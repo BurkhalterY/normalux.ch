@@ -15,3 +15,8 @@ application/logs/*
 !application/logs/index.html
 !application/logs/.htaccess
 /vendor/
+
+#burkhalter_y
+application/config/database.php
+application/medias/*
+.editorconfig
