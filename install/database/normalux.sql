@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le : mar. 01 déc. 2020 à 19:15
+-- Généré le : mar. 01 déc. 2020 à 22:21
 -- Version du serveur :  10.2.32-MariaDB
 -- Version de PHP : 7.3.22
 
@@ -135,6 +135,18 @@ INSERT INTO `users_types` (`id`, `grade`, `level`) VALUES
 (3, 'Modérateur', 4),
 (4, 'Super Admin', 8);
 
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `votes`
+--
+
+CREATE TABLE `votes` (
+  `id` int(11) NOT NULL,
+  `fk_user` int(11) NOT NULL,
+  `fk_drawing` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 --
 -- Index pour les tables déchargées
 --
@@ -189,6 +201,14 @@ ALTER TABLE `users_types`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Index pour la table `votes`
+--
+ALTER TABLE `votes`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_user` (`fk_user`),
+  ADD KEY `fk_drawing` (`fk_drawing`);
+
+--
 -- AUTO_INCREMENT pour les tables déchargées
 --
 
@@ -229,6 +249,12 @@ ALTER TABLE `users_types`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT pour la table `votes`
+--
+ALTER TABLE `votes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- Contraintes pour les tables déchargées
 --
 
@@ -258,6 +284,13 @@ ALTER TABLE `suggestions`
 ALTER TABLE `users`
   ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`fk_profile_picture`) REFERENCES `drawings` (`id`),
   ADD CONSTRAINT `users_ibfk_2` FOREIGN KEY (`fk_user_type`) REFERENCES `users_types` (`id`);
+
+--
+-- Contraintes pour la table `votes`
+--
+ALTER TABLE `votes`
+  ADD CONSTRAINT `votes_ibfk_1` FOREIGN KEY (`fk_user`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `votes_ibfk_2` FOREIGN KEY (`fk_drawing`) REFERENCES `drawings` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
