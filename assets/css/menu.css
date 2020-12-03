@@ -36,11 +36,11 @@ a.active.green {
 }
 
 a.active.red {
-	background-color: Tomato;
+	background-color: tomato;
 }
 
 a.active.blue {
-	background-color: DodgerBlue;
+	background-color: dodgerblue;
 }
 
 a.active.yellow {
@@ -52,11 +52,11 @@ a.active.black {
 }
 
 a.active.purple {
-	background-color: BlueViolet;
+	background-color: blueviolet;
 }
 
 a.active.gray {
-	background-color: Gray;
+	background-color: grey;
 }
 
 .ee {

@@ -96,7 +96,7 @@ li.sidebar{
 }
 
 .button-purple {
-	background-color: BlueViolet;
+	background-color: blueviolet;
 	-ms-animation: rotation 3.6s infinite linear;
 	-moz-animation: rotation 3.6s infinite linear;
 	-webkit-animation: rotation 3.6s infinite linear;
@@ -119,13 +119,21 @@ li.sidebar{
 }
 
 .button-purple:hover {
-	background-color: BlueViolet;
+	background-color: blueviolet;
 }
 
 .button-purple:active {
 	background-color: #f0f;
 	box-shadow: 0 5px #666;
 	transform: translateY(4px);
+}
+
+.button-blue {
+	background-color: cornflowerblue;
+}
+
+.button-blue:hover {
+	background-color: lightblue;
 }
 
 input.field {

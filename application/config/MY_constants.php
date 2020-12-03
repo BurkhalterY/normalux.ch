@@ -16,10 +16,14 @@ define('PER_PAGE', 30);
 define('NORMAL_MODE', 1);
 define('CHAIN_MODE', 2);
 define('PROFILE_PICTURE', 3);
+define('INFINITY_MODE', 4);
 define('ROTATION_MODE', 5);
 define('PIXEL_ART_MODE', 6);
 define('BLINDED_MODE', 7);
-define('INFINITY_MODE', 4);
+define('UNLIMITED_PIXEL_ART', 8);
+define('ZOOM_MODE', 9);
+define('WTF_MODE', 10);
+define('ONLINE_MODE', 11);
 
 /*
 |--------------------------------------------------------------------------

@@ -21,26 +21,29 @@
 						case PROFILE_PICTURE:
 							echo $this->lang->line('profile_picture');
 							break;
+						case INFINITY_MODE:
+							echo $this->lang->line('unlimited_mode');
+							break;
 						case ROTATION_MODE:
 							echo $this->lang->line('rotation_mode');
-							break;
-						case BLINDED_MODE:
-							echo $this->lang->line('blind_mode');
 							break;
 						case PIXEL_ART_MODE:
 							echo $this->lang->line('pixel_art_mode');
 							break;
-						case INFINITY_MODE:
-							echo $this->lang->line('unlimited_mode');
+						case BLINDED_MODE:
+							echo $this->lang->line('blind_mode');
 							break;
-						case 8:
+						case UNLIMITED_PIXEL_ART:
 							echo $this->lang->line('unlimited_pixel_art');
 							break;
-						case 9:
+						case ZOOM_MODE:
 							echo $this->lang->line('zoom_mode');
 							break;
-						case 10:
+						case WTF_MODE:
 							echo $this->lang->line('wtf_mode');
+							break;
+						case ONLINE_MODE:
+							echo $this->lang->line('online_mode');
 							break;
 						default:
 							echo $this->lang->line('unknown');
