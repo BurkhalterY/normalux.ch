@@ -1,11 +1,22 @@
 var conn = new WebSocket('ws://localhost:8080');
 
+var players = new Array();
+
 positions.push = function(e) {
 	Array.prototype.push.call(positions, e);
 
-	let obj = { broadcast: true };
-	obj.type = "position";
-	obj.position = positions[positions.length-1];
+	let obj = {
+		type: "position",
+		position: positions[positions.length-1]
+	}
+	conn.send(JSON.stringify(obj));
+};
+
+conn.onopen = function(e) {
+	let obj = {
+		type: "join",
+		room_code: window.location.pathname.split("/").pop()
+	}
 	conn.send(JSON.stringify(obj));
 };
 
@@ -15,41 +26,65 @@ conn.onmessage = function(e) {
 		case "position":
 			action(data.position);
 			break;
+		case "sync":
+			for (let i = 0; i < data.positions.length; i++) {
+				action(data.positions[i]);
+			}
+			break;
 	}
 };
 
 function action(params) {
+	if(players[params.playerId] === undefined){
+		players[params.playerId] = {
+			x: 0,
+			y: 0,
+			color: "black",
+		}
+	}
+	player = players[params.playerId];
+	let color;
 	switch(params.action){
 		case "time":
 			// Illegal
 			break;
 		case "color":
-			ctx.strokeStyle = params.color;
-			ctx.fillStyle = params.color;
+			player.color = params.color;
 			break;
 		case "width":
+			// Illegal
 			break;
 		case "start":
-			x = params.x;
-			y = params.y;
+			player.x = params.x;
+			player.y = params.y;
 			break;
 		case "paint":
+			color = ctx.strokeStyle;
+			ctx.strokeStyle = player.color;
+
 			ctx.beginPath();
-			ctx.moveTo(x, y);
-			x = params.x;
-			y = params.y;
-			ctx.lineTo(x, y);
+			ctx.moveTo(player.x, player.y);
+			player.x = params.x;
+			player.y = params.y;
+			ctx.lineTo(player.x, player.y);
 			ctx.stroke();
 			ctx.closePath();
+
+			ctx.strokeStyle = color;
 			break;
 		case "point":
-			x = params.x;
-			y = params.y;
+			color = ctx.strokeStyle;
+			ctx.strokeStyle = player.color;
+
+			player.x = params.x;
+			player.y = params.y;
 			ctx.beginPath();
-			ctx.moveTo(x, y);
-			ctx.lineTo(x, y);
+			ctx.moveTo(player.x, player.y);
+			ctx.lineTo(player.x, player.y);
 			ctx.stroke();
 			ctx.closePath();
+
+			ctx.strokeStyle = color;
 			break;
 		case "fill":
 			// Illegal
@@ -63,5 +98,6 @@ function action(params) {
 		case "finish":
 			// Illegal
 			break;
+		players[params.playerId] = player;
 	}
 }
