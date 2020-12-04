@@ -1,4 +1,4 @@
-var conn = new WebSocket('ws://online.normalux.ch');
+var conn = new WebSocket('wss://online.normalux.ch');
 
 var players = new Array();
 
