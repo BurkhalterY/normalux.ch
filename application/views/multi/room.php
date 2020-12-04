@@ -28,5 +28,6 @@
 	<input type="button" id="save" value="<?=$this->lang->line('btn_save')?>" onclick="finishAndSend()" <?=$mode<>INFINITY_MODE?'style="display: none;"':''?>>
 </form> */ ?>
 
+<script>var pseudo = "<?=$_SESSION['pseudo']?>";</script>
 <script src="<?=base_url('assets/javascript/paint.js')?>"></script>
 <script src="<?=base_url('assets/javascript/online.js')?>"></script>

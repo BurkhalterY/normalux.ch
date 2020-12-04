@@ -1,4 +1,4 @@
-var conn = new WebSocket('ws://localhost:8080');
+var conn = new WebSocket('ws://online.normalux.ch');
 
 var players = new Array();
 
@@ -15,6 +15,7 @@ positions.push = function(e) {
 conn.onopen = function(e) {
 	let obj = {
 		type: "join",
+		pseudo: pseudo,
 		room_code: window.location.pathname.split("/").pop()
 	}
 	conn.send(JSON.stringify(obj));
@@ -30,6 +31,9 @@ conn.onmessage = function(e) {
 			for (let i = 0; i < data.positions.length; i++) {
 				action(data.positions[i]);
 			}
+			break;
+		case "join":
+			players.push(data.uuid);
 			break;
 	}
 };
