@@ -136,6 +136,12 @@ li.sidebar{
 	background-color: lightblue;
 }
 
+.button-blue:active {
+	background-color: lightblue;
+	box-shadow: 0 5px #666;
+	transform: translateY(4px);
+}
+
 input.field {
 	width: 200px;
 	padding: 12px 20px;

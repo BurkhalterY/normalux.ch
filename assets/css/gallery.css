@@ -80,3 +80,15 @@ h5.date {
 		width: 85%;
 	}
 }
+
+div.gallery.impostor {
+	border: 2px solid red;
+}
+
+div.gallery.best {
+	border: 2px solid green;
+}
+
+div.gallery.impostor.best {
+	border-color: green red red green;
+}

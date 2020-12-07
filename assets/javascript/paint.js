@@ -22,12 +22,15 @@ for (var i = 0; i < buttons.length; i++) {
 	buttons[i].style.backgroundColor = buttons[i].getAttribute("data-color");
 }
 
+refreshCursor();
+
 function setColor(id){
 	for (var i = 0; i < buttons.length; i++) {
 		buttons[i].classList.remove("active");
 	}
 	ctx.strokeStyle = document.getElementById("color-"+id).getAttribute("data-color");
 	document.getElementById("color-"+id).classList.add("active");
+	refreshCursor();
 	positions.push({time:Date.now()-initialTime, action:"color", color:ctx.strokeStyle});
 }
 
@@ -67,6 +70,12 @@ c.addEventListener("click", function (e) {
 	positions.push({time:Date.now()-initialTime, action:"point", x:x, y:y});
 });
 
+c.addEventListener("wheel", function (e) {
+	ctx.lineWidth = Math.min(ctx.lineWidth - e.deltaY, 50);
+	refreshCursor();
+	positions.push({time:Date.now()-initialTime, action:"width", width: ctx.lineWidth});
+});
+
 var blindmode = false;
 var s = document.getElementById("s").innerHTML;
 positions.push({time:Date.now()-initialTime, action:"time", s:s});
@@ -77,6 +86,12 @@ if(s == "∞"){
 		blindmode = true;
 	}
 	setInterval(timeDecrement, 1000);
+}
+
+function refreshCursor() {
+	let size = ctx.lineWidth;
+	let svg = '<svg height="'+size+'" width="'+size+'" xmlns="http://www.w3.org/2000/svg"><circle cx="'+(size/2)+'" cy="'+(size/2)+'" r="'+(size/2)+'" fill="'+ctx.strokeStyle+'" /></svg>';
+	c.style.cursor = 'url(\'data:image/svg+xml;utf8,'+encodeURIComponent(svg)+'\')'+(size/2)+' '+(size/2)+',auto';
 }
 
 function timeDecrement() {

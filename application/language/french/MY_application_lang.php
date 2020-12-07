@@ -37,8 +37,6 @@ $lang['title_suggestion']				= 'Balancer une suggestion !?';
 $lang['btn_play']						= 'Jouer !';
 $lang['pseudo']							= 'Pseudo :';
 $lang['model']							= 'Dessin :';
-$lang['btn_join']						= 'Rejoindre';
-$lang['room_code']						= 'Code :';
 $lang['color_black']					= 'Noir';
 $lang['color_gray']						= 'Gris';
 $lang['color_white']					= 'Blanc';
@@ -52,7 +50,7 @@ $lang['color_blue']						= 'Bleu';
 $lang['color_indigo']					= 'Indigo';
 $lang['color_violet']					= 'Violet';
 $lang['color_pink']						= 'Rose';
-$lang['btn_save']						= 'Sauvergarder mon image';
+$lang['btn_save']						= 'Sauvegarder mon image';
 
 // Gallery Controller
 $lang['btn_replay']						= 'Rejouer';
@@ -103,6 +101,12 @@ $lang['message__unable_to_use_this_pseudo']		= 'Impossible d\'utiliser ce pseudo
 $lang['message__pseudo_already_used']			= 'Ce pseudo est déjà utilisé';
 $lang['message__passwords_do_not_match']		= 'Les mots de passe ne correspondent pas';
 $lang['message__password_successfully_changed']	= 'Mot de passe changé avec succès';
+
+// Multi Controller
+$lang['btn_join']						= 'Rejoindre';
+$lang['room_code']						= 'Code :';
+$lang['btn_create']						= 'Créer';
+$lang['btn_start']						= 'Commencer';
 
 // Misc Controller
 $lang['contact_text']					= 'N\'hésitez pas à nous contacter à l\'adresse mail suivante :';

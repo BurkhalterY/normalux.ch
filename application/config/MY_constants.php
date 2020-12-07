@@ -12,6 +12,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 
 define('PER_PAGE', 30);
+define('ONLINE_URL', 'https://online.normalux.ch/');
 
 define('NORMAL_MODE', 1);
 define('CHAIN_MODE', 2);

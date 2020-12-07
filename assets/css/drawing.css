@@ -151,3 +151,26 @@ h1 {
 #btn_no {
 	background-color: red;
 }
+
+.model {
+	width: 200px;
+	height: 200px;
+	border: 5px solid #999;
+	border-radius: 10px;
+	margin: 0 auto 10px auto;
+	display: inline-block;
+	background: #fff;
+}
+
+.stats {
+	padding: 10px;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	background-color: lightgray;
+	opacity: 0.75;
+}
+
+.hidden {
+	display: none !important;
+}

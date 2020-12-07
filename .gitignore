@@ -19,5 +19,5 @@ application/logs/*
 #burkhalter_y
 application/config/config.php
 application/config/database.php
-application/medias/*
+medias/*
 .editorconfig

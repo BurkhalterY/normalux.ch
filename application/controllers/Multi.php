@@ -6,8 +6,7 @@ class Multi extends MY_Controller {
 		parent::__construct();
 	}
 
-	public function index($code = '') {
-		$_SESSION['code'] = $code;
+	public function index() {
 		$this->display_view('multi/index');
 	}
 
@@ -26,13 +25,32 @@ class Multi extends MY_Controller {
 		if(isset($_SESSION['pseudo']) && !empty($room_code)){
 			
 			$output['title'] = $this->lang->line('title_draw');
-			$output['picture'] = $this->db->query('SELECT * FROM pictures ORDER BY RAND() LIMIT 1')->result_object()[0];
-			$output['time'] = '&infin;';
-
 			$this->display_view('multi/room', $output, false);
 
 		} else {
 			redirect('multi');
 		}
+	}
+
+	public function create() {
+		if(isset($_POST['pseudo']) && !empty($_POST['pseudo'])){
+			$_SESSION['pseudo'] = htmlspecialchars($_POST['pseudo']);
+			$room_code = substr(str_shuffle("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0 ,4);
+			
+			redirect('multi/room/'.$room_code);
+		} else {
+			redirect('multi');
+		}
+	}
+
+	public function random() {
+		$result = $this->db->query('SELECT * FROM pictures ORDER BY RAND() LIMIT 1')->result_object()[0];
+		$array = [
+			'url' => base_url('medias/pictures/'.$result->file),
+			'title' => $result->title
+		];
+
+		header('Content-type: application/json');
+		echo json_encode($array);
 	}
 }
