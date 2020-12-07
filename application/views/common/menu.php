@@ -26,6 +26,8 @@ function check_active($p1 = '', $p2 = '', $p3 = '1'){
 		<li class="menu"><a <?=check_active('play', 'index', '7')?'class="active gray"':''?> href="<?=base_url('play/index/7')?>"><?=$this->lang->line('menu_blind_mode')?></a></li>
 		<li class="menu"><a <?=check_active('gallery', 'index', '7')?'class="active gray"':''?> href="<?=base_url('gallery/index/7')?>"><?=$this->lang->line('menu_gallery')?></a></li>
 		<br>
+		<li class="menu"><a <?=check_active('multi', 'index', '1')?'class="active blue"':''?> href="<?=base_url('multi')?>"><?=$this->lang->line('menu_multi')?></a></li>
+		<br>
 		<?php if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true){ ?>
 			<li class="menu"><a <?=check_active('user', 'index')?'class="active blue"':''?> href="<?=base_url('user')?>"><?=$this->lang->line('menu_my_account')?></a></li>
 			<li class="menu"><a <?=check_active('user', 'logout')?'class="active blue"':''?> href="<?=base_url('user/logout')?>"><?=$this->lang->line('menu_logout')?></a></li>

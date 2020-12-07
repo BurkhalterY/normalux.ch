@@ -7,6 +7,7 @@ $lang['menu_chain_mode']				= 'Mode en chaîne';
 $lang['menu_rotation_mode']				= 'Mode en rotation';
 $lang['menu_pixel_art']					= 'Mode Pixel Art';
 $lang['menu_blind_mode']				= 'Mode à l\'aveugle';
+$lang['menu_multi']						= 'Multijoueur';
 $lang['menu_login']						= 'Se connecter';
 $lang['menu_register']					= 'S\'inscrire';
 $lang['menu_my_account']				= 'Mon compte';
