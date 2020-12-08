@@ -17,7 +17,15 @@ wss.on('connection', function connection(ws) {
 
 	ws.on('message', function incoming(msg) {
 		
-		let datas = JSON.parse(msg);
+		let datas;
+		try {
+			datas = JSON.parse(msg);
+		} catch (e) {
+			return;
+		}
+		if(!datas.hasOwnProperty('type')){
+			return;
+		}
 		let obj, obj2, clients;
 		switch (datas.type) {
 			case 'join':
@@ -77,7 +85,7 @@ wss.on('connection', function connection(ws) {
 					rooms[ws.room_code].state = 'in-game';
 
 					//Https.get('http://localhost/normalux.ch/multi/random', function(res){
-					Https.get('https://normalux.ch/multi/random', function(res){
+					Https.get('https://www.normalux.ch/multi/random', function(res){
 						let body = '';
 
 						res.on('data', function(chunk){

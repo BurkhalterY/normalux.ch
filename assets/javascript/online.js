@@ -44,7 +44,14 @@ conn.onmessage = function(e) {
 			document.getElementById("btn-start").classList.remove('hidden');
 			break;
 		case "start":
+			positions.length = 0;
 			initialTime = data.initialTime;
+			ctx.strokeStyle = "black";
+			ctx.lineWidth = 5;
+			ctx.lineJoin = "round";
+			ctx.lineCap = "round";
+			refreshCursor();
+
 			document.getElementById("wait-room").classList.add('hidden');
 			document.getElementById("voting").classList.add('hidden');
 			document.getElementById("in-game").classList.remove('hidden');
@@ -209,7 +216,7 @@ function vote(uuid) {
 		let obj = {
 			type: 'vote',
 			cat: voteCat,
-			player: uuid,
+			player: uuid
 		};
 		conn.send(JSON.stringify(obj));
 		if(voteCat == 'impostor'){

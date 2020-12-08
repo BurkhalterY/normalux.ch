@@ -13,10 +13,6 @@ ctx.lineWidth = 5;
 ctx.lineJoin = "round";
 ctx.lineCap = "round";
 
-var colorLayer;
-var startColor = Array(4);
-var fillColor = Array(4);
-
 var buttons = document.getElementsByClassName("color");
 for (var i = 0; i < buttons.length; i++) {
 	buttons[i].style.backgroundColor = buttons[i].getAttribute("data-color");
