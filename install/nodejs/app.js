@@ -39,15 +39,23 @@ wss.on('connection', function connection(ws) {
 				ws.room_code = datas.room_code;
 				ws.score = 0;
 
+				obj = {
+					type: 'welcome',
+					uuid: ws.uuid
+				};
+				ws.send(JSON.stringify(obj));
+
 				if(!rooms.hasOwnProperty(ws.room_code)){
 					rooms[ws.room_code] = {
 						clients: { },
+						clientsWaitlist: { },
 						positions: [],
+						picture: { url: '', title: '' },
 						state: 'waiting'
 					};
 					ws.admin = true;
-					obj2 = { type: 'admin' };
-					ws.send(JSON.stringify(obj2));
+					obj = { type: 'admin' };
+					ws.send(JSON.stringify(obj));
 				}
 				if(rooms[ws.room_code].state == 'waiting') {
 					rooms[ws.room_code].clients[ws.uuid] = ws;
@@ -69,6 +77,10 @@ wss.on('connection', function connection(ws) {
 						}
 						ws.send(JSON.stringify(obj2));
 					}
+				} else {
+					rooms[ws.room_code].clientsWaitlist[ws.uuid] = ws;
+					obj = { type: 'wait' };
+					ws.send(JSON.stringify(obj));
 				}
 				break;
 			case 'start':
@@ -93,7 +105,7 @@ wss.on('connection', function connection(ws) {
 						});
 
 						res.on('end', function(){
-							let picture = JSON.parse(body);
+							rooms[ws.room_code].picture = JSON.parse(body);
 
 							clients = rooms[ws.room_code].clients;
 							let keys = Object.keys(clients);
@@ -103,7 +115,7 @@ wss.on('connection', function connection(ws) {
 							for (let uuid in clients) {
 								obj = {
 									'type': 'start',
-									'picture': picture,
+									'picture': rooms[ws.room_code].picture,
 									'initialTime': Date.now(),
 									'impostor': clients[uuid].isImpostor
 								}
@@ -142,6 +154,12 @@ wss.on('connection', function connection(ws) {
 				Fs.writeFile('archives/'+file+'.json', JSON.stringify(datas.json), {encoding: 'utf8'}, function(err) { });
 
 				obj = {
+					type: 'model',
+					image: rooms[ws.room_code].picture
+				};
+				ws.send(JSON.stringify(obj));
+
+				obj = {
 					type: 'post',
 					image: datas.image,
 					from: ws.uuid
@@ -155,13 +173,16 @@ wss.on('connection', function connection(ws) {
 				if(!datas.hasOwnProperty('cat') || !datas.hasOwnProperty('player')){
 					return;
 				}
-				if(ws.impostorVote == '' && datas.cat == 'impostor'){
+
+				if(ws.impostorVote == '' && !ws.isImpostor && datas.cat == 'impostor'){
 					rooms[ws.room_code].clients[datas.player].votesImpostor++;
 					ws.impostorVote = datas.player;
-				} else if(ws.bestVote == '' && datas.cat == 'best') {
+				} else if(ws.bestVote == '' && ws.uuid != datas.player && datas.cat == 'best') {
 					rooms[ws.room_code].clients[datas.player].votesBest++;
 					ws.bestVote = datas.player;
 				}
+
+				let voted = ws.bestVote != '' && (ws.impostorVote != '' || ws.isImpostor);
 
 				let votesImpostor = { };
 				let votesBest = { };
@@ -172,20 +193,38 @@ wss.on('connection', function connection(ws) {
 					votesImpostor[uuid] = clients[uuid].votesImpostor;
 					votesBest[uuid] = clients[uuid].votesBest;
 
-					if(clients[uuid].impostorVote == '' || clients[uuid].bestVote == ''){
+					if(!(clients[uuid].bestVote != '' && (clients[uuid].impostorVote != '' || clients[uuid].isImpostor))){
 						everyoneHasVoted = false;
+					}
+					if(voted){
+						obj = {
+							type: 'voted',
+							player: ws.uuid
+						};
+						clients[uuid].send(JSON.stringify(obj));
 					}
 				}
 				if(everyoneHasVoted){
+
+					rooms[ws.room_code].state = 'waiting';
+					waitList = rooms[ws.room_code].clientsWaitlist;
+					for (let uuid in waitList) {
+						obj = { type: 'come' };
+						waitList[uuid].send(JSON.stringify(obj));
+					}
 
 					let maxImpostor = Math.max.apply(Math, Object.keys(votesImpostor).map(function(o) { return votesImpostor[o]; }));
 					let maxBest = Math.max.apply(Math, Object.keys(votesBest).map(function(o) { return votesBest[o]; }));
 
 					let scores = { };
+					let bests = [];
+					let impostors = [];
+					let innocents = [];
 
 					for (let uuid in clients) {
 						let combo = 0;
 						if(clients[uuid].votesBest == maxBest){
+							bests.push(uuid);
 							clients[uuid].detailsPoints.push({ msg: 'Meilleur dessin', points: 500 });
 							combo++;
 						}
@@ -193,7 +232,7 @@ wss.on('connection', function connection(ws) {
 							clients[uuid].detailsPoints.push({ msg: 'Passé inaperçu', points: 1000 });
 							combo++;
 						}
-						if(clients[clients[uuid].impostorVote].isImpostor){
+						if(!clients[uuid].isImpostor && clients[clients[uuid].impostorVote].isImpostor){
 							clients[uuid].detailsPoints.push({ msg: 'C\'était bien lui', points: 200 });
 						}
 						if(combo == 2){
@@ -204,11 +243,21 @@ wss.on('connection', function connection(ws) {
 							clients[uuid].score += clients[uuid].detailsPoints[i].points;
 						}
 						scores[uuid] = clients[uuid].score;
+
+						if(clients[uuid].isImpostor){
+							impostors.push(uuid);
+						}
+						if(clients[uuid].votesImpostor == maxImpostor && !clients[uuid].isImpostor){
+							innocents.push(uuid);
+						}
 					}
 					for (let uuid in clients) {
 
 						obj = {
 							type: "results",
+							impostors: impostors,
+							innocents: innocents,
+							bests: bests,
 							votesImpostor: votesImpostor,
 							votesBest: votesBest,
 							yourPoints: clients[uuid].detailsPoints,

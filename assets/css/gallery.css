@@ -4,6 +4,7 @@ div.gallery {
 	border: 1px solid #ccc;
 	float: left;
 	width: 300px;
+	position: relative;
 }
 
 div.top-select {
@@ -81,14 +82,53 @@ h5.date {
 	}
 }
 
-div.gallery.impostor {
+div.gallery.vote-impostor {
 	border: 2px solid red;
 }
 
-div.gallery.best {
+div.gallery.vote-best {
 	border: 2px solid green;
 }
 
-div.gallery.impostor.best {
+div.gallery.vote-impostor.vote-best {
 	border-color: green red red green;
+}
+
+div.gallery.voted::before {
+	content: '';
+	position: absolute;
+	background-image: url(../images/online/voted.png);
+	width: 120px;
+	height: 120px;
+}
+
+div.gallery.impostor::after {
+	content: '';
+	position: absolute;
+	background-image: url(../images/online/impostor.png);
+	width: 120px;
+	height: 120px;
+	right: -30px;
+	bottom: -20px;
+	z-index: 1;
+}
+
+div.gallery.innocent::after {
+	content: '';
+	position: absolute;
+	background-image: url(../images/online/innocent.png);
+	width: 120px;
+	height: 120px;
+	right: -30px;
+	bottom: -20px;
+	z-index: 1;
+}
+
+div.gallery.best::before {
+	content: '';
+	position: absolute;
+	background-image: url(../images/online/best.png);
+	width: 120px;
+	height: 120px;
+	right: -30px;
 }
