@@ -6,6 +6,28 @@
 
 <h3 id="title"></h3>
 
+<div id="config" class="hidden">
+	<label for="victory-condition">Condition de victoire :</label>
+	<select name="victory-condition" id="victory-condition"	onchange="victoiryConditionChange();">
+		<option value="rounds" selected>Nombre de manches</option>
+		<option value="score">Score maximum</option>
+	</select>
+	<br>
+	<div id="section-rounds">
+		<label for="rounds-number">Nombre de manches :</label>
+		<input type="number" name="rounds-number" id="rounds-number" class="field" value="5">
+		<br>
+	</div>
+	<div id="section-score" class="hidden">
+		<label for="score-goal">Score à atteindre :</label>
+		<input type="number" name="score-goal" id="score-goal" class="field" value="10000">
+		<br>
+	</div>
+	<label for="time">Temps (en secondes) :</label>
+	<input type="number" name="time" id="time" class="field" value="45">
+	<br>
+</div>
+
 <div id="in-game" class="hidden">
 	<h1 id="s">∞</h1>
 
@@ -14,7 +36,7 @@
 	<canvas id="canvas" width="400" height="400"></canvas>
 
 	<ul id="colors" class="colors-multi">
-		<li><a href="#" id="color-0" onclick="setColor(0)" class="color active" data-color="#FF0000"></a></li>
+		<li><a href="#" id="color-0" onclick="setColor(0)" class="color" data-color="#FF0000"></a></li>
 		<li><a href="#" id="color-1" onclick="setColor(1)" class="color" data-color="#FF9020"></a></li>
 		<li><a href="#" id="color-2" onclick="setColor(2)" class="color" data-color="#FFD800"></a></li>
 		<li><a href="#" id="color-3" onclick="setColor(3)" class="color" data-color="#B6FF00"></a></li>
@@ -38,7 +60,7 @@
 		<li><a href="#" id="color-20" onclick="setColor(20)" class="color" data-color="#61006D"></a></li>
 		<li><a href="#" id="color-21" onclick="setColor(21)" class="color" data-color="#9F0077"></a></li>
 		<br>
-		<li><a href="#" id="color-22" onclick="setColor(22)" class="color" data-color="#000000"></a></li>
+		<li><a href="#" id="color-22" onclick="setColor(22)" class="color active" data-color="#000000"></a></li>
 		<li><a href="#" id="color-23" onclick="setColor(23)" class="color" data-color="#191919"></a></li>
 		<li><a href="#" id="color-24" onclick="setColor(24)" class="color" data-color="#333333"></a></li>
 		<li><a href="#" id="color-25" onclick="setColor(25)" class="color" data-color="#4C4C4C"></a></li>
@@ -53,10 +75,7 @@
 </div>
 
 <div id="voting" class="hidden"></div>
-
-<div id="wait-room">
-	<button id="btn-start" class="button button-green hidden" onclick="start();"><?=$this->lang->line('btn_start')?></button>
-</div>
+<button id="btn-start" class="button button-green hidden" onclick="start();"><?=$this->lang->line('btn_start')?></button>
 
 <script>
 	var pseudo = "<?=$_SESSION['pseudo']?>";

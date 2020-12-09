@@ -1,9 +1,11 @@
 var players = new Array();
 var me = '';
 
+var started = false;
 var interval;
 var voteCat = '';
 var impostor = false;
+var admin = false;
 
 positions.push = function(e) {
 	Array.prototype.push.call(positions, e);
@@ -33,6 +35,7 @@ conn.onmessage = function(e) {
 			break;
 		case "wait":
 			document.getElementById('title').innerHTML = 'La partie a déjà commencé...';
+			break;
 		case "come":
 			conn.onopen();
 			break;
@@ -48,9 +51,19 @@ conn.onmessage = function(e) {
 			refreshPlayers();
 			break;
 		case "admin":
+			admin = true;
 			document.getElementById("btn-start").classList.remove('hidden');
+			if(!started){
+				document.getElementById("config").classList.remove('hidden');
+			}
 			break;
 		case "start":
+			if(!started){
+				for (let player in players) {
+					players[player].score = 0;
+				}
+			}
+			started = true;
 			positions.length = 0;
 			initialTime = data.initialTime;
 			ctx.strokeStyle = "black";
@@ -59,7 +72,8 @@ conn.onmessage = function(e) {
 			ctx.lineCap = "round";
 			refreshCursor();
 
-			document.getElementById("wait-room").classList.add('hidden');
+			document.getElementById("btn-start").classList.add('hidden');
+			document.getElementById("config").classList.add('hidden');
 			document.getElementById("voting").classList.add('hidden');
 			document.getElementById("in-game").classList.remove('hidden');
 
@@ -104,8 +118,8 @@ conn.onmessage = function(e) {
 				document.getElementById("dashboard").innerHTML = '';
 			}
 
-			document.getElementById("s").innerHTML = 45;
-			s = document.getElementById("s").innerHTML;
+			document.getElementById("s").innerHTML = data.time;
+			s = data.time;
 			interval = setInterval(timeDecrement, 1000);
 
 			break;
@@ -139,7 +153,7 @@ conn.onmessage = function(e) {
 			strong2.appendChild(document.createTextNode(data.image.title));
 			desc2.appendChild(strong2);
 			gallery2.appendChild(desc2);
-			document.getElementById('voting').appendChild(gallery2);
+			document.getElementById('voting').prepend(gallery2);
 			break;
 		case "voted":
 			document.getElementById("drawing-"+data.player).classList.add("voted");
@@ -170,11 +184,26 @@ conn.onmessage = function(e) {
 			for (let i = 0; i < data.yourPoints.length; i++) {
 				console.log(data.yourPoints[i].msg, data.yourPoints[i].points);
 			}
+			let scores = Object.values(data.scores);
+			let max = Math.max(...scores);
+			let winner = null;
 			for (let player in data.scores) {
 				players[player].score = data.scores[player];
+				if(max == data.scores[player]){
+					winner = player;
+				}
 			}
 			refreshPlayers();
-			document.getElementById("wait-room").classList.remove("hidden");
+			if(data.finish) {
+				alert(players[winner].pseudo+' a gagné !');
+				if(admin){
+					started = false;
+					document.getElementById("config").classList.remove("hidden");
+				}
+			}
+			if(admin){
+				document.getElementById("btn-start").classList.remove('hidden');
+			}
 	}
 };
 
@@ -186,8 +215,19 @@ function refreshPlayers() {
 }
 
 function start() {
-	let obj = { type: "start" }
-	conn.send(JSON.stringify(obj));
+	if(!started){
+		let obj = {
+			type: "start",
+			victoryCondition: document.getElementById("victory-condition").value,
+			roundsNumber: document.getElementById("rounds-number").value,
+			scoreGoal: document.getElementById("score-goal").value,
+			time: document.getElementById("time").value
+		};
+		conn.send(JSON.stringify(obj));
+	} else {
+		let obj = { type: "restart" };
+		conn.send(JSON.stringify(obj));
+	}
 }
 
 function action(params) {
@@ -239,7 +279,7 @@ function action(params) {
 	}
 }
 
-finishAndSend = function() {
+finishAndSend = function() { //override
 	clearInterval(interval);
 	positions.push({time:Date.now()-initialTime, action:"finish"});
 	let obj = {
@@ -277,5 +317,18 @@ function vote(uuid) {
 			document.getElementById('title').innerHTML = 'En attente des autres votes...';
 			voteCat = '';
 		}
+	}
+}
+
+function victoiryConditionChange() {
+	switch(document.getElementById("victory-condition").value){
+		case "rounds":
+			document.getElementById("section-rounds").classList.remove("hidden");
+			document.getElementById("section-score").classList.add("hidden");
+			break;
+		case "score":
+			document.getElementById("section-score").classList.remove("hidden");
+			document.getElementById("section-rounds").classList.add("hidden");
+			break;
 	}
 }

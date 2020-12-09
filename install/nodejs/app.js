@@ -10,10 +10,16 @@ const server = fs.existsSync('key.pem') ?
 
 const WebSocket = require('ws');
 
+
 const rooms = { };
-
-
 const wss = new WebSocket.Server({ server });
+
+function uuidv4() {
+	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+		let r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+		return v.toString(16);
+	});
+}
 
 wss.on('connection', function connection(ws) {
 
@@ -38,7 +44,7 @@ wss.on('connection', function connection(ws) {
 				}
 				console.log(datas.pseudo+" joins room "+datas.room_code);
 
-				ws.uuid = datas.pseudo+"_"+Math.floor(Math.random() * 10000);
+				ws.uuid = uuidv4();
 				ws.pseudo = datas.pseudo;
 				ws.room_code = datas.room_code;
 				ws.score = 0;
@@ -53,7 +59,8 @@ wss.on('connection', function connection(ws) {
 					rooms[ws.room_code] = {
 						clients: { },
 						clientsWaitlist: { },
-						positions: [],
+						round: 0,
+						rules: { victoryCondition: 'rounds', roundsNumber: 5, scoreGoal: 10000, time: 45 },
 						picture: { url: '', title: '' },
 						state: 'waiting'
 					};
@@ -88,7 +95,26 @@ wss.on('connection', function connection(ws) {
 				}
 				break;
 			case 'start':
+				if(!datas.hasOwnProperty('victoryCondition') || !datas.hasOwnProperty('roundsNumber') || !datas.hasOwnProperty('scoreGoal') || !datas.hasOwnProperty('time')) {
+					return;
+				}
 				if(ws.hasOwnProperty('admin')){
+
+					if(datas.victoryCondition != 'rounds' && datas.victoryCondition != 'score') return;
+
+					rooms[ws.room_code].rules.victoryCondition = datas.victoryCondition;
+					rooms[ws.room_code].rules.roundsNumber = datas.roundsNumber;
+					rooms[ws.room_code].rules.scoreGoal = datas.scoreGoal;
+					rooms[ws.room_code].rules.time = datas.time;
+
+					rooms[ws.room_code].round = 0;
+				}
+				// absence de break volontaire
+			case 'restart':
+				if(ws.hasOwnProperty('admin')){
+					rooms[ws.room_code].round++;
+					
+					rooms[ws.room_code].state = 'in-game';
 
 					clients = rooms[ws.room_code].clients;
 					for (let uuid in clients) {
@@ -97,8 +123,6 @@ wss.on('connection', function connection(ws) {
 						clients[uuid].impostorVote = clients[uuid].bestVote = '';
 						clients[uuid].detailsPoints = [];
 					}
-
-					rooms[ws.room_code].state = 'in-game';
 
 					//http.get('http://localhost/normalux.ch/multi/random', function(res){
 					https.get('https://www.normalux.ch/multi/random', function(res){
@@ -120,6 +144,7 @@ wss.on('connection', function connection(ws) {
 								obj = {
 									'type': 'start',
 									'picture': rooms[ws.room_code].picture,
+									'time': rooms[ws.room_code].rules.time,
 									'initialTime': Date.now(),
 									'impostor': clients[uuid].isImpostor
 								}
@@ -134,7 +159,6 @@ wss.on('connection', function connection(ws) {
 					return;
 				}
 				datas.position.playerId = ws.uuid;
-				rooms[ws.room_code].positions.push(datas.position);
 
 				obj = {
 					type: 'position',
@@ -210,13 +234,6 @@ wss.on('connection', function connection(ws) {
 				}
 				if(everyoneHasVoted){
 
-					rooms[ws.room_code].state = 'waiting';
-					waitList = rooms[ws.room_code].clientsWaitlist;
-					for (let uuid in waitList) {
-						obj = { type: 'come' };
-						waitList[uuid].send(JSON.stringify(obj));
-					}
-
 					let maxImpostor = Math.max.apply(Math, Object.keys(votesImpostor).map(function(o) { return votesImpostor[o]; }));
 					let maxBest = Math.max.apply(Math, Object.keys(votesBest).map(function(o) { return votesBest[o]; }));
 
@@ -224,6 +241,11 @@ wss.on('connection', function connection(ws) {
 					let bests = [];
 					let impostors = [];
 					let innocents = [];
+
+					let win = false;
+					if(rooms[ws.room_code].rules.victoryCondition == 'rounds' && rooms[ws.room_code].round == rooms[ws.room_code].rules.roundsNumber){
+						win = true;
+					}
 
 					for (let uuid in clients) {
 						let combo = 0;
@@ -246,6 +268,9 @@ wss.on('connection', function connection(ws) {
 						for (let i = 0; i < clients[uuid].detailsPoints.length; i++) {
 							clients[uuid].score += clients[uuid].detailsPoints[i].points;
 						}
+						if(rooms[ws.room_code].rules.victoryCondition == 'score' && clients[uuid].score >= rooms[ws.room_code].rules.scoreGoal){
+							win = true;
+						}
 						scores[uuid] = clients[uuid].score;
 
 						if(clients[uuid].isImpostor){
@@ -265,9 +290,17 @@ wss.on('connection', function connection(ws) {
 							votesImpostor: votesImpostor,
 							votesBest: votesBest,
 							yourPoints: clients[uuid].detailsPoints,
-							scores: scores
+							scores: scores,
+							finish: win
 						};
 						clients[uuid].send(JSON.stringify(obj));
+					}
+
+					rooms[ws.room_code].state = 'waiting';
+					waitList = rooms[ws.room_code].clientsWaitlist;
+					for (let uuid in waitList) {
+						obj = { type: 'come' };
+						waitList[uuid].send(JSON.stringify(obj));
 					}
 				}
 				break;
