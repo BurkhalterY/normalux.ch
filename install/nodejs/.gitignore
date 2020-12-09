@@ -116,4 +116,6 @@ dist
 .pnp.*
 
 # BurkhalterY
+key.pem
+cert.pem
 archives/

@@ -58,6 +58,9 @@
 	<button id="btn-start" class="button button-green hidden" onclick="start();"><?=$this->lang->line('btn_start')?></button>
 </div>
 
-<script>var pseudo = "<?=$_SESSION['pseudo']?>";</script>
+<script>
+	var pseudo = "<?=$_SESSION['pseudo']?>";
+	var conn = new WebSocket('<?=ONLINE_URL?>');
+</script>
 <script src="<?=base_url('assets/javascript/paint.js')?>"></script>
 <script src="<?=base_url('assets/javascript/online.js')?>"></script>

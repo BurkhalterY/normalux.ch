@@ -12,7 +12,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 
 define('PER_PAGE', 30);
-define('ONLINE_URL', 'https://online.normalux.ch/');
+//define('ONLINE_URL', 'wss://online.normalux.ch');
+define('ONLINE_URL', 'ws://localhost:8080');
 
 define('NORMAL_MODE', 1);
 define('CHAIN_MODE', 2);

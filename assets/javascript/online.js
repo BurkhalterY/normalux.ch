@@ -1,6 +1,3 @@
-var conn = new WebSocket('wss://online.normalux.ch');
-//var conn = new WebSocket('ws://localhost:8080');
-
 var players = new Array();
 var me = '';
 

@@ -1,13 +1,17 @@
-const Fs = require('fs');
-const Https = require('https');
+const fs = require('fs');
+
+const http = require('http');
+const https = require('https');
+const server = fs.existsSync('key.pem') ?
+	https.createServer({
+		key: fs.readFileSync('key.pem'),
+		cert: fs.readFileSync('cert.pem')
+	}) : http.createServer();
+
 const WebSocket = require('ws');
 
 const rooms = { };
 
-const server = Https.createServer({
-	key: Fs.readFileSync('key.pem'),
-	cert: Fs.readFileSync('cert.pem')
-});
 
 const wss = new WebSocket.Server({ server });
 
@@ -96,8 +100,8 @@ wss.on('connection', function connection(ws) {
 
 					rooms[ws.room_code].state = 'in-game';
 
-					//Https.get('http://localhost/normalux.ch/multi/random', function(res){
-					Https.get('https://www.normalux.ch/multi/random', function(res){
+					//http.get('http://localhost/normalux.ch/multi/random', function(res){
+					https.get('https://www.normalux.ch/multi/random', function(res){
 						let body = '';
 
 						res.on('data', function(chunk){
@@ -150,8 +154,8 @@ wss.on('connection', function connection(ws) {
 				}
 
 				let file = ws.room_code+'_'+ws.uuid+'_'+Math.floor(Math.random() * 10000);
-				Fs.writeFile('archives/'+file+'.png', datas.image.split(';base64,').pop(), {encoding: 'base64'}, function(err) { });
-				Fs.writeFile('archives/'+file+'.json', JSON.stringify(datas.json), {encoding: 'utf8'}, function(err) { });
+				fs.writeFile('archives/'+file+'.png', datas.image.split(';base64,').pop(), {encoding: 'base64'}, function(err) { });
+				fs.writeFile('archives/'+file+'.json', JSON.stringify(datas.json), {encoding: 'utf8'}, function(err) { });
 
 				obj = {
 					type: 'model',
