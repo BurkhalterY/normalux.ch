@@ -86,8 +86,10 @@ conn.onmessage = function(e) {
 				document.getElementById('title').innerHTML = 'Plagiez les dessins des autres sans vous faire chopper !';
 
 				document.getElementById("dashboard").classList.remove('hidden');
+				document.getElementById("word").classList.add('hidden');
 				document.getElementById("model").classList.add('hidden');
 
+				document.getElementById('word').innerHTML = ''
 				document.getElementById("model").src = '';
 				document.getElementById("model").alt = '???';
 
@@ -107,15 +109,31 @@ conn.onmessage = function(e) {
 					players[player].ctx = ctx;
 				}
 			} else {
-				document.getElementById('title').innerHTML = 'Reproduisez le modèle !';
-				
-				document.getElementById("model").classList.remove('hidden');
-				document.getElementById("dashboard").classList.add('hidden');
+				if(data.hasOwnProperty("picture")){
 
-				document.getElementById("model").src = data.picture.url;
-				document.getElementById("model").alt = data.picture.title;
+					document.getElementById('title').innerHTML = 'Reproduisez le modèle !';
+					
+					document.getElementById("model").classList.remove('hidden');
+					document.getElementById("word").classList.add('hidden');
+					document.getElementById("dashboard").classList.add('hidden');
 
-				document.getElementById("dashboard").innerHTML = '';
+					document.getElementById("model").src = data.picture.url;
+					document.getElementById("model").alt = data.picture.title;
+
+					document.getElementById("dashboard").innerHTML = '';
+
+				} else if(data.hasOwnProperty("word")){
+					
+					document.getElementById('title').innerHTML = 'Illustreuz le mot !';
+					
+					document.getElementById("word").classList.remove('hidden');
+					document.getElementById("model").classList.add('hidden');
+					document.getElementById("dashboard").classList.add('hidden');
+
+					document.getElementById("word").innerHTML = data.word;
+
+					document.getElementById("dashboard").innerHTML = '';
+				}
 			}
 
 			document.getElementById("s").innerHTML = data.time;
@@ -144,13 +162,32 @@ conn.onmessage = function(e) {
 		case "model":
 			let gallery2 = document.createElement('div');
 			gallery2.classList.add('gallery');
-			let img2 = document.createElement('img');
-			img2.src = data.image.url;
-			img2.alt = data.image.title;
-			gallery2.appendChild(img2);
+			let title = '';
+			if(data.hasOwnProperty("image")) {
+				let img2 = document.createElement('img');
+				img2.src = data.image.url;
+				img2.alt = data.image.title;
+				gallery2.appendChild(img2);
+				title = data.image.title;
+			} else if(data.hasOwnProperty("word")) {
+				let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+				svg.setAttribute('width', 400);
+				svg.setAttribute('height', 400);
+				let txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+				txt.setAttribute('x', "50%");
+				txt.setAttribute('y', "50%");
+				txt.setAttribute('text-anchor', "middle");
+				txt.setAttribute('dominant-baseline', "middle");
+				txt.setAttribute('font-size', "32");
+				txt.setAttribute('font-family', "Arial");
+				txt.appendChild(document.createTextNode(data.word));
+				svg.appendChild(txt);
+				gallery2.appendChild(svg);
+				title = data.word;
+			}
 			let desc2 = document.createElement('div');
 			let strong2 = document.createElement('strong');
-			strong2.appendChild(document.createTextNode(data.image.title));
+			strong2.appendChild(document.createTextNode(title));
 			desc2.appendChild(strong2);
 			gallery2.appendChild(desc2);
 			document.getElementById('voting').prepend(gallery2);
@@ -221,7 +258,8 @@ function start() {
 			victoryCondition: document.getElementById("victory-condition").value,
 			roundsNumber: document.getElementById("rounds-number").value,
 			scoreGoal: document.getElementById("score-goal").value,
-			time: document.getElementById("time").value
+			time: document.getElementById("time").value,
+			wordMode: document.getElementById("word-mode").checked
 		};
 		conn.send(JSON.stringify(obj));
 	} else {

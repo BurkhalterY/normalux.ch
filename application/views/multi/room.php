@@ -26,9 +26,13 @@
 	<label for="time">Temps (en secondes) :</label>
 	<input type="number" name="time" id="time" class="field" value="45">
 	<br>
+	<label for="word-mode">Mode mots :</label>
+	<input type="checkbox" id="word-mode" name="word-mode">
+	<br>
 </div>
 
 <div id="in-game" class="hidden">
+	<h1 id="word"></h1>
 	<h1 id="s">∞</h1>
 
 	<div id="dashboard"></div>

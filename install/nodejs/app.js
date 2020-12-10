@@ -36,276 +36,310 @@ wss.on('connection', function connection(ws) {
 		if(!datas.hasOwnProperty('type')){
 			return;
 		}
-		let obj, obj2, clients;
 		switch (datas.type) {
 			case 'join':
-				if(!datas.hasOwnProperty('pseudo') || !datas.hasOwnProperty('pseudo')){
-					return;
-				}
-				console.log(datas.pseudo+" joins room "+datas.room_code);
-
-				ws.uuid = uuidv4();
-				ws.pseudo = datas.pseudo;
-				ws.room_code = datas.room_code;
-				ws.score = 0;
-
-				obj = {
-					type: 'welcome',
-					uuid: ws.uuid
-				};
-				ws.send(JSON.stringify(obj));
-
-				if(!rooms.hasOwnProperty(ws.room_code)){
-					rooms[ws.room_code] = {
-						clients: { },
-						clientsWaitlist: { },
-						round: 0,
-						rules: { victoryCondition: 'rounds', roundsNumber: 5, scoreGoal: 10000, time: 45 },
-						picture: { url: '', title: '' },
-						state: 'waiting'
-					};
-					ws.admin = true;
-					obj = { type: 'admin' };
-					ws.send(JSON.stringify(obj));
-				}
-				if(rooms[ws.room_code].state == 'waiting') {
-					rooms[ws.room_code].clients[ws.uuid] = ws;
-
-					obj = {
-						type: 'join',
-						uuid: ws.uuid,
-						pseudo: ws.pseudo
-					}
-
-					clients = rooms[ws.room_code].clients;
-					for (let uuid in clients) {
-						clients[uuid].send(JSON.stringify(obj));
-
-						obj2 = {
-							type: 'join',
-							uuid: uuid,
-							pseudo: clients[uuid].pseudo
-						}
-						ws.send(JSON.stringify(obj2));
-					}
-				} else {
-					rooms[ws.room_code].clientsWaitlist[ws.uuid] = ws;
-					obj = { type: 'wait' };
-					ws.send(JSON.stringify(obj));
-				}
+				if(!datas.hasOwnProperty('pseudo') || !datas.hasOwnProperty('room_code')) return;
+				join(datas.pseudo, datas.room_code);
 				break;
 			case 'start':
-				if(!datas.hasOwnProperty('victoryCondition') || !datas.hasOwnProperty('roundsNumber') || !datas.hasOwnProperty('scoreGoal') || !datas.hasOwnProperty('time')) {
-					return;
-				}
-				if(ws.hasOwnProperty('admin')){
-
-					if(datas.victoryCondition != 'rounds' && datas.victoryCondition != 'score') return;
-
-					rooms[ws.room_code].rules.victoryCondition = datas.victoryCondition;
-					rooms[ws.room_code].rules.roundsNumber = datas.roundsNumber;
-					rooms[ws.room_code].rules.scoreGoal = datas.scoreGoal;
-					rooms[ws.room_code].rules.time = datas.time;
-
-					rooms[ws.room_code].round = 0;
-				}
+				if(!datas.hasOwnProperty('victoryCondition') || !datas.hasOwnProperty('roundsNumber') || !datas.hasOwnProperty('scoreGoal') || !datas.hasOwnProperty('time') || !datas.hasOwnProperty('wordMode')) return;
+				start(datas.victoryCondition, datas.roundsNumber, datas.scoreGoal, datas.time, datas.wordMode);
 				// absence de break volontaire
 			case 'restart':
-				if(ws.hasOwnProperty('admin')){
-					rooms[ws.room_code].round++;
-					
-					rooms[ws.room_code].state = 'in-game';
-
-					clients = rooms[ws.room_code].clients;
-					for (let uuid in clients) {
-						clients[uuid].isImpostor = false;
-						clients[uuid].votesImpostor = clients[uuid].votesBest = 0;
-						clients[uuid].impostorVote = clients[uuid].bestVote = '';
-						clients[uuid].detailsPoints = [];
-					}
-
-					//http.get('http://localhost/normalux.ch/multi/random', function(res){
-					https.get('https://www.normalux.ch/multi/random', function(res){
-						let body = '';
-
-						res.on('data', function(chunk){
-							body += chunk;
-						});
-
-						res.on('end', function(){
-							rooms[ws.room_code].picture = JSON.parse(body);
-
-							clients = rooms[ws.room_code].clients;
-							let keys = Object.keys(clients);
-							let impostorUUID = keys[Math.floor(Math.random() * keys.length)];
-							clients[impostorUUID].isImpostor = true;
-
-							for (let uuid in clients) {
-								obj = {
-									'type': 'start',
-									'picture': rooms[ws.room_code].picture,
-									'time': rooms[ws.room_code].rules.time,
-									'initialTime': Date.now(),
-									'impostor': clients[uuid].isImpostor
-								}
-								clients[uuid].send(JSON.stringify(obj));
-							}
-						});
-					});
-				}
+				restart();
 				break;
 			case 'position':
-				if(!datas.hasOwnProperty('position')){
-					return;
-				}
-				datas.position.playerId = ws.uuid;
-
-				obj = {
-					type: 'position',
-					position: datas.position,
-				};
-
-				clients = rooms[ws.room_code].clients;
-				for (let uuid in clients) {
-					if(clients[uuid].isImpostor){
-						clients[uuid].send(JSON.stringify(obj));
-					}
-				}
+				if(!datas.hasOwnProperty('position')) return;
+				position(datas.position);
 				break;
 			case 'post':
-				if(!datas.hasOwnProperty('image') || !datas.hasOwnProperty('json')){
-					return;
-				}
-
-				let file = ws.room_code+'_'+ws.uuid+'_'+Math.floor(Math.random() * 10000);
-				fs.writeFile('archives/'+file+'.png', datas.image.split(';base64,').pop(), {encoding: 'base64'}, function(err) { });
-				fs.writeFile('archives/'+file+'.json', JSON.stringify(datas.json), {encoding: 'utf8'}, function(err) { });
-
-				obj = {
-					type: 'model',
-					image: rooms[ws.room_code].picture
-				};
-				ws.send(JSON.stringify(obj));
-
-				obj = {
-					type: 'post',
-					image: datas.image,
-					from: ws.uuid
-				};
-				clients = rooms[ws.room_code].clients;
-				for (let uuid in clients) {
-					clients[uuid].send(JSON.stringify(obj));
-				}
+				if(!datas.hasOwnProperty('image') || !datas.hasOwnProperty('json')) return;
+				post(datas.image, datas.json);
 				break;
 			case 'vote':
-				if(!datas.hasOwnProperty('cat') || !datas.hasOwnProperty('player')){
-					return;
-				}
-
-				if(ws.impostorVote == '' && !ws.isImpostor && datas.cat == 'impostor'){
-					rooms[ws.room_code].clients[datas.player].votesImpostor++;
-					ws.impostorVote = datas.player;
-				} else if(ws.bestVote == '' && ws.uuid != datas.player && datas.cat == 'best') {
-					rooms[ws.room_code].clients[datas.player].votesBest++;
-					ws.bestVote = datas.player;
-				}
-
-				let voted = ws.bestVote != '' && (ws.impostorVote != '' || ws.isImpostor);
-
-				let votesImpostor = { };
-				let votesBest = { };
-				let everyoneHasVoted = true;
-
-				clients = rooms[ws.room_code].clients;
-				for (let uuid in clients) {
-					votesImpostor[uuid] = clients[uuid].votesImpostor;
-					votesBest[uuid] = clients[uuid].votesBest;
-
-					if(!(clients[uuid].bestVote != '' && (clients[uuid].impostorVote != '' || clients[uuid].isImpostor))){
-						everyoneHasVoted = false;
-					}
-					if(voted){
-						obj = {
-							type: 'voted',
-							player: ws.uuid
-						};
-						clients[uuid].send(JSON.stringify(obj));
-					}
-				}
-				if(everyoneHasVoted){
-
-					let maxImpostor = Math.max.apply(Math, Object.keys(votesImpostor).map(function(o) { return votesImpostor[o]; }));
-					let maxBest = Math.max.apply(Math, Object.keys(votesBest).map(function(o) { return votesBest[o]; }));
-
-					let scores = { };
-					let bests = [];
-					let impostors = [];
-					let innocents = [];
-
-					let win = false;
-					if(rooms[ws.room_code].rules.victoryCondition == 'rounds' && rooms[ws.room_code].round == rooms[ws.room_code].rules.roundsNumber){
-						win = true;
-					}
-
-					for (let uuid in clients) {
-						let combo = 0;
-						if(clients[uuid].votesBest == maxBest){
-							bests.push(uuid);
-							clients[uuid].detailsPoints.push({ msg: 'Meilleur dessin', points: 500 });
-							combo++;
-						}
-						if(clients[uuid].isImpostor && clients[uuid].votesImpostor != maxImpostor){
-							clients[uuid].detailsPoints.push({ msg: 'Passé inaperçu', points: 1000 });
-							combo++;
-						}
-						if(!clients[uuid].isImpostor && clients[clients[uuid].impostorVote].isImpostor){
-							clients[uuid].detailsPoints.push({ msg: 'C\'était bien lui', points: 200 });
-						}
-						if(combo == 2){
-							clients[uuid].detailsPoints.push({ msg: 'Contrefaçon', points: 500 });
-						}
-
-						for (let i = 0; i < clients[uuid].detailsPoints.length; i++) {
-							clients[uuid].score += clients[uuid].detailsPoints[i].points;
-						}
-						if(rooms[ws.room_code].rules.victoryCondition == 'score' && clients[uuid].score >= rooms[ws.room_code].rules.scoreGoal){
-							win = true;
-						}
-						scores[uuid] = clients[uuid].score;
-
-						if(clients[uuid].isImpostor){
-							impostors.push(uuid);
-						}
-						if(clients[uuid].votesImpostor == maxImpostor && !clients[uuid].isImpostor){
-							innocents.push(uuid);
-						}
-					}
-					for (let uuid in clients) {
-
-						obj = {
-							type: "results",
-							impostors: impostors,
-							innocents: innocents,
-							bests: bests,
-							votesImpostor: votesImpostor,
-							votesBest: votesBest,
-							yourPoints: clients[uuid].detailsPoints,
-							scores: scores,
-							finish: win
-						};
-						clients[uuid].send(JSON.stringify(obj));
-					}
-
-					rooms[ws.room_code].state = 'waiting';
-					waitList = rooms[ws.room_code].clientsWaitlist;
-					for (let uuid in waitList) {
-						obj = { type: 'come' };
-						waitList[uuid].send(JSON.stringify(obj));
-					}
-				}
+				if(!datas.hasOwnProperty('cat') || !datas.hasOwnProperty('player')) return;
+				vote(datas.cat, datas.player);
 				break;
 		}
 	});
+
+	function join(pseudo, room_code) {
+		console.log(pseudo+" joins room "+room_code);
+
+		ws.uuid = uuidv4();
+		ws.pseudo = pseudo;
+		ws.room_code = room_code;
+		ws.score = 0;
+
+		let obj = {
+			type: 'welcome',
+			uuid: ws.uuid
+		};
+		ws.send(JSON.stringify(obj));
+
+		if(!rooms.hasOwnProperty(ws.room_code)){
+			rooms[ws.room_code] = {
+				clients: { },
+				clientsWaitlist: { },
+				round: 0,
+				rules: { victoryCondition: 'rounds', roundsNumber: 5, scoreGoal: 10000, time: 45, wordMode: false },
+				picture: { url: '', title: '' },
+				word: '',
+				state: 'waiting'
+			};
+			ws.admin = true;
+			obj = { type: 'admin' };
+			ws.send(JSON.stringify(obj));
+		}
+		if(rooms[ws.room_code].state == 'waiting') {
+			rooms[ws.room_code].clients[ws.uuid] = ws;
+
+			obj = {
+				type: 'join',
+				uuid: ws.uuid,
+				pseudo: ws.pseudo
+			}
+
+			let clients = rooms[ws.room_code].clients;
+			for (let uuid in clients) {
+				clients[uuid].send(JSON.stringify(obj));
+
+				let obj2 = {
+					type: 'join',
+					uuid: uuid,
+					pseudo: clients[uuid].pseudo
+				}
+				ws.send(JSON.stringify(obj2));
+			}
+		} else {
+			rooms[ws.room_code].clientsWaitlist[ws.uuid] = ws;
+			obj = { type: 'wait' };
+			ws.send(JSON.stringify(obj));
+		}
+	}
+
+	function start(victoryCondition, roundsNumber, scoreGoal, time, wordMode) {
+		if(ws.hasOwnProperty('admin')){
+
+			if(victoryCondition != 'rounds' && victoryCondition != 'score') return;
+			if(isNaN(roundsNumber) || isNaN(scoreGoal) || isNaN(time) || typeof wordMode !== "boolean") return;
+
+			rooms[ws.room_code].rules.victoryCondition = victoryCondition;
+			rooms[ws.room_code].rules.roundsNumber = roundsNumber;
+			rooms[ws.room_code].rules.scoreGoal = scoreGoal;
+			rooms[ws.room_code].rules.time = time;
+			rooms[ws.room_code].rules.wordMode = wordMode;
+
+			rooms[ws.room_code].round = 0;
+		}
+	}
+
+	function restart() {
+		if(ws.hasOwnProperty('admin')){
+
+			function sendToPlayers() {
+				let clients = rooms[ws.room_code].clients;
+				let keys = Object.keys(clients);
+				let impostorUUID = keys[Math.floor(Math.random() * keys.length)];
+				clients[impostorUUID].isImpostor = true;
+
+				for (let uuid in clients) {
+					let obj = {
+						'type': 'start',
+						'time': rooms[ws.room_code].rules.time,
+						'initialTime': Date.now(),
+						'impostor': clients[uuid].isImpostor
+					}
+					if(rooms[ws.room_code].rules.wordMode){
+						obj.word = rooms[ws.room_code].word;
+					} else {
+						obj.picture = rooms[ws.room_code].picture;
+					}
+					clients[uuid].send(JSON.stringify(obj));
+				}
+			}
+
+			rooms[ws.room_code].round++;
+			
+			rooms[ws.room_code].state = 'in-game';
+
+			let clients = rooms[ws.room_code].clients;
+			for (let uuid in clients) {
+				clients[uuid].isImpostor = false;
+				clients[uuid].votesImpostor = clients[uuid].votesBest = 0;
+				clients[uuid].impostorVote = clients[uuid].bestVote = '';
+				clients[uuid].detailsPoints = [];
+			}
+
+			if(!rooms[ws.room_code].rules.wordMode){
+				//http.get('http://localhost/normalux.ch/multi/random', function(res){
+				https.get('https://www.normalux.ch/multi/random', function(res){
+					let body = '';
+
+					res.on('data', function(chunk){
+						body += chunk;
+					});
+
+					res.on('end', function(){
+						rooms[ws.room_code].picture = JSON.parse(body);
+						sendToPlayers();
+					});
+				});
+			} else {
+				let content = fs.readFileSync('lists/fr.txt', 'UTF-8');
+				let lines = content.split(/\r?\n/);
+				let choice = lines[Math.floor(Math.random() * lines.length)];
+				rooms[ws.room_code].word = choice;
+				sendToPlayers();
+			}
+		}
+	}
+
+	function position(position) {
+		position.playerId = ws.uuid;
+
+		let obj = {
+			type: 'position',
+			position: position,
+		};
+
+		let clients = rooms[ws.room_code].clients;
+		for (let uuid in clients) {
+			if(clients[uuid].isImpostor){
+				clients[uuid].send(JSON.stringify(obj));
+			}
+		}
+	}
+
+	function post(image, json) {
+		let file = ws.room_code+'_'+ws.uuid+'_'+Math.floor(Math.random() * 10000);
+		fs.writeFile('archives/'+file+'.png', image.split(';base64,').pop(), {encoding: 'base64'}, function(err) { });
+		fs.writeFile('archives/'+file+'.json', JSON.stringify(json), {encoding: 'utf8'}, function(err) { });
+
+		let obj = { type: 'model' };
+		if(rooms[ws.room_code].rules.wordMode){
+			obj.word = rooms[ws.room_code].word;
+		} else {
+			obj.picture = rooms[ws.room_code].picture;
+		}
+
+		ws.send(JSON.stringify(obj));
+
+		obj = {
+			type: 'post',
+			image: image,
+			from: ws.uuid
+		};
+		let clients = rooms[ws.room_code].clients;
+		for (let uuid in clients) {
+			clients[uuid].send(JSON.stringify(obj));
+		}
+	}
+
+	function vote(cat, player) {
+		if(ws.impostorVote == '' && !ws.isImpostor && cat == 'impostor'){
+			rooms[ws.room_code].clients[player].votesImpostor++;
+			ws.impostorVote = player;
+		} else if(ws.bestVote == '' && ws.uuid != player && cat == 'best') {
+			rooms[ws.room_code].clients[player].votesBest++;
+			ws.bestVote = player;
+		}
+
+		let voted = ws.bestVote != '' && (ws.impostorVote != '' || ws.isImpostor);
+
+		let votesImpostor = { };
+		let votesBest = { };
+		let everyoneHasVoted = true;
+
+		let clients = rooms[ws.room_code].clients;
+		for (let uuid in clients) {
+			votesImpostor[uuid] = clients[uuid].votesImpostor;
+			votesBest[uuid] = clients[uuid].votesBest;
+
+			if(!(clients[uuid].bestVote != '' && (clients[uuid].impostorVote != '' || clients[uuid].isImpostor))){
+				everyoneHasVoted = false;
+			}
+			if(voted){
+				let obj = {
+					type: 'voted',
+					player: ws.uuid
+				};
+				clients[uuid].send(JSON.stringify(obj));
+			}
+		}
+		if(everyoneHasVoted){
+
+			let maxImpostor = Math.max.apply(Math, Object.keys(votesImpostor).map(function(o) { return votesImpostor[o]; }));
+			let maxBest = Math.max.apply(Math, Object.keys(votesBest).map(function(o) { return votesBest[o]; }));
+
+			let scores = { };
+			let bests = [];
+			let impostors = [];
+			let innocents = [];
+
+			let win = false;
+			if(rooms[ws.room_code].rules.victoryCondition == 'rounds' && rooms[ws.room_code].round == rooms[ws.room_code].rules.roundsNumber){
+				win = true;
+			}
+
+			for (let uuid in clients) {
+				let combo = 0;
+				if(clients[uuid].votesBest == maxBest){
+					bests.push(uuid);
+					clients[uuid].detailsPoints.push({ msg: 'Meilleur dessin', points: 500 });
+					combo++;
+				}
+				if(clients[uuid].isImpostor && clients[uuid].votesImpostor != maxImpostor){
+					clients[uuid].detailsPoints.push({ msg: 'Passé inaperçu', points: 1000 });
+					combo++;
+				}
+				if(!clients[uuid].isImpostor && clients[clients[uuid].impostorVote].isImpostor){
+					clients[uuid].detailsPoints.push({ msg: 'C\'était bien lui', points: 200 });
+				}
+				if(combo == 2){
+					clients[uuid].detailsPoints.push({ msg: 'Contrefaçon', points: 500 });
+				}
+
+				for (let i = 0; i < clients[uuid].detailsPoints.length; i++) {
+					clients[uuid].score += clients[uuid].detailsPoints[i].points;
+				}
+				if(rooms[ws.room_code].rules.victoryCondition == 'score' && clients[uuid].score >= rooms[ws.room_code].rules.scoreGoal){
+					win = true;
+				}
+				scores[uuid] = clients[uuid].score;
+
+				if(clients[uuid].isImpostor){
+					impostors.push(uuid);
+				}
+				if(clients[uuid].votesImpostor == maxImpostor && !clients[uuid].isImpostor){
+					innocents.push(uuid);
+				}
+			}
+			for (let uuid in clients) {
+
+				let obj = {
+					type: "results",
+					impostors: impostors,
+					innocents: innocents,
+					bests: bests,
+					votesImpostor: votesImpostor,
+					votesBest: votesBest,
+					yourPoints: clients[uuid].detailsPoints,
+					scores: scores,
+					finish: win
+				};
+				clients[uuid].send(JSON.stringify(obj));
+			}
+
+			rooms[ws.room_code].state = 'waiting';
+			waitList = rooms[ws.room_code].clientsWaitlist;
+			for (let uuid in waitList) {
+				let obj = { type: 'come' };
+				waitList[uuid].send(JSON.stringify(obj));
+			}
+		}
+	}
+
 
 	ws.on('close', function close() {
 		console.log('disconnected');
