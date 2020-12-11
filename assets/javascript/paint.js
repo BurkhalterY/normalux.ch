@@ -14,14 +14,24 @@ ctx.lineJoin = "round";
 ctx.lineCap = "round";
 
 var buttons = document.getElementsByClassName("color");
-for (var i = 0; i < buttons.length; i++) {
+for (let i = 0; i < buttons.length; i++) {
 	buttons[i].style.backgroundColor = buttons[i].getAttribute("data-color");
 }
 
 refreshCursor();
 
+function disableAll(){
+	ctx.globalCompositeOperation = "source-over";
+	bucketMode = false;
+	positions.push({time:Date.now()-initialTime, action:"eraser", active:false});
+
+	document.getElementById("pencil").classList.remove("active");
+	document.getElementById("eraser").classList.remove("active");
+	document.getElementById("bucket").classList.remove("active");
+}
+
 function setColor(id){
-	for (var i = 0; i < buttons.length; i++) {
+	for (let i = 0; i < buttons.length; i++) {
 		buttons[i].classList.remove("active");
 	}
 	ctx.strokeStyle = document.getElementById("color-"+id).getAttribute("data-color");
@@ -30,19 +40,42 @@ function setColor(id){
 	positions.push({time:Date.now()-initialTime, action:"color", color:ctx.strokeStyle});
 }
 
+function setPencil(){
+	disableAll();
+	document.getElementById("pencil").classList.add("active");
+	refreshCursor();
+}
+
+function setEraser(){
+	disableAll();
+	document.getElementById("eraser").classList.add("active");
+	ctx.globalCompositeOperation = "destination-out";
+	refreshCursor();
+	positions.push({time:Date.now()-initialTime, action:"eraser", active:true});
+}
+
+function setBucket(){
+	disableAll();
+	document.getElementById("bucket").classList.add("active");
+	bucketMode = true;
+	refreshCursor();
+}
+
 document.addEventListener("mouseup", function (e) {
 	painting = false;
 });
 
 c.addEventListener("mousedown", function (e) {
-	painting = true;
-	x = e.offsetX;
-	y = e.offsetY;
-	positions.push({time:Date.now()-initialTime, action:"start", x:x, y:y});
+	if(!bucketMode){
+		painting = true;
+		x = e.offsetX;
+		y = e.offsetY;
+		positions.push({time:Date.now()-initialTime, action:"start", x:x, y:y});
+	}
 });
 
 c.addEventListener("mousemove", function (e) {
-	if(painting){
+	if(painting && !bucketMode){
 		ctx.beginPath();
 		ctx.moveTo(x, y);
 		x = e.offsetX;
@@ -58,12 +91,17 @@ c.addEventListener("click", function (e) {
 	x = e.offsetX;
 	y = e.offsetY;
 
-	ctx.beginPath();
-	ctx.moveTo(x, y);
-	ctx.lineTo(x, y);
-	ctx.stroke();
-	ctx.closePath();
-	positions.push({time:Date.now()-initialTime, action:"point", x:x, y:y});
+	if(!bucketMode) {
+		ctx.beginPath();
+		ctx.moveTo(x, y);
+		ctx.lineTo(x, y);
+		ctx.stroke();
+		ctx.closePath();
+		positions.push({time:Date.now()-initialTime, action:"point", x:x, y:y});
+	} else {
+		fill(x, y, ctx);
+		positions.push({time:Date.now()-initialTime, action:"fill", x:x, y:y});
+	}
 });
 
 c.addEventListener("wheel", function (e) {
@@ -85,9 +123,14 @@ if(s == "∞"){
 }
 
 function refreshCursor() {
-	let size = ctx.lineWidth;
-	let svg = '<svg height="'+size+'" width="'+size+'" xmlns="http://www.w3.org/2000/svg"><circle cx="'+(size/2)+'" cy="'+(size/2)+'" r="'+(size/2)+'" fill="'+ctx.strokeStyle+'" /></svg>';
-	c.style.cursor = 'url(\'data:image/svg+xml;utf8,'+encodeURIComponent(svg)+'\')'+(size/2)+' '+(size/2)+',auto';
+	if(!bucketMode){
+		let size = ctx.lineWidth;
+		let color = ctx.globalCompositeOperation == "destination-out" ? "#ffffff" : ctx.strokeStyle;
+		let svg = '<svg height="'+size+'" width="'+size+'" xmlns="http://www.w3.org/2000/svg"><circle cx="'+(size/2)+'" cy="'+(size/2)+'" r="'+(size/2)+'" fill="'+color+'" /></svg>';
+		c.style.cursor = 'url(\'data:image/svg+xml;utf8,'+encodeURIComponent(svg)+'\')'+(size/2)+' '+(size/2)+',auto';
+	} else {
+		c.style.cursor = 'url(\'/assets/css/bucket.cur\') 0 16,auto';
+	}
 }
 
 function timeDecrement() {
@@ -110,4 +153,112 @@ function finishAndSend() {
 	document.getElementById("image").value = dataURL;
 	document.getElementById("json").value = JSON.stringify(positions);
 	document.getElementById("form").submit();
+}
+
+/*   _____________
+ *  |FILL FUNCTION|
+ *
+ */
+
+
+function fill(x, y, context) {
+	let colorLayer = context.getImageData(0, 0, c.width, c.height);
+	let fillColor = hexToRgb(context.strokeStyle);
+	let startColor = new Array(3);
+
+	if(colorLayer.data[x*4 + y*c.width*4 + 3] == 0){
+		startColor = [255, 255, 255];
+	} else {
+		for(let i = 0; i < 3; i++){
+			startColor[i] = colorLayer.data[x*4 + y*c.width*4 + i];
+		}
+	}
+	
+
+	if(!matchColor(fillColor, (y*c.width + x) * 4)){
+		
+		pixelStack = [[x, y]];
+
+		while(pixelStack.length)
+		{
+			let newPos, pixelPos, reachLeft, reachRight;
+			newPos = pixelStack.pop();
+			x = newPos[0];
+			y = newPos[1];
+			
+			pixelPos = (y*c.width + x) * 4;
+			while(y-- >= 0/*drawingBoundTop*/ && matchColor(startColor, pixelPos))
+			{
+				pixelPos -= c.width * 4;
+			}
+			pixelPos += c.width * 4;
+			y++;
+			reachLeft = false;
+			reachRight = false;
+			while(y++ < c.height-1 && matchColor(startColor, pixelPos))
+			{
+				colorPixel(pixelPos);
+
+				if(x > 0) {
+					if(matchColor(startColor, pixelPos - 4)) {
+						if(!reachLeft){
+							pixelStack.push([x - 1, y]);
+							reachLeft = true;
+						}
+					} else if(reachLeft) {
+						reachLeft = false;
+					}
+				}
+			
+				if(x < c.width-1) {
+					if(matchColor(startColor, pixelPos + 4)) {
+						if(!reachRight) {
+							pixelStack.push([x + 1, y]);
+							reachRight = true;
+						}
+					} else if(reachRight) {
+						reachRight = false;
+					}
+				}
+					
+				pixelPos += c.width * 4;
+			}
+		}
+		context.putImageData(colorLayer, 0, 0);
+	}
+
+	function matchColor(color, pixelPos) {
+
+		let colorLayerPixel = new Array(3);
+
+		if(colorLayer.data[pixelPos+3] == 0){
+			colorLayerPixel = [255, 255, 255];
+		} else {
+			for (let i = 0; i < colorLayerPixel.length; i++) {
+				colorLayerPixel[i] = colorLayer.data[pixelPos+i];
+			}
+		}
+
+		let r = Math.pow(color[0] - colorLayerPixel[0], 2);
+		let g = Math.pow(color[1] - colorLayerPixel[1], 2);
+		let b = Math.pow(color[2] - colorLayerPixel[2], 2);
+
+		return r + g + b < Math.pow(96, 2);
+	}
+
+	function colorPixel(pixelPos) {
+		colorLayer.data[pixelPos] = fillColor[0];
+		colorLayer.data[pixelPos+1] = fillColor[1];
+		colorLayer.data[pixelPos+2] = fillColor[2];
+		colorLayer.data[pixelPos+3] = 255;
+	}
+
+	function hexToRgb(hex) {
+		let bigint = parseInt(hex.substring(1), 16);
+		let r = (bigint >> 16) & 255;
+		let g = (bigint >> 8) & 255;
+		let b = bigint & 255;
+
+		return [r, g, b];
+	}
 }

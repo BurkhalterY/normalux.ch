@@ -124,7 +124,7 @@ conn.onmessage = function(e) {
 
 				} else if(data.hasOwnProperty("word")){
 					
-					document.getElementById('title').innerHTML = 'Illustreuz le mot !';
+					document.getElementById('title').innerHTML = 'Illustrez le mot :';
 					
 					document.getElementById("word").classList.remove('hidden');
 					document.getElementById("model").classList.add('hidden');
@@ -303,7 +303,10 @@ function action(params) {
 			player.ctx.closePath();
 			break;
 		case "fill":
-			// Illegal
+			fill(params.x, params.y, player.ctx);
+			break;
+		case "eraser":
+			player.ctx.globalCompositeOperation = params.active ? "destination-out" : "source-over";
 			break;
 		case "reset":
 			// Illegal

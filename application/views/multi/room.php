@@ -51,6 +51,7 @@
 		<li><a href="#" id="color-8" onclick="setColor(8)" class="color" data-color="#0010D0"></a></li>
 		<li><a href="#" id="color-9" onclick="setColor(9)" class="color" data-color="#9800D0"></a></li>
 		<li><a href="#" id="color-10" onclick="setColor(10)" class="color" data-color="#FF30B0"></a></li>
+		<li><a href="#" id="pencil" onclick="setPencil()" class="fas fa-pen active"></a></li>
 		<br>
 		<li><a href="#" id="color-11" onclick="setColor(11)" class="color" data-color="#C4002F"></a></li>
 		<li><a href="#" id="color-12" onclick="setColor(12)" class="color" data-color="#994B16"></a></li>
@@ -63,18 +64,21 @@
 		<li><a href="#" id="color-19" onclick="setColor(19)" class="color" data-color="#00004E"></a></li>
 		<li><a href="#" id="color-20" onclick="setColor(20)" class="color" data-color="#61006D"></a></li>
 		<li><a href="#" id="color-21" onclick="setColor(21)" class="color" data-color="#9F0077"></a></li>
+		<li><a href="#" id="eraser" onclick="setEraser()" class="fas fa-eraser"></a></li>
 		<br>
-		<li><a href="#" id="color-22" onclick="setColor(22)" class="color active" data-color="#000000"></a></li>
-		<li><a href="#" id="color-23" onclick="setColor(23)" class="color" data-color="#191919"></a></li>
-		<li><a href="#" id="color-24" onclick="setColor(24)" class="color" data-color="#333333"></a></li>
-		<li><a href="#" id="color-25" onclick="setColor(25)" class="color" data-color="#4C4C4C"></a></li>
-		<li><a href="#" id="color-26" onclick="setColor(26)" class="color" data-color="#666666"></a></li>
-		<li><a href="#" id="color-27" onclick="setColor(27)" class="color" data-color="#7F7F7F"></a></li>
-		<li><a href="#" id="color-28" onclick="setColor(28)" class="color" data-color="#999999"></a></li>
-		<li><a href="#" id="color-29" onclick="setColor(29)" class="color" data-color="#B2B2B2"></a></li>
-		<li><a href="#" id="color-30" onclick="setColor(30)" class="color" data-color="#CCCCCC"></a></li>
-		<li><a href="#" id="color-31" onclick="setColor(31)" class="color" data-color="#E5E5E5"></a></li>
+		<li><a href="#" id="color-22" onclick="setColor(22)" class="color" data-color="#FFD8C0"></a></li>
+		<li><a href="#" id="color-23" onclick="setColor(23)" class="color" data-color="#E0B088"></a></li>
+		<li><a href="#" id="color-24" onclick="setColor(24)" class="color" data-color="#A07018"></a></li>
+		<li><a href="#" id="color-25" onclick="setColor(25)" class="color" data-color="#804E00"></a></li>
+		<li><a href="#" id="color-26" onclick="setColor(26)" class="color active" data-color="#000000"></a></li>
+		<li><a href="#" id="color-27" onclick="setColor(27)" class="color" data-color="#2B2B2B"></a></li>
+		<li><a href="#" id="color-28" onclick="setColor(28)" class="color" data-color="#545454"></a></li>
+		<li><a href="#" id="color-29" onclick="setColor(29)" class="color" data-color="#7F7F7F"></a></li>
+		<li><a href="#" id="color-30" onclick="setColor(30)" class="color" data-color="#AAAAAA"></a></li>
+		<li><a href="#" id="color-31" onclick="setColor(31)" class="color" data-color="#D3D3D3"></a></li>
 		<li><a href="#" id="color-32" onclick="setColor(32)" class="color" data-color="#FFFFFF"></a></li>
+		<li><a href="#" id="bucket" onclick="setBucket()" class="fas fa-fill-drip"></a></li>
+		<br>
 	</ul>
 </div>
 

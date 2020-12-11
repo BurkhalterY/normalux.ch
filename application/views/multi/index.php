@@ -1,5 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed'); ?>
 <article>
+	<img src="<?=base_url('assets/images/online/logo.png')?>" alt="Le crossover Skribbl.io × Among Us made in Normalux" class="logo" />
 	<?=form_open('multi/room/')?>
 		<?=form_submit('join', $this->lang->line('btn_join'), array('class' => 'button button-blue'))?><br>
 		<br>

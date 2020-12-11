@@ -213,8 +213,15 @@ input.field[type=submit]:hover {
 	}
 }
 
-img.error{
+img.error {
 	max-width: 100%;
+}
+
+img.logo {
+	max-width: 20%;
+	position: fixed;
+	right: 0;
+	top: 0;
 }
 
 .table-words th, .table-words td {
