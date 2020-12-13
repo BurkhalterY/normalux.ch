@@ -243,7 +243,7 @@ function fill(x, y, context) {
 		let g = Math.pow(color[1] - colorLayerPixel[1], 2);
 		let b = Math.pow(color[2] - colorLayerPixel[2], 2);
 
-		return r + g + b < Math.pow(96, 2);
+		return r + g + b < Math.pow(64, 2);
 	}
 
 	function colorPixel(pixelPos) {

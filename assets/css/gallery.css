@@ -97,15 +97,29 @@ div.gallery.vote-impostor.vote-best {
 div.gallery.voted::before {
 	content: '';
 	position: absolute;
-	background-image: url(../images/online/voted.png);
+	background-image: url(../images/online/voted.svg);
+	background-size: 100%;
 	width: 120px;
 	height: 120px;
 }
 
-div.gallery.impostor::after {
+div.gallery.impostor-win::after {
 	content: '';
 	position: absolute;
-	background-image: url(../images/online/impostor.png);
+	background-image: url(../images/online/imposter_win.svg);
+	background-size: 100%;
+	width: 120px;
+	height: 120px;
+	right: -30px;
+	bottom: -20px;
+	z-index: 1;
+}
+
+div.gallery.impostor-loose::after {
+	content: '';
+	position: absolute;
+	background-image: url(../images/online/imposter_loose.svg);
+	background-size: 100%;
 	width: 120px;
 	height: 120px;
 	right: -30px;
@@ -116,7 +130,8 @@ div.gallery.impostor::after {
 div.gallery.innocent::after {
 	content: '';
 	position: absolute;
-	background-image: url(../images/online/innocent.png);
+	background-image: url(../images/online/scapegoat.svg);
+	background-size: 100%;
 	width: 120px;
 	height: 120px;
 	right: -30px;
@@ -127,8 +142,10 @@ div.gallery.innocent::after {
 div.gallery.best::before {
 	content: '';
 	position: absolute;
-	background-image: url(../images/online/best.png);
+	background-image: url(../images/online/best.svg);
+	background-size: 100%;
 	width: 120px;
 	height: 120px;
 	right: -30px;
+	z-index: 1;
 }

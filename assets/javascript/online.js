@@ -70,6 +70,7 @@ conn.onmessage = function(e) {
 			ctx.lineWidth = 5;
 			ctx.lineJoin = "round";
 			ctx.lineCap = "round";
+			setPencil();
 			refreshCursor();
 
 			document.getElementById("btn-start").classList.add('hidden');
@@ -202,8 +203,11 @@ conn.onmessage = function(e) {
 			while(votedElements.length > 0){
 				votedElements[0].classList.remove('voted');
 			}
-			for (let i = 0; i < data.impostors.length; i++) {
-				document.getElementById("drawing-"+data.impostors[i]).classList.add("impostor");
+			for (let i = 0; i < data.impostorsWin.length; i++) {
+				document.getElementById("drawing-"+data.impostorsWin[i]).classList.add("impostor-win");
+			}
+			for (let i = 0; i < data.impostorsLoose.length; i++) {
+				document.getElementById("drawing-"+data.impostorsLoose[i]).classList.add("impostor-loose");
 			}
 			for (let i = 0; i < data.innocents.length; i++) {
 				document.getElementById("drawing-"+data.innocents[i]).classList.add("innocent");
@@ -233,8 +237,8 @@ conn.onmessage = function(e) {
 			refreshPlayers();
 			if(data.finish) {
 				alert(players[winner].pseudo+' a gagné !');
+				started = false;
 				if(admin){
-					started = false;
 					document.getElementById("config").classList.remove("hidden");
 				}
 			}

@@ -168,6 +168,7 @@ wss.on('connection', function connection(ws) {
 				clients[uuid].isImpostor = false;
 				clients[uuid].votesImpostor = clients[uuid].votesBest = 0;
 				clients[uuid].impostorVote = clients[uuid].bestVote = '';
+				clients[uuid].score = 0;
 				clients[uuid].detailsPoints = [];
 			}
 
@@ -220,7 +221,7 @@ wss.on('connection', function connection(ws) {
 		if(rooms[ws.room_code].rules.wordMode){
 			obj.word = rooms[ws.room_code].word;
 		} else {
-			obj.picture = rooms[ws.room_code].picture;
+			obj.image = rooms[ws.room_code].picture;
 		}
 
 		ws.send(JSON.stringify(obj));
@@ -274,7 +275,8 @@ wss.on('connection', function connection(ws) {
 
 			let scores = { };
 			let bests = [];
-			let impostors = [];
+			let impostorsWin = [];
+			let impostorsLoose = [];
 			let innocents = [];
 
 			let win = false;
@@ -308,8 +310,11 @@ wss.on('connection', function connection(ws) {
 				}
 				scores[uuid] = clients[uuid].score;
 
-				if(clients[uuid].isImpostor){
-					impostors.push(uuid);
+				if(clients[uuid].votesImpostor < maxImpostor && clients[uuid].isImpostor){
+					impostorsWin.push(uuid);
+				}
+				if(clients[uuid].votesImpostor == maxImpostor && clients[uuid].isImpostor){
+					impostorsLoose.push(uuid);
 				}
 				if(clients[uuid].votesImpostor == maxImpostor && !clients[uuid].isImpostor){
 					innocents.push(uuid);
@@ -319,7 +324,8 @@ wss.on('connection', function connection(ws) {
 
 				let obj = {
 					type: "results",
-					impostors: impostors,
+					impostorsWin: impostorsWin,
+					impostorsLoose: impostorsLoose,
 					innocents: innocents,
 					bests: bests,
 					votesImpostor: votesImpostor,
