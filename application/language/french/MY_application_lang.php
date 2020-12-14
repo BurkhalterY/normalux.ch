@@ -112,7 +112,10 @@ $lang['btn_start']						= 'Commencer';
 $lang['btn_submit']						= 'Soumettre';
 $lang['words']							= 'Mots à soumettre :';
 $lang['words_placeholder']				= 'Entrez un mot par ligne, en minuscules et au singulier sauf si nécessaire...';
+$lang['common_theme']					= 'Thème(s) commun(s) à tous les mots :';
 $lang['themes_list']					= 'Liste des thèmes déjà existants :';
+$lang['word']							= 'Mot';
+$lang['theme']							= 'Thème';
 
 // Misc Controller
 $lang['contact_text']					= 'N\'hésitez pas à nous contacter à l\'adresse mail suivante :';

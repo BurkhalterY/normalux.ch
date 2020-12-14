@@ -80,7 +80,7 @@ class Multi extends MY_Controller {
 			$word = trim($word);
 			if(!empty($word)){
 				if($this->online_word_model->count_by(['word' => $word]) == 0){
-					$this->online_word_model->insert(['word' => $word, 'in_validation' => 1]);
+					$this->online_word_model->insert(['word' => $word]);
 				}
 				$output['words'][] = $this->online_word_model->get_by(['word' => $word]);
 			}
@@ -90,15 +90,25 @@ class Multi extends MY_Controller {
 	}
 
 	public function propose_finale() {
+		if(!empty($_POST['common_theme'])){
+			$base_themes = explode(',', $_POST['common_theme']);
+		} else {
+			$base_themes = [];
+		}
 		foreach ($_POST['words'] as $id => $word) {
-			$themes = explode(',', $word);
+			if(!empty($word)){
+				$themes = explode(',', $word);
+			} else {
+				$themes = [];
+			}
+			$themes = array_merge($base_themes, $themes);
 			if(count($themes) == 0){
-				$themes[] = 'non classés';
+				$themes[] = 'non classé';
 			}
 			foreach ($themes as $theme) {
 				$theme = trim($theme);
 				if($this->online_theme_model->count_by(['theme' => $theme]) == 0){
-					$this->online_theme_model->insert(['theme' => $theme, 'in_validation' => 1]);
+					$this->online_theme_model->insert(['theme' => $theme]);
 				}
 				$themeDb = $this->online_theme_model->get_by(['theme' => $theme]);
 

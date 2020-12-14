@@ -7,6 +7,7 @@
 #canvas, #model {
 	border: 10px solid #999;
 	border-radius: 20px;
+	margin: 0 auto 20px auto;
 	display: inline-block;
 	background: #fff;
 }
@@ -31,30 +32,31 @@
 
 #colors a.color {
 	display: inline-block;
+	width: 30px;
+	height: 30px;
+	margin-right: 10px;
 	text-indent: 100%;
 	overflow: hidden;
 	border-radius: 50%;
 }
 
-#colors #pencil, #colors #eraser, #colors #bucket{
-	display: inline-block;
+#colors a.color.active {
+	border: 2px solid #000;
+	width: 26px;
+	height: 26px;
 }
 
 .colors-multi a.color {
-	border:  3px solid transparent;
-	margin: 2px;
-	width: 44px;
-	max-width: calc(100vw / 12);
-	max-height: calc(100vw / 12);
+	margin-right: 0 !important;
+	width: 50px !important;
+	height: 50px !important;
 }
 
-.colors-multi a.color:after {
-	content: "";
-	display: block;
-	padding-bottom: 100%;
-}
 .colors-multi a.color.active {
-	border-color: #000;
+	border: 3px solid #000 !important;
+	margin-right: 0 !important;
+	width: 44px !important;
+	height: 44px !important;
 }
 
 .colors-multi a.fas {
@@ -68,7 +70,7 @@
 }
 
 h1 {
-	margin: 0;
+	margin-top: 0;
 }
 
 .rotation-canvas {
@@ -173,6 +175,16 @@ h1 {
 	background-color: red;
 }
 
+.model {
+	width: 200px;
+	height: 200px;
+	border: 5px solid #999;
+	border-radius: 10px;
+	margin: 0 auto 10px auto;
+	display: inline-block;
+	background: #fff;
+}
+
 .stats {
 	padding: 10px;
 	position: absolute;
@@ -185,157 +197,3 @@ h1 {
 .hidden {
 	display: none !important;
 }
-
-
-
-
-#dashboard, #word, #model{
-	width: 100%;
-	height: 30vh;
-	position: absolute;
-	top:10vh;
-	text-align: center;
-}
-#word{
-	line-height: 200%;
-}
-#model{
-	width: auto;
-}
-#dashboard{
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	align-content: start;
-	justify-content: space-evenly;
-	height: 30vh;
-	overflow-y: auto;
-}
-#dashboard .model{
-	border: 5px solid #999;
-	background-color: #ffffff;
-	border-radius: 10px;
-	margin-top: 5px;
-	height: calc(50% - 15px);
-	
-}
-#model{
-	margin: 0 auto;
-    width: calc(30vh - 20px);
-    height: calc(30vh - 20px);
-	max-width: calc(100vw - 20px);
-	max-height: calc(100vw - 20px);
-    left: 50%;
-    transform: translateX(-50%);
-}
-#title{
-	position: absolute;
-	top: 0;
-	width: 100%;
-	text-align: center;
-	height: 3vh;
-	padding: 1vh 0;
-	margin: 0;
-}
-#s{
-	background-color: red;
-	position: absolute;
-	top: 5vh;
-	width: 100%;
-	text-align: center;
-	height: 3vh;
-	padding: 1vh 0;
-}
-#canvas{
-	position: absolute;
-	bottom: 20vh;
-	width: calc(40vh - 20px);
-	height: calc(40vh - 20px);
-	max-width: calc(100vw - 20px);
-	max-height: calc(100vw - 20px);
-	left: 50%;
-	transform: translateX(-50%);
-	margin:0;
-}
-#colors{
-	width: 100%;
-    height: auto;
-    position: absolute;
-    bottom: 20px;
-}
-#colors li{
-    max-width: calc(7.69% - 6px);
-	max-height: calc(7.69vw - 6px);
-}
-#colors li a{
-    max-width: 100%;
-    max-height: 100%;
-}
-
-
-@media (min-width: 180vh) { 
-		
-	#dashboard{
-		height: 35vh;
-		top:5vh;
-	}
-	
-	#s{
-		background-color: green;
-
-		right: 0;
-		top: 40vh;
-		bottom:0;
-		width:calc(50vw - 30vh);
-	}
-	#colors{
-		position:absolute;
-		top: 40vh;
-		left: 0;
-		width:calc(50vw - 30vh);
-		height: 70vh; 
-		bottom:0;
-	}
-	#canvas{
-		position:absolute;
-		height: calc(60vh - 20px); 
-		width: calc(60vh - 20px); 
-		left: 50%;
-		transform: translateX(-50%);
-		bottom:0;
-		max-width: 50%;
-		
-	}
-}
-@media (max-width: 100vh) { 
-	#s, #title{
-		background-color: blue;
-		top: 0;
-		height: 2.5vh;
-		padding: 0;
-		width: 100%;
-	}
-	#title{
-		top:2.5vh;
-	}
-	#canvas{
-		width: calc(50vh - 20px);
-		height: calc(50vh - 20px);
-		top: 35vh;
-	}
-	#dashboard, #word, #model{
-		height: calc(30vh - 20px);
-		width: 100%;
-		top: 5vh;
-	}
-	#model{
-		width:auto;
-	}
-	#dashboard{
-		height: 30vh;
-	}
-	#colors{
-		bottom:0;
-	}
-}
-
