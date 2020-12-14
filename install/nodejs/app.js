@@ -42,8 +42,8 @@ wss.on('connection', function connection(ws) {
 				join(datas.pseudo, datas.room_code);
 				break;
 			case 'start':
-				if(!datas.hasOwnProperty('victoryCondition') || !datas.hasOwnProperty('roundsNumber') || !datas.hasOwnProperty('scoreGoal') || !datas.hasOwnProperty('time') || !datas.hasOwnProperty('wordMode')) return;
-				start(datas.victoryCondition, datas.roundsNumber, datas.scoreGoal, datas.time, datas.wordMode);
+				if(!datas.hasOwnProperty('victoryCondition') || !datas.hasOwnProperty('roundsNumber') || !datas.hasOwnProperty('scoreGoal') || !datas.hasOwnProperty('time') || !datas.hasOwnProperty('wordMode') || !datas.hasOwnProperty('themes')) return;
+				start(datas.victoryCondition, datas.roundsNumber, datas.scoreGoal, datas.time, datas.wordMode, datas.themes);
 				// absence de break volontaire
 			case 'restart':
 				restart();
@@ -82,7 +82,7 @@ wss.on('connection', function connection(ws) {
 				clients: { },
 				clientsWaitlist: { },
 				round: 0,
-				rules: { victoryCondition: 'rounds', roundsNumber: 5, scoreGoal: 10000, time: 45, wordMode: false },
+				rules: { victoryCondition: 'rounds', roundsNumber: 5, scoreGoal: 10000, time: 45, wordMode: false, themes: [] },
 				picture: { url: '', title: '' },
 				word: '',
 				state: 'waiting'
@@ -118,19 +118,26 @@ wss.on('connection', function connection(ws) {
 		}
 	}
 
-	function start(victoryCondition, roundsNumber, scoreGoal, time, wordMode) {
+	function start(victoryCondition, roundsNumber, scoreGoal, time, wordMode, themes) {
 		if(ws.hasOwnProperty('admin')){
 
 			if(victoryCondition != 'rounds' && victoryCondition != 'score') return;
 			if(isNaN(roundsNumber) || isNaN(scoreGoal) || isNaN(time) || typeof wordMode !== "boolean") return;
+			if(!Array.isArray(themes)) return;
 
 			rooms[ws.room_code].rules.victoryCondition = victoryCondition;
 			rooms[ws.room_code].rules.roundsNumber = roundsNumber;
 			rooms[ws.room_code].rules.scoreGoal = scoreGoal;
 			rooms[ws.room_code].rules.time = time;
 			rooms[ws.room_code].rules.wordMode = wordMode;
+			rooms[ws.room_code].rules.themes = themes;
 
 			rooms[ws.room_code].round = 0;
+
+			let clients = rooms[ws.room_code].clients;
+			for (let uuid in clients) {
+				clients[uuid].score = 0;
+			}
 		}
 	}
 
@@ -168,7 +175,6 @@ wss.on('connection', function connection(ws) {
 				clients[uuid].isImpostor = false;
 				clients[uuid].votesImpostor = clients[uuid].votesBest = 0;
 				clients[uuid].impostorVote = clients[uuid].bestVote = '';
-				clients[uuid].score = 0;
 				clients[uuid].detailsPoints = [];
 			}
 
@@ -187,11 +193,18 @@ wss.on('connection', function connection(ws) {
 					});
 				});
 			} else {
-				let content = fs.readFileSync('lists/fr.txt', 'UTF-8');
-				let lines = content.split(/\r?\n/);
-				let choice = lines[Math.floor(Math.random() * lines.length)];
-				rooms[ws.room_code].word = choice;
-				sendToPlayers();
+				https.get('https://www.normalux.ch/multi/word?themes='+rooms[ws.room_code].rules.themes, function(res){
+					let body = '';
+
+					res.on('data', function(chunk){
+						body += chunk;
+					});
+
+					res.on('end', function(){
+						rooms[ws.room_code].word = body;
+						sendToPlayers();
+					});
+				});
 			}
 		}
 	}

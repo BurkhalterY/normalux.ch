@@ -27,13 +27,20 @@
 	<input type="number" name="time" id="time" class="field" value="45">
 	<br>
 	<label for="word-mode">Mode mots :</label>
-	<input type="checkbox" id="word-mode" name="word-mode">
+	<input type="checkbox" id="word-mode" name="word-mode" onclick="changeMode();">
+	<div id="section-themes" class="hidden">
+		<select id="themes" multiple>
+			<?php foreach ($themes as $theme) { ?>
+				<option value="<?=$theme->id?>"><?=$theme->theme?></option>
+			<?php } ?>
+		</select>
+	</div>
 	<br>
 </div>
 
 <div id="in-game" class="hidden">
-	<h1 id="word"></h1>
-	<h1 id="s">∞</h1>
+	<h2 id="word"></h2>
+	<h2 id="s">∞</h2>
 
 	<div id="dashboard"></div>
 	<img id="model" src="" alt="" width="400" height="400" />

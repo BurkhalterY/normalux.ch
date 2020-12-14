@@ -27,6 +27,7 @@ class Multi extends MY_Controller {
 			
 			$output['title'] = $this->lang->line('title_draw');
 			$output['online_mode'] = true;
+			$output['themes'] = $this->online_theme_model->order_by('theme')->get_all();
 			$this->display_view('multi/room', $output, false);
 
 		} else {
@@ -57,16 +58,13 @@ class Multi extends MY_Controller {
 	}
 
 	public function word() {
-		if(!is_null($_GET['themes'])){
-			$word = $this->online_theme_word_model->with('word')->order_by('RAND()')->limit(1)->get_by(['fk_theme' => $_GET['themes'], 'in_validation' => 0])->word;
-			$array = [
-				'id' => $word->id,
-				'word' => $word->word
-			];
-			
-			header('Content-type: application/json');
-			echo json_encode($word);
+		$request = ['in_validation' => 0];
+		if(!empty($_GET['themes'])){
+			$request['fk_theme'] = explode(',', $_GET['themes']);
 		}
+		$word = $this->online_theme_word_model->with('word')->order_by('RAND()')->limit(1)->get_by($request)->word;
+
+		echo $word->word;
 	}
 
 	public function propose_words() {

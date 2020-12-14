@@ -257,13 +257,22 @@ function refreshPlayers() {
 
 function start() {
 	if(!started){
+		let themes = [];
+		let options = document.getElementById('themes').options;
+		for (let i = 0; i < options.length; i++) {
+			if(options[i].selected){
+				themes.push(options[i].value);
+			}
+		}
+
 		let obj = {
 			type: "start",
 			victoryCondition: document.getElementById("victory-condition").value,
 			roundsNumber: document.getElementById("rounds-number").value,
 			scoreGoal: document.getElementById("score-goal").value,
 			time: document.getElementById("time").value,
-			wordMode: document.getElementById("word-mode").checked
+			wordMode: document.getElementById("word-mode").checked,
+			themes: themes
 		};
 		conn.send(JSON.stringify(obj));
 	} else {
@@ -375,5 +384,13 @@ function victoiryConditionChange() {
 			document.getElementById("section-score").classList.remove("hidden");
 			document.getElementById("section-rounds").classList.add("hidden");
 			break;
+	}
+}
+
+function changeMode() {
+	if(document.getElementById("word-mode").checked){
+		document.getElementById("section-themes").classList.remove("hidden");
+	} else {
+		document.getElementById("section-themes").classList.add("hidden");
 	}
 }

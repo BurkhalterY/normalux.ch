@@ -20,7 +20,7 @@
 }
 
 #colors {
-	list-style: none; 
+	list-style: none;
 	margin: 0;
 	padding: 0;
 }
@@ -67,7 +67,7 @@
 	color: blue;
 }
 
-h1 {
+h2 {
 	margin: 0;
 }
 
@@ -174,12 +174,22 @@ h1 {
 }
 
 .stats {
-	padding: 10px;
 	position: absolute;
-	top: 10px;
-	right: 10px;
-	background-color: lightgray;
-	opacity: 0.75;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	margin: 0 20px;
+	right: 0;
+}
+
+#config {
+	 /* Super provisoire ! */
+	margin-top: 100px;
+}
+
+#btn-start {
+	position: absolute;
+	bottom: 20%;
 }
 
 .hidden {
@@ -238,6 +248,7 @@ h1 {
 	margin: 0;
 }
 #s{
+	color: white;
 	background-color: red;
 	position: absolute;
 	top: 5vh;
@@ -293,13 +304,13 @@ h1 {
 		top: 40vh;
 		left: 0;
 		width:calc(50vw - 30vh);
-		height: 70vh; 
+		height: 60vh;
 		bottom:0;
 	}
 	#canvas{
 		position:absolute;
-		height: calc(60vh - 20px); 
-		width: calc(60vh - 20px); 
+		height: calc(60vh - 20px);
+		width: calc(60vh - 20px);
 		left: 50%;
 		transform: translateX(-50%);
 		bottom:0;
