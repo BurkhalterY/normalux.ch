@@ -1,0 +1,191 @@
+div.gallery {
+	background-color: white;
+	margin: .4vh;
+	border: 3px solid #ccc;
+	float: left;
+	width: calc(30.8vh - 30px);
+	height: 30vh;
+	position: relative;
+}
+
+#voting::before{
+	content:"";
+	margin: .4vh;
+	border: 3px solid transparent;
+	width: calc(30.8vh - 30px);
+	height: 30vh;
+	position: relative;
+	float:right;
+}
+
+div.top-select {
+	background-color: white;
+	margin: 5px;
+	border-color: #ccc;
+	padding: 15px;
+	text-align: center;
+}
+
+div.gallery:hover {
+	border-color: #777;
+}
+
+div.gallery img, div.gallery svg {
+	width: 100%;
+	height: auto;
+}
+
+div.desc {
+	padding: 15px;
+	text-align: center;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+div.comment {
+	background-color: white;
+	margin: 5px;
+	border: 1px solid #ccc;
+	width: 50%;
+	display: inline-block;
+	text-align: left;
+}
+
+div.comment:hover {
+	border: 1px solid #777;
+}
+
+hr.line {
+	width: 50%;
+}
+
+.settings {
+	font-size: 24px;
+	float: right;
+	color: black;
+}
+
+h5.date {
+	float: right;
+}
+
+.false {
+	background-color: #f8d7da !important;
+}
+
+.true {
+	background-color: #d4edda !important;
+}
+
+@media screen and (max-width: 720px){
+	article {
+		margin-left: 0;
+	}
+}
+
+@media screen and (max-width: 1280px){
+	div.comment {
+		width: 85%;
+	}
+
+	hr.line {
+		width: 85%;
+	}
+}
+
+div.gallery.vote-impostor {
+	border-color: red;
+}
+
+div.gallery.vote-best {
+	border-color: green;
+}
+
+div.gallery.vote-impostor.vote-best {
+	border-color: green red red green;
+	border-width: 3px;
+	padding: 0px;
+}
+
+div.gallery.voted::before {
+	content: '';
+	position: absolute;
+	background-image: url(../images/online/voted.svg);
+	background-size: 100%;
+	width: 120px;
+	height: 120px;
+}
+
+div.gallery.impostor-win::after {
+	content: '';
+	position: absolute;
+	background-image: url(../images/online/imposter_win.svg);
+	background-size: 100%;
+	width: 120px;
+	height: 120px;
+	right: -30px;
+	bottom: -20px;
+	z-index: 1;
+}
+
+div.gallery.impostor-loose::after {
+	content: '';
+	position: absolute;
+	background-image: url(../images/online/imposter_loose.svg);
+	background-size: 100%;
+	width: 120px;
+	height: 120px;
+	right: -30px;
+	bottom: -20px;
+	z-index: 1;
+}
+
+div.gallery.innocent::after {
+	content: '';
+	position: absolute;
+	background-image: url(../images/online/scapegoat.svg);
+	background-size: 100%;
+	width: 120px;
+	height: 120px;
+	right: -30px;
+	bottom: -20px;
+	z-index: 1;
+}
+
+div.gallery.best::before {
+	content: '';
+	position: absolute;
+	background-image: url(../images/online/best.svg);
+	background-size: 100%;
+	width: 120px;
+	height: 120px;
+	right: -30px;
+	z-index: 1;
+}
+
+#voting{
+	position:absolute;
+	right:0;
+	left:0;
+	top: 5vh;
+	bottom:0;
+}
+
+
+@media (max-width: 100vh) {
+	div.gallery {
+		margin: 2vw;
+		width: calc(46vw - 10px);
+		height: calc(50vw + 10px);
+	}
+	
+	#voting{
+		top: 7.5vh;
+		width: 100vw;
+	}
+	#voting::before{
+		margin: 2vw;
+		width: calc(46vw - 10px);
+		height: calc(50vw + 10px);
+	}
+}

@@ -108,6 +108,11 @@ $lang['btn_join']						= 'Rejoindre';
 $lang['room_code']						= 'Code :';
 $lang['btn_create']						= 'Créer';
 $lang['btn_start']						= 'Commencer';
+// Multi Controller (propose part)
+$lang['btn_submit']						= 'Soumettre';
+$lang['words']							= 'Mots à soumettre :';
+$lang['words_placeholder']				= 'Entrez un mot par ligne, en minuscules et au singulier sauf si nécessaire...';
+$lang['themes_list']					= 'Liste des thèmes déjà existants :';
 
 // Misc Controller
 $lang['contact_text']					= 'N\'hésitez pas à nous contacter à l\'adresse mail suivante :';

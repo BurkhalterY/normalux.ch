@@ -6,7 +6,7 @@ class Modo extends MY_Controller {
 
 	public function __construct() {
 		parent::__construct();
-		$this->load->model(array('drawing_model', 'comment_model'));
+		$this->load->model(array('drawing_model', 'comment_model', 'online_word_model', 'online_theme_model', 'online_theme_word_model'));
 	}
 
 	public function drawing($id) {
@@ -17,5 +17,9 @@ class Modo extends MY_Controller {
 	public function comment($id) {
 		$this->comment_model->delete($id);
 		redirect($_SERVER['HTTP_REFERER']);
+	}
+
+	public function validate_word() {
+		//TODO
 	}
 }

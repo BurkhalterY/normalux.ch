@@ -61,36 +61,35 @@ function setBucket(){
 	refreshCursor();
 }
 
-document.addEventListener("mouseup", function (e) {
+function mouseUp(){
 	painting = false;
-});
+}
 
-c.addEventListener("mousedown", function (e) {
+function mouseDown(ex, ey){
 	if(!bucketMode){
 		painting = true;
-		x = e.offsetX;
-		y = e.offsetY;
+		x = ex;
+		y = ey;
 		positions.push({time:Date.now()-initialTime, action:"start", x:x, y:y});
 	}
-});
+}
 
-c.addEventListener("mousemove", function (e) {
+function mouseMove(ex, ey){
 	if(painting && !bucketMode){
 		ctx.beginPath();
 		ctx.moveTo(x, y);
-		x = e.offsetX;
-		y = e.offsetY;
+		x = ex;
+		y = ey;
 		ctx.lineTo(x, y);
 		ctx.stroke();
 		ctx.closePath();
 		positions.push({time:Date.now()-initialTime, action:"paint", x:x, y:y});
 	}
-});
+}
 
-c.addEventListener("click", function (e) {
-	x = e.offsetX;
-	y = e.offsetY;
-
+function click(ex, ey){
+	x = ex;
+	y = ey;
 	if(!bucketMode) {
 		ctx.beginPath();
 		ctx.moveTo(x, y);
@@ -99,15 +98,61 @@ c.addEventListener("click", function (e) {
 		ctx.closePath();
 		positions.push({time:Date.now()-initialTime, action:"point", x:x, y:y});
 	} else {
+		x = Math.round(x);
+		y = Math.round(y);
 		fill(x, y, ctx);
 		positions.push({time:Date.now()-initialTime, action:"fill", x:x, y:y});
 	}
-});
+}
 
-c.addEventListener("wheel", function (e) {
-	ctx.lineWidth = Math.min(ctx.lineWidth - e.deltaY, 50);
+function wheel(delta){
+	ctx.lineWidth = Math.min(ctx.lineWidth - delta, 50);
 	refreshCursor();
 	positions.push({time:Date.now()-initialTime, action:"width", width: ctx.lineWidth});
+}
+
+document.addEventListener("mouseup", function (e) {
+	mouseUp();
+});
+
+c.addEventListener("mousedown", function (e) {
+	let ex = e.offsetX / c.clientWidth * c.width;
+	let ey = e.offsetY / c.clientHeight * c.height;
+	mouseDown(ex, ey);
+});
+
+c.addEventListener("mousemove", function (e) {
+	let ex = e.offsetX / c.clientWidth * c.width;
+	let ey = e.offsetY / c.clientHeight * c.height;
+	mouseMove(ex, ey);
+});
+
+c.addEventListener("click", function (e) {
+	let ex = e.offsetX / c.clientWidth * c.width;
+	let ey = e.offsetY / c.clientHeight * c.height;
+	click(ex, ey);
+});
+
+document.addEventListener("touchend", function (e) {
+	mouseUp();
+});
+
+document.addEventListener("touchcancel", function (e) {
+	mouseUp();
+});
+
+c.addEventListener("touchstart", function (e) {
+	let rect = e.target.getBoundingClientRect();
+	let ex = (e.targetTouches[0].pageX - rect.left) / c.clientWidth * c.width;
+	let ey = (e.targetTouches[0].pageY - rect.top) / c.clientHeight * c.height;
+	mouseDown(ex, ey);
+});
+
+c.addEventListener("touchmove", function (e) {
+	let rect = e.target.getBoundingClientRect();
+	let ex = (e.targetTouches[0].pageX - rect.left) / c.clientWidth * c.width;
+	let ey = (e.targetTouches[0].pageY - rect.top) / c.clientHeight * c.height;
+	mouseMove(ex, ey);
 });
 
 var blindmode = false;
