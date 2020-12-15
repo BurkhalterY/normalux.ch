@@ -71,12 +71,12 @@ conn.onmessage = function(e) {
 			ctx.lineJoin = "round";
 			ctx.lineCap = "round";
 			setPencil();
-			refreshCursor();
 
 			document.getElementById("btn-start").classList.add('hidden');
 			document.getElementById("config").classList.add('hidden');
 			document.getElementById("voting").classList.add('hidden');
 			document.getElementById("in-game").classList.remove('hidden');
+			refreshCursor();
 
 			document.getElementById("voting").innerHTML = "";
 			document.getElementById("dashboard").innerHTML = "";

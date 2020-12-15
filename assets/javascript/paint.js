@@ -111,6 +111,12 @@ function wheel(delta){
 	positions.push({time:Date.now()-initialTime, action:"width", width: ctx.lineWidth});
 }
 
+function setSize(size){
+	ctx.lineWidth = size;
+	refreshCursor();
+	positions.push({time:Date.now()-initialTime, action:"width", width: ctx.lineWidth});
+}
+
 document.addEventListener("mouseup", function (e) {
 	mouseUp();
 });
@@ -131,6 +137,10 @@ c.addEventListener("click", function (e) {
 	let ex = e.offsetX / c.clientWidth * c.width;
 	let ey = e.offsetY / c.clientHeight * c.height;
 	click(ex, ey);
+});
+
+c.addEventListener("wheel", function (e) {
+	wheel(e.deltaY);
 });
 
 document.addEventListener("touchend", function (e) {
@@ -169,7 +179,7 @@ if(s == "∞"){
 
 function refreshCursor() {
 	if(!bucketMode){
-		let size = ctx.lineWidth;
+		let size = ctx.lineWidth * c.clientWidth / c.width;
 		let color = ctx.globalCompositeOperation == "destination-out" ? "#ffffff" : ctx.strokeStyle;
 		let svg = '<svg height="'+size+'" width="'+size+'" xmlns="http://www.w3.org/2000/svg"><circle cx="'+(size/2)+'" cy="'+(size/2)+'" r="'+(size/2)+'" fill="'+color+'" /></svg>';
 		c.style.cursor = 'url(\'data:image/svg+xml;utf8,'+encodeURIComponent(svg)+'\')'+(size/2)+' '+(size/2)+',auto';
@@ -177,6 +187,8 @@ function refreshCursor() {
 		c.style.cursor = 'url(\'/assets/css/bucket.cur\') 0 16,auto';
 	}
 }
+
+window.onresize = refreshCursor;
 
 function timeDecrement() {
 	s--;

@@ -86,6 +86,8 @@
 		<li><a href="#" id="color-32" onclick="setColor(32)" class="color" data-color="#FFFFFF"></a></li>
 		<li><a href="#" id="bucket" onclick="setBucket()" class="fas fa-fill-drip"></a></li>
 		<br>
+		<br>
+		<input type="range" min="1" max="50" value="5" class="slider" oninput="setSize(this.value)" onchange="setSize(this.value)">
 	</ul>
 </div>
 

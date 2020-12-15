@@ -37,5 +37,9 @@
 			<a href="<?=base_url('medias/divers/TRUMP - L\'intégrale/Tome 3 - Spécial anime !.pdf')?>" target="_blank"><img src="<?=base_url('assets/images/thumbails/Tome 3 - Spécial anime !.jpg')?>" alt="TRUMP - Tome3 : Spécial anime !"></a>
 			<div class="desc">TRUMP - Tome3 : Spécial anime !</div>
 		</div>
+		<div class="gallery" style="float: none; display: inline-block;">
+			<a href="<?=base_url('medias/divers/TRUMP - L\'intégrale/Trump 4 dans l\'espace.pdf')?>" target="_blank"><img src="<?=base_url('assets/images/thumbails/Trump 4 dans l\'espace.png')?>" alt="Trump 4 dans l'espace"></a>
+			<div class="desc">Trump 4 dans l'espace</div>
+		</div>
 	</div>
 </article>
