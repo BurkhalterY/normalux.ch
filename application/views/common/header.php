@@ -9,6 +9,7 @@
 		<?php if(isset($online_mode)) { ?>
 			<link rel="stylesheet" type="text/css" href="<?=base_url('assets/css/drawing.online.css')?>">
 			<link rel="stylesheet" type="text/css" href="<?=base_url('assets/css/gallery.online.css')?>">
+			<link rel="stylesheet" type="text/css" href="<?=base_url('assets/css/speciale_rules.online.css')?>">
 		<?php } else { ?>
 			<link rel="stylesheet" type="text/css" href="<?=base_url('assets/css/drawing.css')?>">
 			<link rel="stylesheet" type="text/css" href="<?=base_url('assets/css/gallery.css')?>">

@@ -2,10 +2,12 @@ var players = new Array();
 var me = '';
 
 var started = false;
+var state = 'waiting';
 var interval;
 var voteCat = '';
 var impostor = false;
 var admin = false;
+var resetRule = function(){};
 
 positions.push = function(e) {
 	Array.prototype.push.call(positions, e);
@@ -52,18 +54,20 @@ conn.onmessage = function(e) {
 			break;
 		case "admin":
 			admin = true;
+			refreshPlayers();
 			document.getElementById("btn-start").classList.remove('hidden');
-			if(!started){
+			if(state != 'in-game'){
 				document.getElementById("config").classList.remove('hidden');
 			}
 			break;
 		case "start":
 			if(!started){
-				for (let player in players) {
-					players[player].score = 0;
+				for (let uuid in players) {
+					players[uuid].score = 0;
 				}
 			}
 			started = true;
+			state = 'in-game';
 			positions.length = 0;
 			initialTime = data.initialTime;
 			ctx.strokeStyle = "black";
@@ -94,20 +98,20 @@ conn.onmessage = function(e) {
 				document.getElementById("model").src = '';
 				document.getElementById("model").alt = '???';
 
-				for (let player in players) {
+				for (let uuid in players) {
 					let node = document.createElement('canvas');
-					node.id = 'canvas-'+player;
+					node.id = 'canvas-'+uuid;
 					node.width = 400;
 					node.height = 400;
 					node.classList.add('model');
 					document.getElementById("dashboard").appendChild(node);
 
-					players[player].x = players[player].y = 0;
-					let ctx = document.getElementById("canvas-"+player).getContext("2d");
+					players[uuid].x = players[uuid].y = 0;
+					let ctx = document.getElementById("canvas-"+uuid).getContext("2d");
 					ctx.lineWidth = 5;
 					ctx.lineJoin = "round";
 					ctx.lineCap = "round";
-					players[player].ctx = ctx;
+					players[uuid].ctx = ctx;
 				}
 			} else {
 				if(data.hasOwnProperty("picture")){
@@ -137,6 +141,8 @@ conn.onmessage = function(e) {
 				}
 			}
 
+			applyRule(data.specialRule);
+
 			document.getElementById("s").innerHTML = data.time;
 			s = data.time;
 			interval = setInterval(timeDecrement, 1000);
@@ -144,6 +150,10 @@ conn.onmessage = function(e) {
 			break;
 		case "position":
 			action(data.position);
+			break;
+		case "finish-bordel":
+			state = 'voting';
+			finishAndSendNoAdm();
 			break;
 		case "post":
 			let gallery = document.createElement('div');
@@ -197,6 +207,7 @@ conn.onmessage = function(e) {
 			document.getElementById("drawing-"+data.player).classList.add("voted");
 			break;
 		case "results":
+			state = 'waiting';
 			document.getElementById('title').innerHTML = 'Résultats';
 
 			let votedElements = document.getElementsByClassName('voted');
@@ -228,10 +239,10 @@ conn.onmessage = function(e) {
 			let scores = Object.values(data.scores);
 			let max = Math.max(...scores);
 			let winner = null;
-			for (let player in data.scores) {
-				players[player].score = data.scores[player];
-				if(max == data.scores[player]){
-					winner = player;
+			for (let uuid in data.scores) {
+				players[uuid].score = data.scores[uuid];
+				if(max == data.scores[uuid]){
+					winner = uuid;
 				}
 			}
 			refreshPlayers();
@@ -245,13 +256,18 @@ conn.onmessage = function(e) {
 			if(admin){
 				document.getElementById("btn-start").classList.remove('hidden');
 			}
+			break;
+		case 'kicked':
+			alert("Vous avez été kick par l'admin !");
+			break;
 	}
 };
 
 function refreshPlayers() {
 	document.getElementById("players").innerHTML = '';
-	for (let player in players) {
-		document.getElementById("players").innerHTML += '<tr><td>'+players[player].pseudo+'</td><td id="score-'+player+'">'+players[player].score+'</td></tr>';
+	for (let uuid in players) {
+		let cross = admin && uuid != me ? ' <span style="color: red;" onclick="kick(\''+uuid+'\')">[x]</span>' : '';
+		document.getElementById("players").innerHTML += '<tr><td>'+players[uuid].pseudo+cross+'</td><td id="score-'+uuid+'">'+players[uuid].score+'</td></tr>';
 	}
 }
 
@@ -271,8 +287,10 @@ function start() {
 			roundsNumber: document.getElementById("rounds-number").value,
 			scoreGoal: document.getElementById("score-goal").value,
 			time: document.getElementById("time").value,
+			impostors: document.getElementById("impostors").value,
 			wordMode: document.getElementById("word-mode").checked,
-			themes: themes
+			themes: themes,
+			rulesByRounds: document.getElementById("rules-by-rounds").value
 		};
 		conn.send(JSON.stringify(obj));
 	} else {
@@ -333,7 +351,58 @@ function action(params) {
 	}
 }
 
+function applyRule(rule) {
+	resetRule();
+	if(rule !== null){
+		document.getElementById('rule-title').innerHTML = rule.title;
+		document.getElementById('rule-description').innerHTML = rule.description;
+		switch(rule.name){
+			case 'Black & white':
+				if(impostor){
+					for (let uuid in players) {
+						players[uuid].ctx.canvas.classList.add("black-and-white");
+					}
+				}
+				c.classList.add("black-and-white");
+				document.getElementById("model").classList.add("black-and-white");
+
+				resetRule = function(){
+					document.getElementById("model").classList.remove("black-and-white");
+					c.classList.remove("black-and-white");
+				}
+				break;
+			case 'Rotation':
+				if(impostor){
+					let i = 0;
+					for (let uuid in players) {
+						players[uuid].ctx.canvas.classList.add("rotation");
+						if(i % 2 == 0){
+							players[uuid].ctx.canvas.classList.add("reverse");
+						}
+						i++;
+					}
+				}
+				c.classList.add("rotation");
+				document.getElementById("model").classList.add("rotation");
+				document.getElementById("model").classList.add("reverse");
+
+				resetRule = function(){
+					c.classList.remove("rotation");
+					document.getElementById("model").classList.remove("rotation");
+					document.getElementById("model").classList.remove("reverse");
+				}
+				break;
+		}
+	}
+}
+
 finishAndSend = function() { //override
+	if(admin){
+		finishAndSendNoAdm();
+	}
+}
+
+function finishAndSendNoAdm(){
 	clearInterval(interval);
 	positions.push({time:Date.now()-initialTime, action:"finish"});
 	let obj = {
@@ -392,5 +461,15 @@ function changeMode() {
 		document.getElementById("section-themes").classList.remove("hidden");
 	} else {
 		document.getElementById("section-themes").classList.add("hidden");
+	}
+}
+
+function kick(uuid) {
+	if(confirm("Confirmer le kick de "+players[uuid].pseudo+" ?")){
+		let obj = {
+			type: "kick",
+			uuid: uuid
+		}
+		conn.send(JSON.stringify(obj));
 	}
 }

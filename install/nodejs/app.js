@@ -13,6 +13,17 @@ const WebSocket = require('ws');
 
 const rooms = { };
 const wss = new WebSocket.Server({ server });
+const specialsRules = [
+	{
+		name: 'Black & white',
+		title: 'Noir & blanc',
+		description: ''
+	}, {
+		name: 'Rotation',
+		title: 'Rotation',
+		description: ''
+	}
+];
 
 function uuidv4() {
 	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -22,8 +33,6 @@ function uuidv4() {
 }
 
 wss.on('connection', function connection(ws) {
-
-	console.log('connected');
 
 	ws.on('message', function incoming(msg) {
 		
@@ -42,8 +51,16 @@ wss.on('connection', function connection(ws) {
 				join(datas.pseudo, datas.room_code);
 				break;
 			case 'start':
-				if(!datas.hasOwnProperty('victoryCondition') || !datas.hasOwnProperty('roundsNumber') || !datas.hasOwnProperty('scoreGoal') || !datas.hasOwnProperty('time') || !datas.hasOwnProperty('wordMode') || !datas.hasOwnProperty('themes')) return;
-				start(datas.victoryCondition, datas.roundsNumber, datas.scoreGoal, datas.time, datas.wordMode, datas.themes);
+				if(!datas.hasOwnProperty('victoryCondition')
+				|| !datas.hasOwnProperty('roundsNumber')
+				|| !datas.hasOwnProperty('scoreGoal')
+				|| !datas.hasOwnProperty('time')
+				|| !datas.hasOwnProperty('impostors')
+				|| !datas.hasOwnProperty('wordMode')
+				|| !datas.hasOwnProperty('themes')
+				|| !datas.hasOwnProperty('rulesByRounds'))
+					return;
+				start(datas.victoryCondition, datas.roundsNumber, datas.scoreGoal, datas.time, datas.impostors, datas.wordMode, datas.themes, datas.rulesByRounds);
 				// absence de break volontaire
 			case 'restart':
 				restart();
@@ -60,11 +77,14 @@ wss.on('connection', function connection(ws) {
 				if(!datas.hasOwnProperty('cat') || !datas.hasOwnProperty('player')) return;
 				vote(datas.cat, datas.player);
 				break;
+			case 'kick':
+				if(!datas.hasOwnProperty('uuid')) return;
+				kick(datas.uuid);
+				break;
 		}
 	});
 
 	function join(pseudo, room_code) {
-		console.log(pseudo+" joins room "+room_code);
 
 		ws.uuid = uuidv4();
 		ws.pseudo = pseudo;
@@ -82,7 +102,7 @@ wss.on('connection', function connection(ws) {
 				clients: { },
 				clientsWaitlist: { },
 				round: 0,
-				rules: { victoryCondition: 'rounds', roundsNumber: 5, scoreGoal: 10000, time: 45, wordMode: false, themes: [] },
+				rules: { victoryCondition: 'rounds', roundsNumber: 5, scoreGoal: 10000, time: 45, impostors: 1, wordMode: false, themes: [], rulesByRounds: 4 },
 				picture: { url: '', title: '' },
 				word: '',
 				state: 'waiting'
@@ -116,21 +136,26 @@ wss.on('connection', function connection(ws) {
 			obj = { type: 'wait' };
 			ws.send(JSON.stringify(obj));
 		}
+
+		console.log(pseudo+" joins room "+room_code+" ["+Object.keys(rooms[ws.room_code].clients).length+"]");
 	}
 
-	function start(victoryCondition, roundsNumber, scoreGoal, time, wordMode, themes) {
+	function start(victoryCondition, roundsNumber, scoreGoal, time, impostors, wordMode, themes, rulesByRounds) {
 		if(ws.hasOwnProperty('admin')){
 
 			if(victoryCondition != 'rounds' && victoryCondition != 'score') return;
-			if(isNaN(roundsNumber) || isNaN(scoreGoal) || isNaN(time) || typeof wordMode !== "boolean") return;
-			if(!Array.isArray(themes)) return;
+			if(isNaN(roundsNumber) || isNaN(scoreGoal) || isNaN(time) || isNaN(impostors) || isNaN(rulesByRounds)) return;
+			if(roundsNumber <= 0 || scoreGoal <= 0 || time <= 0 || impostors <= 0 || rulesByRounds < 0) return;
+			if(typeof wordMode !== "boolean" || !Array.isArray(themes)) return;
 
 			rooms[ws.room_code].rules.victoryCondition = victoryCondition;
 			rooms[ws.room_code].rules.roundsNumber = roundsNumber;
 			rooms[ws.room_code].rules.scoreGoal = scoreGoal;
 			rooms[ws.room_code].rules.time = time;
+			rooms[ws.room_code].rules.impostors = impostors;
 			rooms[ws.room_code].rules.wordMode = wordMode;
 			rooms[ws.room_code].rules.themes = themes;
+			rooms[ws.room_code].rules.rulesByRounds = rulesByRounds;
 
 			rooms[ws.room_code].round = 0;
 
@@ -147,15 +172,23 @@ wss.on('connection', function connection(ws) {
 			function sendToPlayers() {
 				let clients = rooms[ws.room_code].clients;
 				let keys = Object.keys(clients);
-				let impostorUUID = keys[Math.floor(Math.random() * keys.length)];
-				clients[impostorUUID].isImpostor = true;
+				for (let i = 0; i < rooms[ws.room_code].rules.impostors; i++) {
+					let impostorUUID = keys[Math.floor(Math.random() * keys.length)];
+					while(clients[impostorUUID].isImpostor){
+						impostorUUID = keys[Math.floor(Math.random() * keys.length)];
+					}
+					clients[impostorUUID].isImpostor = true;
+				}
+
+				let rule = rooms[ws.room_code].round % rooms[ws.room_code].rules.rulesByRounds == 0 ? specialsRules[Math.floor(Math.random() * specialsRules.length)] : null;
 
 				for (let uuid in clients) {
 					let obj = {
 						'type': 'start',
 						'time': rooms[ws.room_code].rules.time,
 						'initialTime': Date.now(),
-						'impostor': clients[uuid].isImpostor
+						'impostor': clients[uuid].isImpostor,
+						'specialRule': rule
 					}
 					if(rooms[ws.room_code].rules.wordMode){
 						obj.word = rooms[ws.room_code].word;
@@ -175,6 +208,7 @@ wss.on('connection', function connection(ws) {
 				clients[uuid].isImpostor = false;
 				clients[uuid].votesImpostor = clients[uuid].votesBest = 0;
 				clients[uuid].impostorVote = clients[uuid].bestVote = '';
+				clients[uuid].voteForTrustImpostor = false;
 				clients[uuid].detailsPoints = [];
 			}
 
@@ -230,6 +264,18 @@ wss.on('connection', function connection(ws) {
 		fs.writeFile('archives/'+file+'.png', image.split(';base64,').pop(), {encoding: 'base64'}, function(err) { });
 		fs.writeFile('archives/'+file+'.json', JSON.stringify(json), {encoding: 'utf8'}, function(err) { });
 
+		if(ws.hasOwnProperty('admin')){
+			rooms[ws.room_code].state = 'voting';
+
+			let obj = { type: 'finish-bordel' };
+			let clients = rooms[ws.room_code].clients;
+			for (let uuid in clients) {
+				if(ws.uuid != uuid){
+					clients[uuid].send(JSON.stringify(obj));
+				}
+			}
+		}
+
 		let obj = { type: 'model' };
 		if(rooms[ws.room_code].rules.wordMode){
 			obj.word = rooms[ws.room_code].word;
@@ -253,6 +299,7 @@ wss.on('connection', function connection(ws) {
 	function vote(cat, player) {
 		if(ws.impostorVote == '' && !ws.isImpostor && cat == 'impostor'){
 			rooms[ws.room_code].clients[player].votesImpostor++;
+			ws.voteForTrustImpostor = rooms[ws.room_code].clients[player].isImpostor;
 			ws.impostorVote = player;
 		} else if(ws.bestVote == '' && ws.uuid != player && cat == 'best') {
 			rooms[ws.room_code].clients[player].votesBest++;
@@ -260,6 +307,22 @@ wss.on('connection', function connection(ws) {
 		}
 
 		let voted = ws.bestVote != '' && (ws.impostorVote != '' || ws.isImpostor);
+
+		if(voted){
+			let obj = {
+				type: 'voted',
+				player: ws.uuid
+			};
+
+			let clients = rooms[ws.room_code].clients;
+			for (let uuid in clients) {
+				clients[uuid].send(JSON.stringify(obj));
+			}
+		}
+		checkVotes();
+	}
+
+	function checkVotes() {
 
 		let votesImpostor = { };
 		let votesBest = { };
@@ -272,13 +335,6 @@ wss.on('connection', function connection(ws) {
 
 			if(!(clients[uuid].bestVote != '' && (clients[uuid].impostorVote != '' || clients[uuid].isImpostor))){
 				everyoneHasVoted = false;
-			}
-			if(voted){
-				let obj = {
-					type: 'voted',
-					player: ws.uuid
-				};
-				clients[uuid].send(JSON.stringify(obj));
 			}
 		}
 		if(everyoneHasVoted){
@@ -308,7 +364,7 @@ wss.on('connection', function connection(ws) {
 					clients[uuid].detailsPoints.push({ msg: 'Passé inaperçu', points: 1000 });
 					combo++;
 				}
-				if(!clients[uuid].isImpostor && clients[clients[uuid].impostorVote].isImpostor){
+				if(!clients[uuid].isImpostor && clients[uuid].voteForTrustImpostor){
 					clients[uuid].detailsPoints.push({ msg: 'C\'était bien lui', points: 200 });
 				}
 				if(combo == 2){
@@ -351,6 +407,12 @@ wss.on('connection', function connection(ws) {
 			}
 
 			rooms[ws.room_code].state = 'waiting';
+			comeWaiters();
+		}
+	}
+
+	function comeWaiters(){
+		if(rooms[ws.room_code].state == 'waiting'){
 			waitList = rooms[ws.room_code].clientsWaitlist;
 			for (let uuid in waitList) {
 				let obj = { type: 'come' };
@@ -359,16 +421,22 @@ wss.on('connection', function connection(ws) {
 		}
 	}
 
+	function kick(uuid) {
+		if(ws.hasOwnProperty('admin') && rooms[ws.room_code].clients.hasOwnProperty(uuid)){
+			let obj = { type: 'kicked' };
+			rooms[ws.room_code].clients[uuid].send(JSON.stringify(obj));
+			rooms[ws.room_code].clients[uuid].close();
+		}
+	}
 
 	ws.on('close', function close() {
-		console.log('disconnected');
-
-		let obj = {
-			type: 'leave',
-			uuid: ws.uuid
-		};
 
 		if(rooms.hasOwnProperty(ws.room_code)){
+			let obj = {
+				type: 'leave',
+				uuid: ws.uuid
+			};
+
 			let clients = rooms[ws.room_code].clients;
 			for (let uuid in clients) {
 				if(ws.uuid != uuid){
@@ -382,7 +450,12 @@ wss.on('connection', function connection(ws) {
 					}
 				}
 			}
+
 			delete clients[ws.uuid];
+			if(rooms[ws.room_code].state == 'voting'){
+				checkVotes();
+			}
+			console.log(ws.pseudo+' disconnected ['+Object.keys(clients).length+']');
 			if(Object.keys(clients).length === 0){
 				delete rooms[ws.room_code];
 			}

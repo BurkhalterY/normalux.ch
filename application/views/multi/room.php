@@ -26,6 +26,12 @@
 	<label for="time">Temps (en secondes) :</label>
 	<input type="number" name="time" id="time" class="field" value="45">
 	<br>
+	<label for="impostors">Nombre d'imposteurs :</label>
+	<input type="number" name="impostors" id="impostors" class="field" value="1">
+	<br>
+	<label for="rules-by-rounds">Règle spéciale tous les x tours :</label>
+	<input type="number" name="rules-by-rounds" id="rules-by-rounds" class="field" value="4">
+	<br>
 	<label for="word-mode">Mode mots :</label>
 	<input type="checkbox" id="word-mode" name="word-mode" onclick="changeMode();">
 	<div id="section-themes" class="hidden">
@@ -39,8 +45,12 @@
 </div>
 
 <div id="in-game" class="hidden">
-	<h2 id="word"></h2>
-	<h2 id="s">∞</h2>
+	<div class="meta">
+		<h2 id="word"></h2>
+		<h2 id="s">∞</h2>
+		<h4 id="rule-title"></h4>
+		<p id="rule-description"></p>
+	</div>
 
 	<div id="dashboard"></div>
 	<img id="model" src="" alt="" width="400" height="400" />

@@ -1,0 +1,15 @@
+.black-and-white {
+	-webkit-filter: grayscale(100%);
+	filter: grayscale(100%);
+}
+
+.rotation {
+	-ms-animation: rotation 10s infinite linear;
+	-moz-animation: rotation 10s infinite linear;
+	-webkit-animation: rotation 10s infinite linear;
+	animation: rotation 10s infinite linear;
+}
+
+.rotation.reverse {
+	animation-direction: reverse;
+}
