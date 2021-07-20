@@ -19,5 +19,7 @@ application/logs/*
 #burkhalter_y
 application/config/config.php
 application/config/database.php
-medias/*
+medias/pictures/*
+medias/drawings/*
+medias/json/*
 .editorconfig

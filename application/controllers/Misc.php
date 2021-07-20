@@ -12,6 +12,11 @@ class Misc extends MY_Controller {
 		$this->display_view('misc/contact', $output);
 	}
 
+	public function bd() {
+		$output['title'] = $this->lang->line('title_bd');
+		$this->display_view('misc/bd', $output);
+	}
+
 	public function suggestion() {
 		if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true){
 			$output['title'] = $this->lang->line('title_suggestion');

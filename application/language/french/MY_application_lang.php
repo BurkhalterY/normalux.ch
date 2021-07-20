@@ -12,6 +12,7 @@ $lang['menu_register']					= 'S\'inscrire';
 $lang['menu_my_account']				= 'Mon compte';
 $lang['menu_logout']					= 'Deconnexion';
 $lang['menu_contact']					= 'Contact';
+$lang['menu_comics']					= 'Les BD';
 $lang['menu_yo']						= 'Salut ;-)';
 
 // Pages titles
@@ -31,6 +32,7 @@ $lang['title_login']					= 'Connexion';
 $lang['title_register']					= 'Enregistrement';
 $lang['title_settings']					= 'Mes paramètres';
 $lang['title_contact']					= 'Contact';
+$lang['title_bd']					= 'Les BD';
 $lang['title_suggestion']				= 'Balancer une suggestion !?';
 
 // Play Controller
@@ -110,6 +112,8 @@ $lang['suggestion_files']				= 'Joignez-y une image ou un document explicatif :'
 $lang['suggestion_thanks']				= 'Merci pour votre participation';
 $lang['suggestions_admin']				= 'Voir les suggestions postées';
 $lang['our_other_projects']				= 'Mes autres projets :';
+$lang['comics_collection']				= 'Collection de BD :';
 $lang['error']							= 'Erreur';
 $lang['error_message'][403]				= 'Vous n\'avez pas la permission d\'accèder à cette page 😡';
 $lang['error_message'][404]				= 'Cette page est introuvable.';
+$lang['sponso']							= 'Nos partenaires :';
