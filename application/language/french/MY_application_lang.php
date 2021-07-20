@@ -32,8 +32,10 @@ $lang['title_login']					= 'Connexion';
 $lang['title_register']					= 'Enregistrement';
 $lang['title_settings']					= 'Mes paramètres';
 $lang['title_contact']					= 'Contact';
-$lang['title_bd']					= 'Les BD';
 $lang['title_suggestion']				= 'Balancer une suggestion !?';
+$lang['title_bd']						= 'Les BD';
+$lang['title_fan']						= 'Les fan-stories';
+$lang['title_pdt']						= 'Les opus de Pierre de Trost';
 
 // Play Controller
 $lang['btn_play']						= 'Jouer !';
