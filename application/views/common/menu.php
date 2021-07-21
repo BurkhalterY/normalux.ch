@@ -35,7 +35,7 @@ function check_active($p1 = '', $p2 = '', $p3 = '1'){
 		<?php } ?>
 		<br>
 		<li class="menu"><a <?=check_active('misc', 'contact')?'class="active yellow"':''?> href="<?=base_url('misc/contact')?>"><?=$this->lang->line('menu_contact')?></a></li>
-		<li class="menu"><a <?=str_starts_with($_SERVER['REQUEST_URI'], 'bd')?'class="active yellow"':''?> href="<?=base_url('bd')?>"><?=$this->lang->line('menu_comics')?></a></li>
+		<li class="menu"><a <?=check_active('bd')?'class="active yellow"':''?> href="<?=base_url('bd')?>"><?=$this->lang->line('menu_comics')?></a></li>
 		<li class="menu ee"><a <?=check_active('play', 'index', '4')?'class="active yellow"':''?> href="<?=base_url('play/index/4')?>"><?=$this->lang->line('menu_yo')?></a></li>
 	</ul>
 </nav>

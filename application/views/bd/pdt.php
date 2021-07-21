@@ -6,11 +6,15 @@
 		<h3>Steins;Gate</h3>
 		<div class="gallery" style="float: none; display: inline-block;">
 			<a href="<?=base_url('medias/bd/Fan-stories/Pierre de Trost/Steins_gate_version_1.pdf')?>" target="_blank"><img src="<?=base_url('medias/bd/thumbails/Steins_gate_version_1.png')?>" alt="Steins;Gate - Tome 1"></a>
-			<div class="desc">Steins;Gate - Tome 1</div>
+			<div class="desc">Tome 1</div>
 		</div>
 		<div class="gallery" style="float: none; display: inline-block;">
 			<a href="<?=base_url('medias/bd/Fan-stories/Pierre de Trost/Steins_gate_partie_2.pdf')?>" target="_blank"><img src="<?=base_url('medias/bd/thumbails/Steins_gate_partie_2.png')?>" alt="Steins;Gate - Tome 2"></a>
-			<div class="desc">Steins;Gate - Tome 2</div>
+			<div class="desc">Tome 2</div>
+		</div>
+		<div class="gallery" style="float: none; display: inline-block;">
+			<a href="<?=base_url('medias/bd/Fan-stories/Pierre de Trost/La_collection_du_puissant_tome_1.pdf')?>" target="_blank"><img src="<?=base_url('medias/bd/thumbails/La_collection_du_puissant_tome_1.png')?>" alt="Steins;Gate - Tome 3 (Arc 2)"></a>
+			<div class="desc">Tome 3 (Arc 2)</div>
 		</div>
 		<h3>Série secondaire</h3>
 		<div class="gallery" style="float: none; display: inline-block;">
