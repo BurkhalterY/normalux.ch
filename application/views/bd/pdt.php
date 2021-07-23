@@ -18,7 +18,7 @@
 		</div>
 		<h3>Série secondaire</h3>
 		<div class="gallery" style="float: none; display: inline-block;">
-			<a href="<?=base_url('medias/bd/Fan-stories/Minecraft l\'aventure d\'un con tome 1.pdf')?>" target="_blank"><img src="<?=base_url('medias/bd/thumbails/Minecraft l\'aventure d\'un con tome 1.png')?>" alt="Minecraft l'aventure d'un con tome 1"></a>
+			<a href="<?=base_url('medias/bd/Fan-stories/Pierre de Trost/Minecraft l\'aventure d\'un con tome 1.pdf')?>" target="_blank"><img src="<?=base_url('medias/bd/thumbails/Minecraft l\'aventure d\'un con tome 1.png')?>" alt="Minecraft l'aventure d'un con tome 1"></a>
 			<div class="desc">Minecraft l'aventure d'un con tome 1</div>
 		</div>
 		<div class="gallery" style="float: none; display: inline-block;">
