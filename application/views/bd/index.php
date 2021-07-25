@@ -11,7 +11,7 @@
 			<div class="desc">TRUMP - Tome 2</div>
 		</div>
 		<div class="gallery" style="float: none; display: inline-block;">
-			<a href="<?=base_url('medias/bd/TRUMP - L\'intégrale/Tome 3 - Spécial anime !.pdf')?>" target="_blank"><img src="<?=base_url('medias/bd/thumbails/Tome 3 - Spécial anime !.jpg')?>" alt="TRUMP - Tome3 : Spécial anime !"></a>
+			<a href="<?=base_url('medias/bd/TRUMP - L\'intégrale/Tome 3 - Spécial anime !.pdf')?>" target="_blank"><img src="<?=base_url('medias/bd/thumbails/Tome 3 - Spécial anime !.png')?>" alt="TRUMP - Tome3 : Spécial anime !"></a>
 			<div class="desc">TRUMP - Tome3 : Spécial anime !</div>
 		</div>
 		<div class="gallery" style="float: none; display: inline-block;">
