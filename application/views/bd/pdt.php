@@ -20,6 +20,10 @@
 			<a href="<?=base_url('medias/bd/Fan-stories/Pierre de Trost/La_collection_du_puissant_partie_2.pdf')?>" target="_blank"><img src="<?=base_url('medias/bd/thumbails/La_collection_du_puissant_partie_2.png')?>" alt="Steins;Gate - Tome 4 (Arc 2)"></a>
 			<div class="desc">Tome 4 (Arc 2)</div>
 		</div>
+		<div class="gallery" style="float: none; display: inline-block;">
+			<a href="<?=base_url('medias/bd/Fan-stories/Pierre de Trost/La_vie_est_dure_en_enfer_partie_1.pdf.pdf')?>" target="_blank"><img src="<?=base_url('medias/bd/thumbails/La_vie_est_dure_en_enfer_partie_1.pdf.png')?>" alt="Steins;Gate - Tome 5 (Arc 2)"></a>
+			<div class="desc">Tome 5 (Arc 2)</div>
+		</div>
 		<h3>Série secondaire</h3>
 		<div class="gallery" style="float: none; display: inline-block;">
 			<a href="<?=base_url('medias/bd/Fan-stories/Pierre de Trost/Minecraft l\'aventure d\'un con tome 1.pdf')?>" target="_blank"><img src="<?=base_url('medias/bd/thumbails/Minecraft l\'aventure d\'un con tome 1.png')?>" alt="Minecraft l'aventure d'un con tome 1"></a>
