@@ -1,7 +1,5 @@
 <template>
-  <div class="flex flex-wrap m-2 gap-2">
-    <Image v-for="drawing of drawings" :data="drawing" />
-  </div>
+  <div></div>
 </template>
 
 <script>
@@ -14,19 +12,17 @@ export default {
   components: { Image },
   setup() {
     const route = useRoute()
-    const drawings = ref([])
+    const drawing = ref(null)
 
     onMounted(async () => {
-      drawings.value = (
+      drawing.value = (
         await axios.get(
-          `${import.meta.env.VITE_API_URL}drawings.php?type=${
-            route.params.type
-          }`
+          `${import.meta.env.VITE_API_URL}drawing.php?id=${route.params.id}`
         )
-      ).data.drawings
+      ).data.drawing
     })
 
-    return { drawings }
+    return { drawing }
   },
 }
 </script>

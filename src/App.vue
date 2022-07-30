@@ -1,7 +1,7 @@
 <template>
-  <div class="min-h-screen h-full flex flex-col">
-    <TheHeader />
-    <div class="grow flex justify-center items-center my-32">
+  <div class="min-h-screen h-full flex bg-slate-200">
+    <TheMenu />
+    <div>
       <router-view v-slot="{ Component }">
         <transition mode="out-in">
           <component :is="Component" />
@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-import TheHeader from "@/components/TheHeader.vue"
+import TheMenu from "@/components/TheMenu.vue"
 import TheFooter from "@/components/TheFooter.vue"
 </script>
 
