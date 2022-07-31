@@ -1,21 +1,14 @@
 <?php
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "normalux2";
+require "../db.php";
 
+$items_per_page = 30;
+$offset = $_GET["page"] * $items_per_page;
 $data = ["drawings" => []];
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-$sql = "SELECT id, pseudo, file, date FROM drawings WHERE fk_type = ? LIMIT 30;";
+$sql = "SELECT id, pseudo, file, date FROM drawings WHERE fk_type = ? LIMIT ?, ?;";
 
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $_GET["type"]);
+$stmt->bind_param("iii", $_GET["type"], $offset, $items_per_page);
 $stmt->execute();
 $result = $stmt->get_result();
 while ($row = $result->fetch_assoc()) {
@@ -25,4 +18,3 @@ $stmt->close();
 
 header("Content-Type: application/json");
 echo json_encode($data);
-exit();
