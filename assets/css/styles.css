@@ -109,12 +109,23 @@ li.sidebar{
 		-moz-transform: rotate(0deg);
 		-webkit-transform: rotate(0deg);
 		transform: rotate(0deg);
+		box-shadow: 0 9px #999;
+	}
+	25% {
+		box-shadow: 9px 0 #999;
+	}
+	50% {
+		box-shadow: 0 -9px #999;
+	}
+	75% {
+		box-shadow: -9px 0 #999;
 	}
 	to {
 		-ms-transform: rotate(359deg);
 		-moz-transform: rotate(359deg);
 		-webkit-transform: rotate(359deg);
 		transform: rotate(359deg);
+		box-shadow: 0 9px #999;
 	}
 }
 
