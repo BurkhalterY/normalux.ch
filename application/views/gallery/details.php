@@ -64,9 +64,7 @@
 			<tr>
 				<td colspan="2">
 					<?php
-						if(is_null($drawing->json)){
-							echo $this->lang->line('trace_unavailable');
-						} else {
+						if(!is_null($drawing->json)){
 							echo '<a href="'.base_url('gallery/replay/'.$drawing->id).'">'.$this->lang->line('live_route').'</a>';
 						}
 					?>
@@ -83,22 +81,19 @@
 			<?php if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true && $_SESSION['user_access'] >= ACCESS_LVL_MODO){ ?>
 				<a href="javascript:deleteComment(<?=$comment->id?>)">[x]</a>
 			<?php } ?>
-			<h3><?=$comment->user->pseudo?></h3>
+			<h3><?=$comment->pseudo?></h3>
 			<p><?=$comment->message?></p>
 		</div>
 	<?php } ?>
 
 	<div class="comment">
-		<?php if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true){ ?>
-			<?=form_open('gallery/comment/'.$drawing->id, array('style' => 'text-align:center;'))?>
-				<?=form_label($this->lang->line('message'), 'message')?>
-				<?=form_submit('send', $this->lang->line('btn_send'))?>
-				<?=form_textarea('message', set_value('message'), array('style' => 'width: 95%; height:80px;'))?>
-			<?=form_close()?>
-			<br>
-		<?php } else { ?>
-			<p><a href="<?=base_url('user/login')?>"><?=$this->lang->line('login_for_send_comment')[0]?></a><?=$this->lang->line('login_for_send_comment')[1]?></p>
-		<?php } ?>
+		<?=form_open('gallery/comment/'.$drawing->id, array('style' => 'text-align:center;'))?>
+			<?=form_label($this->lang->line('pseudo'), 'pseudo')?><br>
+			<?=form_input('pseudo', set_value('pseudo'), array('id' => 'pseudo', 'class' => 'field'))?><br><br>
+			<?=form_label($this->lang->line('message'), 'message')?>
+			<?=form_submit('send', $this->lang->line('btn_send'))?>
+			<?=form_textarea('message', set_value('message'), array('style' => 'width: 99%; height:80px;'))?>
+		<?=form_close()?>
 	</div>
 
 	<?php if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true && $_SESSION['user_access'] >= ACCESS_LVL_MODO){ ?>

@@ -34,7 +34,5 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 #burkhalter_y
 application/config/config.php
 application/config/database.php
-medias/pictures/*
-medias/drawings/*
-medias/json/*
+medias/
 .editorconfig

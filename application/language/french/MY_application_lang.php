@@ -10,9 +10,8 @@ $lang['menu_blind_mode']				= 'Mode à l\'aveugle';
 $lang['menu_login']						= 'Se connecter';
 $lang['menu_register']					= 'S\'inscrire';
 $lang['menu_my_account']				= 'Mon compte';
-$lang['menu_logout']					= 'Deconnexion';
+$lang['menu_logout']					= 'Déconnexion';
 $lang['menu_contact']					= 'Contact';
-$lang['menu_comics']					= 'Les BD';
 $lang['menu_yo']						= 'Salut ;-)';
 
 // Pages titles
@@ -32,10 +31,6 @@ $lang['title_login']					= 'Connexion';
 $lang['title_register']					= 'Enregistrement';
 $lang['title_settings']					= 'Mes paramètres';
 $lang['title_contact']					= 'Contact';
-$lang['title_suggestion']				= 'Balancer une suggestion !?';
-$lang['title_bd']						= 'Les BD';
-$lang['title_fan']						= 'Les fan-stories';
-$lang['title_pdt']						= 'Les opus de Pierre de Trost';
 
 // Play Controller
 $lang['btn_play']						= 'Jouer !';
@@ -54,30 +49,29 @@ $lang['color_blue']						= 'Bleu';
 $lang['color_indigo']					= 'Indigo';
 $lang['color_violet']					= 'Violet';
 $lang['color_pink']						= 'Rose';
-$lang['btn_save']						= 'Sauvergarder mon image';
+$lang['btn_save']						= 'Sauvegarder mon image';
 
 // Gallery Controller
 $lang['btn_replay']						= 'Rejouer';
 $lang['btn_story']						= 'Évolution';
-$lang['show_others_drawings']			= 'Afficher d\'autre dessins :';
+$lang['show_others_drawings']			= 'Afficher d\'autres dessins :';
 $lang['page']							= 'Page :';
 $lang['normal_mode']					= 'Normal';
 $lang['chain_mode']						= 'Chaîne';
-$lang['profile_picture']				= 'Photo de profile';
+$lang['profile_picture']				= 'Photo de profil';
 $lang['unlimited_mode']					= 'Temps illimité';
 $lang['rotation_mode']					= 'En rotation';
-$lang['pixel_art_mode']					= 'Pixel art';
+$lang['pixel_art_mode']					= 'Pixel Art';
 $lang['blind_mode']						= 'À l\'aveugle';
 $lang['unlimited_pixel_art']			= 'Temps illimité (Pixel Art)';
 $lang['zoom_mode']						= 'Zoom!';
 $lang['wtf_mode']						= 'WTF';
-$lang['unknown']						= 'Incconu';
+$lang['unknown']						= 'Inconnu';
 $lang['table_mode']						= 'Mode :';
 $lang['table_picture']					= 'Modèle :';
 $lang['no_model']						= 'aucun';
 $lang['table_user']						= 'Artiste :';
 $lang['table_date']						= 'Réalisé le :';
-$lang['trace_unavailable']				= 'Tracé non disponible';
 $lang['live_route']						= 'Voir le tracé en direct';
 $lang['message']						= 'Poster un commentaire :';
 $lang['btn_send']						= 'Envoyer';
@@ -106,16 +100,6 @@ $lang['message__passwords_do_not_match']		= 'Les mots de passe ne correspondent 
 $lang['message__password_successfully_changed']	= 'Mot de passe changé avec succès';
 
 // Misc Controller
-$lang['contact_text']					= 'N\'hésitez pas à nous contacter à l\'adresse mail suivante :';
-$lang['suggestion_link'][0]				= 'Ou à nous proposer vos suggestions directement ';
-$lang['suggestion_link'][1]				= 'en ligne';
-$lang['suggestion_message']				= 'Message . . .';
-$lang['suggestion_files']				= 'Joignez-y une image ou un document explicatif :';
-$lang['suggestion_thanks']				= 'Merci pour votre participation';
-$lang['suggestions_admin']				= 'Voir les suggestions postées';
-$lang['our_other_projects']				= 'Mes autres projets :';
-$lang['comics_collection']				= 'Collection de BD :';
 $lang['error']							= 'Erreur';
 $lang['error_message'][403]				= 'Vous n\'avez pas la permission d\'accèder à cette page 😡';
 $lang['error_message'][404]				= 'Cette page est introuvable.';
-$lang['sponso']							= 'Nos partenaires :';

@@ -49,6 +49,8 @@ class User extends MY_Controller {
 	}
 
 	public function register() {
+		redirect('misc/error/403');
+		/*
 		$output['title'] = $this->lang->line('title_register');
 
 		if(isset($_POST['register'])){
@@ -78,6 +80,7 @@ class User extends MY_Controller {
 		}
 
 		$this->display_view('user/register', $output);
+		*/
 	}
 
 	public function logout() {

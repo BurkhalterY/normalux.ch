@@ -38,38 +38,33 @@ class Gallery extends MY_Controller {
 	public function details($id){
 		$output['title'] = $this->lang->line('title_details');
 		$output['drawing'] = $this->drawing_model->with('picture')->with_deleted()->get($id);
+		if(is_null($output['drawing'])){ redirect('misc/error/404'); return; }
 		$output['likes'] = $this->vote_model->count_by('fk_drawing', $id);
 		$output['comments'] = $this->comment_model->with('user')->get_many_by('fk_drawing', $id);
 		$this->display_view('gallery/details', $output);
 	}
 
 	public function like($id){
-		if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true){
-			if($this->vote_model->count_by('fk_user='.$_SESSION['user_id'].' AND fk_drawing='.$id) == 0){
-				$req = array(
-					'fk_user' => $_SESSION['user_id'],
-					'fk_drawing' => $id
-				);
-				$this->vote_model->insert($req);
-			} else {
-				$this->vote_model->delete_by('fk_user='.$_SESSION['user_id'].' AND fk_drawing='.$id);
-			}
-			redirect('gallery/details/'.$id);
+		if($this->vote_model->count_by('ip="'.$_SERVER['REMOTE_ADDR'].'" AND fk_drawing='.$id) == 0){
+			$req = array(
+				'ip' => $_SERVER['REMOTE_ADDR'],
+				'fk_drawing' => $id
+			);
+			$this->vote_model->insert($req);
 		} else {
-			redirect('user/login');
+			$this->vote_model->delete_by('ip="'.$_SERVER['REMOTE_ADDR'].'" AND fk_drawing='.$id);
 		}
+		redirect('gallery/details/'.$id);
 	}
 
 	public function comment($id){
-		if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true){
-			$req = array(
-				'fk_user' => $_SESSION['user_id'],
-				'fk_drawing' => $id,
-				'message' => $this->input->post('message'),
-				'ip' => $_SERVER['REMOTE_ADDR']
-			);
-			$this->comment_model->insert($req);
-		}
+		$req = array(
+			'fk_drawing' => $id,
+			'pseudo' => $this->input->post('pseudo'),
+			'message' => $this->input->post('message'),
+			'ip' => $_SERVER['REMOTE_ADDR']
+		);
+		$this->comment_model->insert($req);
 		redirect('gallery/details/'.$id);
 	}
 

@@ -12,8 +12,6 @@ class user_model extends MY_Model
 											 'model' => 'user_type_model']];
 	protected $has_many = ['drawings' => ['primary_key' => 'fk_user',
 										  'model' => 'drawing_model'],
-						   'votes' => ['primary_key' => 'fk_user',
-									   'model' => 'vote_model'],
 						   'comments' => ['primary_key' => 'fk_user',
 										  'model' => 'comment_model'],
 						   'units' => ['primary_key' => 'fk_user',

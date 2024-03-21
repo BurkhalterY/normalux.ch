@@ -6,9 +6,7 @@ class vote_model extends MY_Model
 	protected $_table = 'votes';
 	protected $primary_key = 'id';
 	protected $protected_attributes = ['id'];
-	protected $belongs_to = ['user' => ['primary_key' => 'fk_user',
-										'model' => 'user_model'],
-							 'drawing' => ['primary_key' => 'fk_drawing',
+	protected $belongs_to = ['drawing' => ['primary_key' => 'fk_drawing',
 										   'model' => 'drawing_model']];
 
 	/**
