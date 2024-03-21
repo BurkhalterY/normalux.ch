@@ -1,5 +1,5 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed'); ?>
-<article>
+<article class="grid">
 	<div class="top-select">
 		<?php if(isset($mode)){ ?>
 			<a href="<?=base_url('play/index/'.$mode)?>"><?=$this->lang->line('btn_replay')?></a><?=$mode==CHAIN_MODE?' | <a href="'.base_url('gallery/story').'">'.$this->lang->line('btn_story').'</a>':''?><br><br>

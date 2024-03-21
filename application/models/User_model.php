@@ -6,16 +6,8 @@ class user_model extends MY_Model
 	protected $_table = 'users';
 	protected $primary_key = 'id';
 	protected $protected_attributes = ['id'];
-	protected $belongs_to = ['profile_picture' => ['primary_key' => 'fk_profile_picture',
-												   'model' => 'drawing_model'],
-							 'user_type' => ['primary_key' => 'fk_user_type',
+	protected $belongs_to = ['user_type' => ['primary_key' => 'fk_user_type',
 											 'model' => 'user_type_model']];
-	protected $has_many = ['drawings' => ['primary_key' => 'fk_user',
-										  'model' => 'drawing_model'],
-						   'comments' => ['primary_key' => 'fk_user',
-										  'model' => 'comment_model'],
-						   'units' => ['primary_key' => 'fk_user',
-									   'model' => 'unit_model']];
 	protected $soft_delete = TRUE;
 	protected $soft_delete_key = 'inactive';
 

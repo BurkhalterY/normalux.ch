@@ -47,11 +47,24 @@
 							break;
 					} ?>
 				</td>
-				<td rowspan="5"><a href="<?=base_url('gallery/like/'.$drawing->id)?>"><span style="font-size: 24px; color: #3c5a99;"><i class="far fa-thumbs-up"></i></span></a> <?=$likes?></td>
+				<td rowspan="5" style="text-align: right;">
+					<a href="<?=base_url('gallery/like/'.$drawing->id)?>"><img src="<?=base_url('assets/images/thumb.png')?>" alt="Like"/></a>
+				</td>
+				<td rowspan="5">
+					<?=$likes?>
+				</td>
 			</tr>
 			<tr>
 				<th><?=$this->lang->line('table_picture')?></th>
-				<td><?=isset($drawing->picture->title)?$drawing->picture->title:'<i>'.$this->lang->line('no_model').'</i>'?></td>
+				<td>
+					<?php if(isset($drawing->picture->title)){?>
+						<a href="<?=base_url('gallery/index/'.$drawing->type.'/'.$drawing->picture->id)?>">
+							<?=$drawing->picture->title?>
+						</a>
+					<?php }else{ ?>
+						<i>'.$this->lang->line('no_model').'</i>'?>
+					<?php }?>
+				</td>
 			</tr>
 			<tr>
 				<th><?=$this->lang->line('table_user')?></th>
@@ -70,6 +83,9 @@
 					?>
 				</td>
 			</tr>
+			<?php if($drawing->deleted){ ?>
+				<tr><td colspan="4" style="color: red;"><b><?=$this->lang->line('censored_drawing')?></b></td></tr>
+			<?php } ?>
 		</table>
 	</div>
 
@@ -88,11 +104,13 @@
 
 	<div class="comment">
 		<?=form_open('gallery/comment/'.$drawing->id, array('style' => 'text-align:center;'))?>
-			<?=form_label($this->lang->line('pseudo'), 'pseudo')?><br>
-			<?=form_input('pseudo', set_value('pseudo'), array('id' => 'pseudo', 'class' => 'field'))?><br><br>
-			<?=form_label($this->lang->line('message'), 'message')?>
+			<h3><?=form_label($this->lang->line('message'), 'message')?></h3>
+			<?=form_label($this->lang->line('pseudo'), 'pseudo')?>
+			<?=form_input('pseudo', set_value('pseudo'), array('id' => 'pseudo', 'class' => 'field', 'required' => ''))?>
+			<?=form_textarea('message', set_value('message'), array('required' => '', 'style' => 'width: 99%; height:80px;'))?>
+			<br><br>
 			<?=form_submit('send', $this->lang->line('btn_send'))?>
-			<?=form_textarea('message', set_value('message'), array('style' => 'width: 99%; height:80px;'))?>
+			<br><br>
 		<?=form_close()?>
 	</div>
 

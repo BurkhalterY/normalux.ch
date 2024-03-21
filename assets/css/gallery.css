@@ -1,3 +1,9 @@
+article.grid {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
 div.gallery {
 	background-color: white;
 	margin: 5px;
@@ -12,6 +18,7 @@ div.top-select {
 	border: 1px solid #ccc;
 	padding: 15px;
 	text-align: center;
+	width: 100%;
 }
 
 div.gallery:hover {
@@ -69,6 +76,10 @@ h5.date {
 @media screen and (max-width: 720px) {
 	article {
 		margin-left: 0;
+	}
+
+	article.grid {
+		justify-content: space-around;
 	}
 }
 

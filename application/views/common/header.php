@@ -10,7 +10,6 @@
 		<link rel="stylesheet" type="text/css" href="<?=base_url('assets/css/menu.css')?>">
 		<link rel="stylesheet" type="text/css" href="<?=base_url('assets/css/drawing.css')?>">
 		<link rel="stylesheet" type="text/css" href="<?=base_url('assets/css/gallery.css')?>">
-		<link rel="stylesheet" type="text/css" href="<?=base_url('assets/fontawesome/css/all.css')?>">
 		<link rel="icon" type="image/png" href="<?=base_url('assets/images/favicon.png')?>" />
 	</head>
 <body>

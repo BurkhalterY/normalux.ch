@@ -7,15 +7,11 @@ class drawing_model extends MY_Model
 	protected $primary_key = 'id';
 	protected $protected_attributes = ['id'];
 	protected $belongs_to = ['picture' => ['primary_key' => 'fk_picture',
-										   'model' => 'picture_model'],
-							 'user' => ['primary_key' => 'fk_user',
-										'model' => 'user_model']];
+										   'model' => 'picture_model']];
 	protected $has_many = ['comments' => ['primary_key' => 'fk_drawing',
 										  'model' => 'comment_model'],
 						   'votes' => ['primary_key' => 'fk_drawing',
-										  'model' => 'vote_model'],
-						   'as_profile_pictures' => ['primary_key' => 'fk_profile_picture',
-													 'model' => 'user_model']];
+										  'model' => 'vote_model']];
 	protected $soft_delete = TRUE;
 	protected $soft_delete_key = 'deleted';
 

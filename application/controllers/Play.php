@@ -10,11 +10,7 @@ class Play extends MY_Controller {
 	public function index($mode = 1) {
 		unset($_SESSION['picture_id']);
 		if($mode == INFINITY_MODE){
-			if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true){
-				$output['models'] = $this->picture_model->get_dropdown();
-			} else {
-				redirect('user/login');
-			}
+			$output['models'] = $this->picture_model->get_dropdown();
 		}
 		$output['mode'] = $mode;
 		switch ($mode) {
@@ -147,7 +143,6 @@ class Play extends MY_Controller {
 
 		$req = array(
 			'pseudo' => $_SESSION['pseudo'],
-			'fk_user' => isset($_SESSION['user_id'])?$_SESSION['user_id']:null,
 			'fk_picture' => $picture,
 			'type' => $mode,
 			'file' => date("Y-m").'/'.$temp_name,

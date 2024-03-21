@@ -58,19 +58,21 @@ class Gallery extends MY_Controller {
 	}
 
 	public function comment($id){
-		$req = array(
-			'fk_drawing' => $id,
-			'pseudo' => $this->input->post('pseudo'),
-			'message' => $this->input->post('message'),
-			'ip' => $_SERVER['REMOTE_ADDR']
-		);
-		$this->comment_model->insert($req);
+		if(!empty($_POST['pseudo']) && !empty($_POST['message'])) {
+			$req = array(
+				'fk_drawing' => $id,
+				'pseudo' => $this->input->post('pseudo'),
+				'message' => $this->input->post('message'),
+				'ip' => $_SERVER['REMOTE_ADDR']
+			);
+			$this->comment_model->insert($req);
+		}
 		redirect('gallery/details/'.$id);
 	}
 
 	public function replay($id){
 		$output['title'] = $this->lang->line('title_replay');
-		$output['drawing'] = $this->drawing_model->with('picture')->get($id);
+		$output['drawing'] = $this->drawing_model->with('picture')->with_deleted()->get($id);
 		if($output['drawing']->type == CHAIN_MODE){
 			$output['drawing']->picture = $this->db->query('SELECT * FROM drawings WHERE fk_picture = '.$output['drawing']->picture->id.' AND type = 2 AND id < '.$id.' AND deleted = 0 ORDER BY id DESC')->result_object()[0];
 		}

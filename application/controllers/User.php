@@ -7,26 +7,6 @@ class User extends MY_Controller {
 		$this->load->model(array('user_model', 'drawing_model'));
 	}
 
-	public function index($id = -1, $page = 1) {
-
-		if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true){
-			if($id <= 0){
-				$id = $_SESSION['user_id'];
-			}
-
-			$output['user'] = $this->user_model->get($id);
-			$output['drawings'] = $this->drawing_model->get_many_by('deleted = 0 AND fk_user = '.$id);
-
-			$output['nb_pages'] = ceil(count($output['drawings'])/PER_PAGE);
-			$output['page'] = $page < $output['nb_pages'] ? $page : $output['nb_pages'];
-			$output['drawings'] = array_slice($output['drawings'], ($output['page']-1)*PER_PAGE, PER_PAGE);
-
-			$this->display_view('user/index', $output);
-		} else {
-			redirect('user/login');
-		}
-	}
-
 	public function login() {
 		$output['title'] = $this->lang->line('title_login');
 

@@ -7,15 +7,16 @@ body {
 article {
 	height: 100%;
 	margin-left: 300px;
+	margin-right: 20px;
 	padding-top: 20px;
 }
 
-nav.sidebar{
+nav.sidebar {
 	float: right;
 	margin-right: 8px;
 }
 
-li.sidebar{
+li.sidebar {
 	list-style-type: none;
 }
 
@@ -34,7 +35,7 @@ li.sidebar{
 }
 
 .button-green {
-	background-color: #4CAF50;
+	background-color: #4caf50;
 }
 
 .button-green:hover {
@@ -62,11 +63,11 @@ li.sidebar{
 }
 
 .button-sayan {
-	background-color: #008CBA;
+	background-color: #008cba;
 }
 
 .button-sayan:hover {
-	background-color: #008CBA;
+	background-color: #008cba;
 }
 
 .button-sayan:active {
@@ -150,16 +151,16 @@ input.field {
 	text-align: center;
 }
 
-input.field[type=submit] {
+input.field[type="submit"] {
 	width: 300px;
-	background-color: #4CAF50;
+	background-color: #4caf50;
 	color: white;
 	padding: 14px 20px;
 	border: none;
 	cursor: pointer;
 }
 
-input.field[type=submit]:hover {
+input.field[type="submit"]:hover {
 	background-color: #45a049;
 }
 
@@ -169,11 +170,11 @@ input.field[type=submit]:hover {
 	background-color: #f8d7da;
 	border-color: #f5c6cb;
 	position: relative;
-	padding: .75rem 1.25rem;
+	padding: 0.75rem 1.25rem;
 	margin-bottom: 1rem;
 	border: 1px solid transparent;
 	border-color: transparent;
-	border-radius: .25rem;
+	border-radius: 0.25rem;
 }
 
 .alert hr {
@@ -184,7 +185,7 @@ input.field[type=submit]:hover {
 	border-top-color: currentcolor;
 	border-top-style: none;
 	border-top-width: 0px;
-	border-top: 1px solid rgba(0,0,0,.1);
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
 	border-top-color: rgba(0, 0, 0, 0.1);
 }
 
@@ -195,7 +196,7 @@ input.field[type=submit]:hover {
 }
 
 @media screen and (max-width: 720px) {
-	input[type=text] {
+	input[type="text"] {
 		width: auto;
 		padding: 12px 20px;
 		margin: 8px 0;
@@ -210,10 +211,11 @@ input.field[type=submit]:hover {
 	}
 }
 
-img.error{
+img.error {
 	max-width: 100%;
 }
 
-.table-words th, .table-words td {
+.table-words th,
+.table-words td {
 	border: 1px solid black;
 }

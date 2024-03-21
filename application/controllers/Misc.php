@@ -4,7 +4,6 @@ class Misc extends MY_Controller {
 
 	public function __construct() {
 		parent::__construct();
-		$this->load->model('suggestion_model');
 	}
 
 	public function contact() {
