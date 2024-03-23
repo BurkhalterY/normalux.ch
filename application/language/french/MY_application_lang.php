@@ -78,8 +78,12 @@ $lang['message']						= 'Poster un commentaire';
 $lang['btn_send']						= 'Envoyer';
 $lang['login_for_send_comment'][0]		= 'Connectez-vous';
 $lang['login_for_send_comment'][1]		= ' pour poster un commentaire';
-$lang['delete_drawing']					= 'Voulez-vous vraiment supprimer ce dessin ?';
-$lang['delete_comment']					= 'Voulez-vous vraiment supprimer ce commentaire ?';
+$lang['delete']					        = 'Supprimer';
+$lang['undelete']				    	= 'Restaurer';
+$lang['delete_drawing']     			= 'Voulez-vous vraiment supprimer ce dessin ?';
+$lang['delete_comment']     			= 'Voulez-vous vraiment supprimer ce commentaire ?';
+$lang['undelete_drawing']       		= 'Voulez-vous restaurer ce dessin ?';
+$lang['undelete_comment']       		= 'Voulez-vous restaurer ce commentaire ?';
 
 // User Controller
 $lang['password']						= 'Mot de passe :';

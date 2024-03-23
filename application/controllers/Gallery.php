@@ -40,7 +40,11 @@ class Gallery extends MY_Controller {
 		$output['drawing'] = $this->drawing_model->with('picture')->with_deleted()->get($id);
 		if(is_null($output['drawing'])){ redirect('misc/error/404'); return; }
 		$output['likes'] = $this->vote_model->count_by('fk_drawing', $id);
-		$output['comments'] = $this->comment_model->with('user')->get_many_by('fk_drawing', $id);
+		if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true && $_SESSION['user_access'] >= ACCESS_LVL_MODO){
+			$output['comments'] = $this->comment_model->with_deleted()->get_many_by('fk_drawing', $id);
+		} else {
+			$output['comments'] = $this->comment_model->get_many_by('fk_drawing', $id);
+		}
 		$this->display_view('gallery/details', $output);
 	}
 

@@ -4,9 +4,6 @@
 		<img id="model" src="<?=base_url('medias/drawings/'.$drawing->file)?>" alt="<?=$drawing->pseudo?>" width="400" height="400">
 	</div>
 	<div class="comment">
-		<?php if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true && $_SESSION['user_access'] >= ACCESS_LVL_MODO){ ?>
-			<a href="javascript:deleteDrawing(<?=$drawing->id?>)">[x]</a>
-		<?php } ?>
 		<table style="width:100%">
 			<tr>
 				<th><?=$this->lang->line('table_mode')?></th>
@@ -86,6 +83,12 @@
 			<?php if($drawing->deleted){ ?>
 				<tr><td colspan="4" style="color: red;"><b><?=$this->lang->line('censored_drawing')?></b></td></tr>
 			<?php } ?>
+			<?php if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true && $_SESSION['user_access'] >= ACCESS_LVL_MODO){ ?>
+				<tr><td colspan="4">
+					<?php if(!$drawing->deleted){ ?><a href="javascript:deleteDrawing(<?=$drawing->id?>)" style="color: red;"><?=$this->lang->line('delete')?></a><?php }
+										else { ?><a href="javascript:undeleteDrawing(<?=$drawing->id?>)" style="color: green;"><?=$this->lang->line('undelete')?></a><?php } ?>
+				</td></tr>
+			<?php } ?>
 		</table>
 	</div>
 
@@ -95,7 +98,8 @@
 		<div class="comment">
 			<h5 class="date"><?=$comment->date_post?></h5>
 			<?php if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true && $_SESSION['user_access'] >= ACCESS_LVL_MODO){ ?>
-				<a href="javascript:deleteComment(<?=$comment->id?>)">[x]</a>
+				<?php if(!$comment->deleted){ ?><a href="javascript:deleteComment(<?=$comment->id?>)" style="color: red;"><?=$this->lang->line('delete')?></a><?php }
+									else { ?><a href="javascript:undeleteComment(<?=$comment->id?>)" style="color: green;"><?=$this->lang->line('undelete')?></a><?php } ?>
 			<?php } ?>
 			<h3><?=$comment->pseudo?></h3>
 			<p><?=$comment->message?></p>
@@ -116,16 +120,28 @@
 
 	<?php if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true && $_SESSION['user_access'] >= ACCESS_LVL_MODO){ ?>
 		<script>
+			function deleteDrawing(id) {
+				var r = confirm("<?=$this->lang->line('delete_drawing')?>");
+				if (r == true) {
+					window.location.href = "<?=base_url('modo/drawing/')?>"+id;
+				}
+			}
+			function undeleteDrawing(id) {
+				var r = confirm("<?=$this->lang->line('undelete_drawing')?>");
+				if (r == true) {
+					window.location.href = "<?=base_url('modo/drawing/')?>"+id+"/0";
+				}
+			}
 			function deleteComment(id) {
 				var r = confirm("<?=$this->lang->line('delete_comment')?>");
 				if (r == true) {
 					window.location.href = "<?=base_url('modo/comment/')?>"+id;
 				}
 			}
-			function deleteDrawing(id) {
-				var r = confirm("<?=$this->lang->line('delete_drawing')?>");
+			function undeleteComment(id) {
+				var r = confirm("<?=$this->lang->line('undelete_comment')?>");
 				if (r == true) {
-					window.location.href = "<?=base_url('modo/drawing/')?>"+id;
+					window.location.href = "<?=base_url('modo/comment/')?>"+id+"/0";
 				}
 			}
 		</script>

@@ -13,7 +13,6 @@ ctx.lineWidth = 5;
 ctx.lineJoin = "round";
 ctx.lineCap = "round";
 
-var colorLayer;
 var startColor = Array(4);
 var fillColor = Array(4);
 

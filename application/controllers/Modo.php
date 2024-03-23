@@ -9,13 +9,15 @@ class Modo extends MY_Controller {
 		$this->load->model(array('drawing_model', 'comment_model'));
 	}
 
-	public function drawing($id) {
-		$this->drawing_model->delete($id);
-		redirect('gallery');
+	public function drawing($id, $deleted=TRUE) {
+		$req = array('deleted' => $deleted);
+		$this->drawing_model->update($id, $req);
+		redirect($_SERVER['HTTP_REFERER']);
 	}
 
-	public function comment($id) {
-		$this->comment_model->delete($id);
+	public function comment($id, $deleted=TRUE) {
+		$req = array('deleted' => $deleted);
+		$this->comment_model->update($id, $req);
 		redirect($_SERVER['HTTP_REFERER']);
 	}
 
