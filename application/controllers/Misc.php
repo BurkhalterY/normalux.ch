@@ -7,7 +7,7 @@ class Misc extends MY_Controller {
 	}
 
 	public function contact() {
-		$output['title'] = $this->lang->line('title_contact');
+		$output['title'] = $this->lang->line('contact');
 		$this->display_view('misc/contact', $output);
 	}
 

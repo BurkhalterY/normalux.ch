@@ -7,8 +7,8 @@ class Gallery extends MY_Controller {
 		$this->load->model(array('picture_model', 'drawing_model', 'vote_model', 'comment_model'));
 	}
 
-	public function index($mode = 1, $picture = 0, $page = 1) {
-		$output['title'] = $this->lang->line('title_gallery');
+	public function index($mode = NORMAL_MODE, $picture = 0, $page = 1) {
+		$output['title'] = $this->lang->line('gallery');
 		$output['mode'] = $mode;
 		$output['picture_id'] = $picture;
 
@@ -36,7 +36,7 @@ class Gallery extends MY_Controller {
 	}
 
 	public function details($id){
-		$output['title'] = $this->lang->line('title_details');
+		$output['title'] = $this->lang->line('details'); // TODO
 		$output['drawing'] = $this->drawing_model->with('picture')->with_deleted()->get($id);
 		if(is_null($output['drawing'])){ redirect('misc/error/404'); return; }
 		$output['likes'] = $this->vote_model->count_by('fk_drawing', $id);
@@ -75,7 +75,7 @@ class Gallery extends MY_Controller {
 	}
 
 	public function replay($id){
-		$output['title'] = $this->lang->line('title_replay');
+		$output['title'] = $this->lang->line('live_replay');
 		$output['drawing'] = $this->drawing_model->with('picture')->with_deleted()->get($id);
 		if($output['drawing']->type == CHAIN_MODE){
 			$output['drawing']->picture = $this->db->query('SELECT * FROM drawings WHERE fk_picture = '.$output['drawing']->picture->id.' AND type = 2 AND id < '.$id.' AND deleted = 0 ORDER BY id DESC')->result_object()[0];
@@ -89,7 +89,7 @@ class Gallery extends MY_Controller {
 	}
 
 	public function story(){
-		$output['title'] = $this->lang->line('title_story');
+		$output['title'] = $this->lang->line('story');
 		$this->db->order_by('title');
 		$output['pictures'] = $this->picture_model->get_all();
 		foreach ($output['pictures'] as $picture) {

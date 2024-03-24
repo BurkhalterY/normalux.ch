@@ -37,7 +37,7 @@
 <form action="<?=base_url('play/post/'.$mode.'/'.$id)?>" method="post" id="form">
 	<input type="hidden" name="image" id="image">
 	<input type="hidden" name="json" id="json">
-	<input type="button" id="save" value="<?=$this->lang->line('btn_save')?>" onclick="finishAndSend()" <?=$mode<>INFINITY_MODE?'style="display: none;"':''?>>
+	<input type="button" id="save" value="<?=$this->lang->line('save')?>" onclick="finishAndSend()" <?=$mode<>INFINITY_MODE?'style="display: none;"':''?>>
 </form>
 
 <?php if($mode == PIXEL_ART_MODE){ ?>

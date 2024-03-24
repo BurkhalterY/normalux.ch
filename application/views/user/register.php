@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed'); ?>
 <article>
-	<h2><?=$this->lang->line('title_register')?></h2>
+	<h2><?=$this->lang->line('register')?></h2>
 
 	<?php if(isset($message)){ ?>
 		<p class="alert"><?=$message?></p>
@@ -24,6 +24,6 @@
 		<?=form_label($this->lang->line('passconf'), 'passconf')?><br>
 		<?=form_password('passconf', '', array('id' => 'passconf', 'class' => 'field'))?><br>
 
-		<?=form_submit('register', $this->lang->line('btn_register'), array('class' => 'field'))?>
+		<?=form_submit('register', $this->lang->line('register'), array('class' => 'field'))?>
 	<?=form_close()?>
 </article>

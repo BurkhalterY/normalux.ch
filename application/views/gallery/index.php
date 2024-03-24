@@ -2,8 +2,9 @@
 <article class="grid">
 	<div class="top-select">
 		<?php if(isset($mode)){ ?>
-			<a href="<?=base_url('play/index/'.$mode)?>"><?=$this->lang->line('btn_replay')?></a><?=$mode==CHAIN_MODE?' | <a href="'.base_url('gallery/story').'">'.$this->lang->line('btn_story').'</a>':''?><br><br>
-			<?=$this->lang->line('show_others_drawings')?><br>
+			<a href="<?=base_url('play/index/'.$mode)?>"><?=$this->lang->line('replay')?></a>
+			<?=$mode==CHAIN_MODE?' | <a href="'.base_url('gallery/story').'">'.$this->lang->line('story').'</a>':''?>
+			| <?=$this->lang->line('picture')?>
 			<select onchange="location.href=this.value">
 				<option value="<?=base_url('gallery/index/'.$mode)?>" selected disabled hidden ></option>
 				<?php foreach ($pictures as $picture) { ?>

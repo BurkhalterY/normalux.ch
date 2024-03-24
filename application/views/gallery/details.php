@@ -6,82 +6,64 @@
 	<div class="comment">
 		<table style="width:100%">
 			<tr>
-				<th><?=$this->lang->line('table_mode')?></th>
-				<td>
-					<?php switch ($drawing->type) {
+				<th><?=$this->lang->line('mode')?></th>
+				<td><a href="<?=base_url('play/index/'.$drawing->type)?>"><?php switch ($drawing->type) {
 						case NORMAL_MODE:
-							echo $this->lang->line('normal_mode');
+							echo $this->lang->line('normal_mode_short');
 							break;
 						case CHAIN_MODE:
-							echo $this->lang->line('chain_mode');
-							break;
-						case PROFILE_PICTURE:
-							echo $this->lang->line('profile_picture');
+							echo $this->lang->line('chain_mode_short');
 							break;
 						case ROTATION_MODE:
-							echo $this->lang->line('rotation_mode');
+							echo $this->lang->line('rotation_mode_short');
 							break;
 						case BLINDED_MODE:
-							echo $this->lang->line('blind_mode');
+							echo $this->lang->line('blind_mode_short');
 							break;
 						case PIXEL_ART_MODE:
-							echo $this->lang->line('pixel_art_mode');
+							echo $this->lang->line('pixel_art_mode_short');
 							break;
 						case INFINITY_MODE:
-							echo $this->lang->line('unlimited_mode');
-							break;
-						case 8:
-							echo $this->lang->line('unlimited_pixel_art');
-							break;
-						case 9:
-							echo $this->lang->line('zoom_mode');
-							break;
-						case 10:
-							echo $this->lang->line('wtf_mode');
+							echo $this->lang->line('unlimited_mode_short');
 							break;
 						default:
-							echo $this->lang->line('unknown');
+							echo '<i>'.$this->lang->line('unknown_mode').'</i>';
 							break;
-					} ?>
-				</td>
+				} ?></a></td>
 				<td rowspan="5" style="text-align: right;">
 					<a href="<?=base_url('gallery/like/'.$drawing->id)?>"><img src="<?=base_url('assets/images/thumb.png')?>" alt="Like"/></a>
 				</td>
-				<td rowspan="5">
-					<?=$likes?>
-				</td>
+				<td rowspan="5"><?=$likes?></td>
 			</tr>
 			<tr>
-				<th><?=$this->lang->line('table_picture')?></th>
+				<th><?=$this->lang->line('picture')?></th>
 				<td>
 					<?php if(isset($drawing->picture->title)){?>
-						<a href="<?=base_url('gallery/index/'.$drawing->type.'/'.$drawing->picture->id)?>">
-							<?=$drawing->picture->title?>
-						</a>
+						<a href="<?=base_url('gallery/index/'.$drawing->type.'/'.$drawing->picture->id)?>"><?=$drawing->picture->title?></a>
 					<?php }else{ ?>
-						<i>'.$this->lang->line('no_model').'</i>'?>
+						<i><?=$this->lang->line('no_model')?></i>
 					<?php }?>
 				</td>
 			</tr>
 			<tr>
-				<th><?=$this->lang->line('table_user')?></th>
+				<th><?=$this->lang->line('user')?></th>
 				<td><?=$drawing->pseudo?></td>
 			</tr>
 			<tr>
-				<th><?=$this->lang->line('table_date')?></th>
+				<th><?=$this->lang->line('date')?></th>
 				<td><?=$drawing->date_drawing?></td>
 			</tr>
 			<tr>
 				<td colspan="2">
 					<?php
 						if(!is_null($drawing->json)){
-							echo '<a href="'.base_url('gallery/replay/'.$drawing->id).'">'.$this->lang->line('live_route').'</a>';
+							echo '<a href="'.base_url('gallery/replay/'.$drawing->id).'">'.$this->lang->line('live_replay').'</a>';
 						}
 					?>
 				</td>
 			</tr>
 			<?php if($drawing->deleted){ ?>
-				<tr><td colspan="4" style="color: red;"><b><?=$this->lang->line('censored_drawing')?></b></td></tr>
+				<tr><td colspan="4" style="color: red;"><b><?=$this->lang->line('is_censored')?></b></td></tr>
 			<?php } ?>
 			<?php if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true && $_SESSION['user_access'] >= ACCESS_LVL_MODO){ ?>
 				<tr><td colspan="4">
@@ -95,7 +77,7 @@
 	<hr class="line">
 
 	<?php foreach ($comments as $comment) { ?>
-		<div class="comment">
+		<div class="comment" <?=$comment->deleted?'style="opacity:0.5;"':''?>>
 			<h5 class="date"><?=$comment->date_post?></h5>
 			<?php if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true && $_SESSION['user_access'] >= ACCESS_LVL_MODO){ ?>
 				<?php if(!$comment->deleted){ ?><a href="javascript:deleteComment(<?=$comment->id?>)" style="color: red;"><?=$this->lang->line('delete')?></a><?php }
@@ -108,12 +90,12 @@
 
 	<div class="comment">
 		<?=form_open('gallery/comment/'.$drawing->id, array('style' => 'text-align:center;'))?>
-			<h3><?=form_label($this->lang->line('message'), 'message')?></h3>
+			<h3><?=form_label($this->lang->line('new_comment'), 'message')?></h3>
 			<?=form_label($this->lang->line('pseudo'), 'pseudo')?>
 			<?=form_input('pseudo', set_value('pseudo'), array('id' => 'pseudo', 'class' => 'field', 'required' => ''))?>
 			<?=form_textarea('message', set_value('message'), array('required' => '', 'style' => 'width: 99%; height:80px;'))?>
 			<br><br>
-			<?=form_submit('send', $this->lang->line('btn_send'))?>
+			<?=form_submit('send', $this->lang->line('send'))?>
 			<br><br>
 		<?=form_close()?>
 	</div>

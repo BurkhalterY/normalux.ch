@@ -15,11 +15,12 @@ define('PER_PAGE', 30);
 
 define('NORMAL_MODE', 1);
 define('CHAIN_MODE', 2);
-define('PROFILE_PICTURE', 3);
 define('ROTATION_MODE', 5);
 define('PIXEL_ART_MODE', 6);
 define('BLINDED_MODE', 7);
 define('INFINITY_MODE', 4);
+
+define('ALL_MODES', array(1, 2, 4, 5, 6, 7));
 
 /*
 |--------------------------------------------------------------------------

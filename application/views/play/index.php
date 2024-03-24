@@ -1,7 +1,7 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed'); ?>
 <article>
 	<?=form_open('play/draw/'.$mode)?>
-		<?=form_submit('play', $this->lang->line('btn_play'), array('class' => get_css_color($mode)))?><br>
+		<?=form_submit('play', $this->lang->line('play'), array('class' => get_css_color($mode)))?><br>
 		<br>
 		<?=form_label($this->lang->line('pseudo'), 'pseudo')?><br>
 		<?=form_input('pseudo', $this->session->pseudo, array('id' => 'pseudo'))?>
@@ -14,7 +14,7 @@
 
 <?php
 
-function get_css_color($mode = 1){
+function get_css_color($mode){
 	switch($mode){
 		case NORMAL_MODE: return 'button button-green';
 		case CHAIN_MODE: return 'button button-red';

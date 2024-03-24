@@ -1,41 +1,31 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-// Menu
-$lang['menu_normal_mode']				= 'Mode normal';
-$lang['menu_gallery']					= 'Galerie';
-$lang['menu_chain_mode']				= 'Mode en chaîne';
-$lang['menu_rotation_mode']				= 'Mode en rotation';
-$lang['menu_pixel_art']					= 'Mode Pixel Art';
-$lang['menu_blind_mode']				= 'Mode à l\'aveugle';
-$lang['menu_login']						= 'Se connecter';
-$lang['menu_register']					= 'S\'inscrire';
-$lang['menu_my_account']				= 'Mon compte';
-$lang['menu_logout']					= 'Déconnexion';
-$lang['menu_contact']					= 'Contact';
-$lang['menu_yo']						= 'Salut ;-)';
+// Common
+$lang['pseudo']							= 'Pseudo :';
+$lang['mode']							= 'Mode :';
+$lang['picture']						= 'Modèle :';
+$lang['user']							= 'Artiste :';
+$lang['date']							= 'Réalisé le :';
 
-// Pages titles
-$lang['meta_description']				= 'Vous avez 45 secondes pour dessiner selon le modèle.';
-$lang['title_home']						= 'Accueil';
-$lang['title_draw']						= 'Dessine challenge !';
-$lang['title_chain_mode']				= 'Mode en chaîne';
-$lang['title_rotation_mode']			= 'Mode en rotation';
-$lang['title_pixel_art_mode']			= 'Mode Pixel Art';
-$lang['title_blind_mode']				= 'Mode à l\'aveugle';
-$lang['title_unlimited_mode']			= 'Easter egg';
-$lang['title_gallery']					= 'Les dessins';
-$lang['title_details']					= 'Un dessin';
-$lang['title_replay']					= 'Replay';
-$lang['title_story']					= 'Évolution !';
-$lang['title_login']					= 'Connexion';
-$lang['title_register']					= 'Enregistrement';
-$lang['title_settings']					= 'Mes paramètres';
-$lang['title_contact']					= 'Contact';
+// Modes
+$lang['normal_mode']					= 'Mode normal';
+$lang['chain_mode']						= 'Mode en chaîne';
+$lang['rotation_mode']					= 'Mode en rotation';
+$lang['pixel_art_mode']					= 'Mode Pixel Art';
+$lang['blind_mode']						= 'Mode à l\'aveugle';
+$lang['unlimited_mode']					= 'Mode temps illimité';
+
+$lang['normal_mode_short']				= 'Normal';
+$lang['chain_mode_short']				= 'Chaîne';
+$lang['rotation_mode_short']			= 'Rotation';
+$lang['pixel_art_mode_short']			= 'Pixel Art';
+$lang['blind_mode_short']				= 'À l\'aveugle';
+$lang['unlimited_mode_short']			= 'Temps illimité';
+$lang['unknown_mode']					= 'Inconnu';
 
 // Play Controller
-$lang['btn_play']						= 'Jouer !';
-$lang['pseudo']							= 'Pseudo :';
-$lang['model']							= 'Dessin :';
+$lang['play']							= 'Jouer !';
+$lang['draw']							= 'Normalux.ch !';
 $lang['color_black']					= 'Noir';
 $lang['color_gray']						= 'Gris';
 $lang['color_white']					= 'Blanc';
@@ -49,62 +39,52 @@ $lang['color_blue']						= 'Bleu';
 $lang['color_indigo']					= 'Indigo';
 $lang['color_violet']					= 'Violet';
 $lang['color_pink']						= 'Rose';
-$lang['btn_save']						= 'Sauvegarder mon image';
+$lang['easter_egg']						= 'Easter egg';
+$lang['save']							= 'Enregistrer';
 
 // Gallery Controller
-$lang['btn_replay']						= 'Rejouer';
-$lang['btn_story']						= 'Évolution';
-$lang['show_others_drawings']			= 'Afficher d\'autres dessins :';
+$lang['gallery']						= 'Galerie';
+$lang['replay']							= 'Rejouer';
+$lang['story']							= 'Évolution'; // Chain mode only
 $lang['page']							= 'Page :';
-$lang['normal_mode']					= 'Normal';
-$lang['chain_mode']						= 'Chaîne';
-$lang['profile_picture']				= 'Photo de profil';
-$lang['unlimited_mode']					= 'Temps illimité';
-$lang['rotation_mode']					= 'En rotation';
-$lang['pixel_art_mode']					= 'Pixel Art';
-$lang['blind_mode']						= 'À l\'aveugle';
-$lang['unlimited_pixel_art']			= 'Temps illimité (Pixel Art)';
-$lang['zoom_mode']						= 'Zoom!';
-$lang['wtf_mode']						= 'WTF';
-$lang['unknown']						= 'Inconnu';
-$lang['table_mode']						= 'Mode :';
-$lang['table_picture']					= 'Modèle :';
-$lang['no_model']						= 'aucun';
-$lang['table_user']						= 'Artiste :';
-$lang['table_date']						= 'Réalisé le :';
-$lang['live_route']						= 'Voir le tracé en direct';
-$lang['censored_drawing']				= 'Ce dessin a été supprimé !';
-$lang['message']						= 'Poster un commentaire';
-$lang['btn_send']						= 'Envoyer';
-$lang['login_for_send_comment'][0]		= 'Connectez-vous';
-$lang['login_for_send_comment'][1]		= ' pour poster un commentaire';
-$lang['delete']					        = 'Supprimer';
-$lang['undelete']				    	= 'Restaurer';
-$lang['delete_drawing']     			= 'Voulez-vous vraiment supprimer ce dessin ?';
-$lang['delete_comment']     			= 'Voulez-vous vraiment supprimer ce commentaire ?';
-$lang['undelete_drawing']       		= 'Voulez-vous restaurer ce dessin ?';
-$lang['undelete_comment']       		= 'Voulez-vous restaurer ce commentaire ?';
+$lang['no_model']						= 'Aucun';
+$lang['live_replay']					= 'Replay';
+$lang['new_comment']					= 'Poster un commentaire';
+$lang['send']							= 'Envoyer';
+$lang['delete']							= 'Supprimer';
+$lang['undelete']						= 'Restaurer';
+$lang['delete_drawing']					= 'Voulez-vous vraiment supprimer ce dessin ?';
+$lang['delete_comment']					= 'Voulez-vous vraiment supprimer ce commentaire ?';
+$lang['undelete_drawing']				= 'Voulez-vous restaurer ce dessin ?';
+$lang['undelete_comment']				= 'Voulez-vous restaurer ce commentaire ?';
+$lang['is_censored']					= 'Ce dessin a été supprimé !';
 
 // User Controller
-$lang['password']						= 'Mot de passe :';
-$lang['btn_login']						= 'Connexion';
+$lang['login']							= 'Connexion';
+$lang['logout']							= 'Déconnexion';
+$lang['register']						= 'Inscription'; // disabled
+$lang['settings']						= 'Paramètres';
 $lang['email']							= 'Adresse e-mail :';
-$lang['optional']						= '(facultatif)';
+$lang['password']						= 'Mot de passe :';
 $lang['passconf']						= 'Confirmer le mot de passe :';
-$lang['btn_register']					= 'S\'enregistrer';
+$lang['optional']						= '(facultatif)';
 $lang['change_password']				= 'Changer le mot de passe';
 $lang['old_password']					= 'Ancien mot de passe :';
 $lang['new_password']					= 'Nouveau mot de passe :';
 $lang['confirm_password']				= 'Confirmer le nouveau mot de passe :';
-$lang['btn_confirm']					= 'Valider';
-$lang['message__please_complete_all_fields']	= 'Veuillez compléter chaque champ';
-$lang['message__authentification_error']		= 'Erreur d\'authentification';
-$lang['message__unable_to_use_this_pseudo']		= 'Impossible d\'utiliser ce pseudo';
-$lang['message__pseudo_already_used']			= 'Ce pseudo est déjà utilisé';
-$lang['message__passwords_do_not_match']		= 'Les mots de passe ne correspondent pas';
-$lang['message__password_successfully_changed']	= 'Mot de passe changé avec succès';
+$lang['confirm']						= 'Valider';
+$lang['msg_complete_all_fields']		= 'Veuillez compléter chaque champ.';
+$lang['msg_auth_error']					= 'Erreur d\'authentification';
+$lang['msg_invalid_pseudo']				= 'Ce pseudo est invalide...';
+$lang['msg_used_pseudo']				= 'Ce pseudo est déjà utilisé...';
+$lang['msg_passwords_mismatch']			= 'Les mots de passe ne correspondent pas.';
+$lang['msg_password_success']			= 'Mot de passe changé avec succès !';
 
-// Misc Controller
+// Misc.
+$lang['home']							= 'Normalux.ch | Mode normal';
+$lang['meta_description']				= 'Vous avez 45 secondes pour dessiner selon le modèle !';
+$lang['contact']						= 'Contact';
+$lang['menu_yo']						= 'Hello ;-)';
 $lang['error']							= 'Erreur';
 $lang['error_message'][403]				= 'Vous n\'avez pas la permission d\'accèder à cette page 😡';
 $lang['error_message'][404]				= 'Cette page est introuvable.';

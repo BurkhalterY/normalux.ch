@@ -14,6 +14,6 @@
 		<?=form_label($this->lang->line('confirm_password'), 'confirm_password')?><br>
 		<?=form_password('confirm_password', '', array('id' => 'confirm_password', 'class' => 'field'))?><br><br>
 
-		<?=form_submit('submit', $this->lang->line('btn_confirm'), array('class' => 'field'))?>
+		<?=form_submit('submit', $this->lang->line('confirm'), array('class' => 'field'))?>
 	<?=form_close()?>
 </article>

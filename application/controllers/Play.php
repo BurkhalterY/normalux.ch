@@ -7,46 +7,44 @@ class Play extends MY_Controller {
 		$this->load->model(array('picture_model', 'drawing_model'));
 	}
 
-	public function index($mode = 1) {
+	public function index($mode = NORMAL_MODE) {
 		unset($_SESSION['picture_id']);
+		if (!in_array($mode, ALL_MODES)) $mode = NORMAL_MODE;
 		if($mode == INFINITY_MODE){
 			$output['models'] = $this->picture_model->get_dropdown();
 		}
 		$output['mode'] = $mode;
 		switch ($mode) {
 			case NORMAL_MODE:
-				$output['title'] = $this->lang->line('title_home');
+				$output['title'] = $this->lang->line('home');
 				break;
 			case CHAIN_MODE:
-				$output['title'] = $this->lang->line('title_chain_mode');
-				break;
-			case PROFILE_PICTURE:
-				$output['title'] = $this->lang->line('title_home');
+				$output['title'] = $this->lang->line('chain_mode');
 				break;
 			case ROTATION_MODE:
-				$output['title'] = $this->lang->line('title_rotation_mode');
+				$output['title'] = $this->lang->line('rotation_mode');
 				break;
 			case PIXEL_ART_MODE:
-				$output['title'] = $this->lang->line('title_pixel_art_mode');
+				$output['title'] = $this->lang->line('pixel_art_mode');
 				break;
 			case BLINDED_MODE:
-				$output['title'] = $this->lang->line('title_blind_mode');
+				$output['title'] = $this->lang->line('blind_mode');
 				break;
 			case INFINITY_MODE:
-				$output['title'] = $this->lang->line('title_unlimited_mode');
+				$output['title'] = $this->lang->line('unlimited_mode');
 				break;
 			default:
-				$output['title'] = $this->lang->line('title_home');
+				$output['title'] = $this->lang->line('unknown_mode'); // Should never happen
 				break;
 		}
 		$this->display_view('play/index', $output);
 	}
 
-	public function draw($mode = 1) {
+	public function draw($mode = NORMAL_MODE) {
 		if(!empty($_POST['pseudo'])){
 			$_SESSION['pseudo'] = htmlspecialchars($_POST['pseudo']);
 			
-			$output['title'] = $this->lang->line('title_draw');
+			$output['title'] = $this->lang->line('draw');
 			$output['mode'] = $mode;
 			if($mode == INFINITY_MODE){
 				$output['picture'] = $this->picture_model->get($_POST['model']);
@@ -69,12 +67,7 @@ class Play extends MY_Controller {
 
 			switch ($mode) {
 				case NORMAL_MODE:
-					$output['time'] = 45;
-					break;
 				case CHAIN_MODE:
-					$output['time'] = 45;
-					break;
-				case PROFILE_PICTURE:
 					$output['time'] = 45;
 					break;
 				case ROTATION_MODE:
@@ -106,11 +99,7 @@ class Play extends MY_Controller {
 			mkdir($dir);
 		}
 
-		if($mode == PROFILE_PICTURE){
-			$picture_name = 'U'.$_SESSION['user_id']."_".date("Ymd-His");
-		} else {
-			$picture_name = $picture."_".date("Ymd-His");
-		}
+		$picture_name = $picture."_".date("Ymd-His");
 		$temp_name = $picture_name.'.png';
 		$i = 0;
 		while(is_file($dir.'/'.$temp_name)){
@@ -126,11 +115,7 @@ class Play extends MY_Controller {
 			mkdir($dir);
 		}
 
-		if($mode == PROFILE_PICTURE){
-			$json_filename = 'U'.$_SESSION['user_id']."_".date("Ymd-His");
-		} else {
-			$json_filename = $picture."_".date("Ymd-His");
-		}
+		$json_filename = $picture."_".date("Ymd-His");
 		$json_temp_name = $json_filename.'.json';
 		$i = 0;
 		while(is_file($dir.'/'.$json_temp_name)){
