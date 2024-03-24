@@ -1,10 +1,13 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed'); ?>
 
-<h1 id="s">45</h1>
+<div class="draw">
 
-<img id="model" src="<?=base_url('medias/'.(isset($drawing->picture->title)?'pictures':'drawings').'/'.$drawing->picture->file)?>" alt="<?=isset($drawing->picture->title)?$drawing->picture->title:$drawing->picture->pseudo?>" width="400" height="400" <?=$drawing->type==ROTATION_MODE?'class="rotation-canvas"':''?> />
-<canvas id="canvas" width="400" height="400" <?=$drawing->type==ROTATION_MODE?'class="rotation-model"':''?>></canvas>
+	<h1 id="s">45</h1>
 
+	<img id="model" src="<?=base_url('medias/'.(isset($drawing->picture->title)?'pictures':'drawings').'/'.$drawing->picture->file)?>" alt="<?=isset($drawing->picture->title)?$drawing->picture->title:$drawing->picture->pseudo?>" width="400" height="400" <?=$drawing->type==ROTATION_MODE?'class="rotation-canvas"':''?> />
+	<canvas id="canvas" width="400" height="400" <?=$drawing->type==ROTATION_MODE?'class="rotation-model"':''?>></canvas>
+
+</div>
 <script>
 	var started = false
 

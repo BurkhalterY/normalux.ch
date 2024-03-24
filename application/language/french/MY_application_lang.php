@@ -86,7 +86,6 @@ $lang['msg_password_success']			= 'Mot de passe changé avec succès !';
 $lang['home']							= 'Normalux.ch';
 $lang['meta_description']				= 'Vous avez 45 secondes pour dessiner selon le modèle !';
 $lang['contact']						= 'Contact';
-$lang['menu_yo']						= 'Hello ;-)';
 $lang['error']							= 'Erreur';
 $lang['error_message'][403]				= 'Vous n\'avez pas la permission d\'accèder à cette page 😡';
 $lang['error_message'][404]				= 'Cette page est introuvable.';

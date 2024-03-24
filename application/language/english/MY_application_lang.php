@@ -86,7 +86,6 @@ $lang['msg_password_success']			= 'Password successfully changed!';
 $lang['home']							= 'Normalux.ch';
 $lang['meta_description']				= 'You\'ve got 45 seconds to draw the model!';
 $lang['contact']						= 'Contact';
-$lang['menu_yo']						= 'Hi ;-)';
 $lang['error']							= 'Error';
 $lang['error_message'][403]				= 'You are not allowed to access this page 😡';
 $lang['error_message'][404]				= 'Page Not Found';

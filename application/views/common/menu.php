@@ -10,32 +10,35 @@ function check_active($p1 = '', $p2 = '', $p3 = '1'){
 
 ?>
 <nav>
-	<ul class="menu">
-		<li class="menu"><a <?=check_active('play', 'index', '1')?'class="active green"':''?> href="<?=base_url()?>"><?=$this->lang->line('normal_mode')?></a></li>
-		<li class="menu"><a <?=check_active('gallery', 'index', '1')?'class="active green"':''?> href="<?=base_url('gallery')?>"><?=$this->lang->line('gallery')?></a></li>
+	<ul>
+		<li><a <?=check_active('play', 'index', '1')?'class="active green"':''?> href="<?=base_url()?>"><?=$this->lang->line('normal_mode')?></a></li>
+		<li><a <?=check_active('gallery', 'index', '1')?'class="active green"':''?> href="<?=base_url('gallery')?>"><?=$this->lang->line('gallery')?></a></li>
 		<br>
-		<li class="menu"><a <?=check_active('play', 'index', '2')?'class="active red"':''?> href="<?=base_url('play/index/2')?>"><?=$this->lang->line('chain_mode')?></a></li>
-		<li class="menu"><a <?=check_active('gallery', 'index', '2')?'class="active red"':''?> href="<?=base_url('gallery/index/2')?>"><?=$this->lang->line('gallery')?></a></li>
+		<li><a <?=check_active('play', 'index', '2')?'class="active red"':''?> href="<?=base_url('play/index/2')?>"><?=$this->lang->line('chain_mode')?></a></li>
+		<li><a <?=check_active('gallery', 'index', '2')?'class="active red"':''?> href="<?=base_url('gallery/index/2')?>"><?=$this->lang->line('gallery')?></a></li>
 		<br>
-		<li class="menu"><a <?=check_active('play', 'index', '5')?'class="active purple"':''?> href="<?=base_url('play/index/5')?>"><?=$this->lang->line('rotation_mode')?></a></li>
-		<li class="menu"><a <?=check_active('gallery', 'index', '5')?'class="active purple"':''?> href="<?=base_url('gallery/index/5')?>"><?=$this->lang->line('gallery')?></a></li>
+		<li><a <?=check_active('play', 'index', '5')?'class="active purple"':''?> href="<?=base_url('play/index/5')?>"><?=$this->lang->line('rotation_mode')?></a></li>
+		<li><a <?=check_active('gallery', 'index', '5')?'class="active purple"':''?> href="<?=base_url('gallery/index/5')?>"><?=$this->lang->line('gallery')?></a></li>
 		<br>
-		<li class="menu"><a <?=check_active('play', 'index', '6')?'class="active black"':''?> href="<?=base_url('play/index/6')?>"><?=$this->lang->line('pixel_art_mode')?></a></li>
-		<li class="menu"><a <?=check_active('gallery', 'index', '6')?'class="active black"':''?> href="<?=base_url('gallery/index/6')?>"><?=$this->lang->line('gallery')?></a></li>
+		<li><a <?=check_active('play', 'index', '6')?'class="active black"':''?> href="<?=base_url('play/index/6')?>"><?=$this->lang->line('pixel_art_mode')?></a></li>
+		<li><a <?=check_active('gallery', 'index', '6')?'class="active black"':''?> href="<?=base_url('gallery/index/6')?>"><?=$this->lang->line('gallery')?></a></li>
 		<br>
-		<li class="menu"><a <?=check_active('play', 'index', '7')?'class="active gray"':''?> href="<?=base_url('play/index/7')?>"><?=$this->lang->line('blind_mode')?></a></li>
-		<li class="menu"><a <?=check_active('gallery', 'index', '7')?'class="active gray"':''?> href="<?=base_url('gallery/index/7')?>"><?=$this->lang->line('gallery')?></a></li>
+		<li><a <?=check_active('play', 'index', '7')?'class="active gray"':''?> href="<?=base_url('play/index/7')?>"><?=$this->lang->line('blind_mode')?></a></li>
+		<li><a <?=check_active('gallery', 'index', '7')?'class="active gray"':''?> href="<?=base_url('gallery/index/7')?>"><?=$this->lang->line('gallery')?></a></li>
 		<br>
 		<?php if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true){ ?>
-			<li class="menu"><a <?=check_active('user', 'logout')?'class="active blue"':''?> href="<?=base_url('user/logout')?>"><?=$this->lang->line('logout')?></a></li>
+			<li><a <?=check_active('user', 'logout')?'class="active blue"':''?> href="<?=base_url('user/logout')?>"><?=$this->lang->line('logout')?></a></li>
 		<?php } else { ?>
-			<li class="menu"><a <?=check_active('user', 'login')?'class="active blue"':''?> href="<?=base_url('user/login')?>"><?=$this->lang->line('login')?></a></li>
+			<li><a <?=check_active('user', 'login')?'class="active blue"':''?> href="<?=base_url('user/login')?>"><?=$this->lang->line('login')?></a></li>
 		<?php } ?>
-		<li class="menu"><a <?=check_active('misc', 'contact')?'class="active yellow"':''?> href="<?=base_url('misc/contact')?>"><?=$this->lang->line('contact')?></a></li>
-		<li class="menu">
-			<a href="<?=base_url('misc/lang/en')?>" style="width: auto; font-size: 150%; padding: 1px 15px 0;">🇺🇸</a>
-			<a href="<?=base_url('misc/lang/fr')?>" style="width: auto; font-size: 150%; padding: 1px 15px 0;">🇫🇷</a><!--TODO-->
-			<a class="<?=check_active('play', 'index', '4')?'active yellow':'ee'?>" href="<?=base_url('play/index/4')?>" style="width: 40%;"><?=$this->lang->line('menu_yo')?></a>
+		<li><a <?=check_active('misc', 'contact')?'class="active yellow"':''?> href="<?=base_url('misc/contact')?>"><?=$this->lang->line('contact')?></a></li>
+		<li>
+			<a href="<?=base_url('misc/lang/en')?>" class="lang">🇺🇸</a>
+			<a href="<?=base_url('misc/lang/fr')?>" class="lang">🇫🇷</a>
+			<?php if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true){ ?>
+				<a href="<?=base_url('user/settings')?>" class="lang">⚙️</a>
+			<?php } ?>
+			<a class="<?=check_active('play', 'index', '4')?'active yellow':'ee'?>" href="<?=base_url('play/index/4')?>"><?=$this->lang->line('easter_egg')?></a>
 		</li>
 	</ul>
 </nav>

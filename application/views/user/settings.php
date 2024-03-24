@@ -1,9 +1,9 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed'); ?>
 <article>
-	<h2><?=$this->lang->line('change_password')?></h2>
+	<h1><?=$this->lang->line('change_password')?></h1>
 
 	<?php if(isset($message)){ ?>
-		<p class="alert <?=isset($success)?'success':''?>"><?=$message?></p>
+		<p class="alert <?=isset($success)?'success':''?>"><?=$message?></p><br>
 	<?php } ?>
 
 	<?=form_open()?>
