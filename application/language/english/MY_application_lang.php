@@ -1,5 +1,7 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
+$lang['iso_code']                       = 'en';
+
 // Common
 $lang['pseudo']							= 'Pseudo:';
 $lang['mode']							= 'Mode:';
