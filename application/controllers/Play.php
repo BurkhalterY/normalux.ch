@@ -14,28 +14,9 @@ class Play extends MY_Controller {
 			$output['models'] = $this->picture_model->get_dropdown();
 		}
 		$output['mode'] = $mode;
-		switch ($mode) {
-			case NORMAL_MODE:
-				$output['title'] = $this->lang->line('home');
-				break;
-			case CHAIN_MODE:
-				$output['title'] = $this->lang->line('chain_mode');
-				break;
-			case ROTATION_MODE:
-				$output['title'] = $this->lang->line('rotation_mode');
-				break;
-			case PIXEL_ART_MODE:
-				$output['title'] = $this->lang->line('pixel_art_mode');
-				break;
-			case BLINDED_MODE:
-				$output['title'] = $this->lang->line('blind_mode');
-				break;
-			case INFINITY_MODE:
-				$output['title'] = $this->lang->line('unlimited_mode');
-				break;
-			default:
-				$output['title'] = $this->lang->line('unknown_mode'); // Should never happen
-				break;
+		$output['title'] = $this->drawing_model->get_mode_name($mode);
+		if($mode == NORMAL_MODE) {
+			$output['title'] = $this->lang->line('home').' | '.$output['title'];
 		}
 		$this->display_view('play/index', $output);
 	}

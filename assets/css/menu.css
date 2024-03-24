@@ -16,7 +16,8 @@ ul.menu {
 }
 
 li.menu a {
-	display: block;
+	display: inline-block;
+	width: 100%;
 	color: #000;
 	padding: 8px 16px;
 	text-decoration: none;
@@ -32,7 +33,7 @@ li.menu a:hover:not(.active) {
 }
 
 a.active.green {
-	background-color: #4CAF50;
+	background-color: #4caf50;
 }
 
 a.active.red {
@@ -44,7 +45,7 @@ a.active.blue {
 }
 
 a.active.yellow {
-	background-color: #FFD800;
+	background-color: #ffd800;
 }
 
 a.active.black {
@@ -69,7 +70,7 @@ a.active.gray {
 	opacity: 50;
 }
 
-@media screen and (max-width: 720px){
+@media screen and (max-width: 720px) {
 	ul.menu {
 		height: auto;
 		width: 100%;

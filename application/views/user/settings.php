@@ -11,8 +11,8 @@
 		<?=form_password('old_password', '', array('id' => 'old_password', 'class' => 'field'))?><br><br>
 		<?=form_label($this->lang->line('new_password'), 'new_password')?><br>
 		<?=form_password('new_password', '', array('id' => 'new_password', 'class' => 'field'))?><br><br>
-		<?=form_label($this->lang->line('confirm_password'), 'confirm_password')?><br>
-		<?=form_password('confirm_password', '', array('id' => 'confirm_password', 'class' => 'field'))?><br><br>
+		<?=form_label($this->lang->line('passconf'), 'passconf')?><br>
+		<?=form_password('passconf', '', array('id' => 'passconf', 'class' => 'field'))?><br><br>
 
 		<?=form_submit('submit', $this->lang->line('confirm'), array('class' => 'field'))?>
 	<?=form_close()?>

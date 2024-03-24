@@ -14,6 +14,7 @@ $lang['rotation_mode']					= 'Mode en rotation';
 $lang['pixel_art_mode']					= 'Mode Pixel Art';
 $lang['blind_mode']						= 'Mode à l\'aveugle';
 $lang['unlimited_mode']					= 'Mode temps illimité';
+$lang['unknown_mode']					= 'Mode inconnu';
 
 $lang['normal_mode_short']				= 'Normal';
 $lang['chain_mode_short']				= 'Chaîne';
@@ -21,7 +22,7 @@ $lang['rotation_mode_short']			= 'Rotation';
 $lang['pixel_art_mode_short']			= 'Pixel Art';
 $lang['blind_mode_short']				= 'À l\'aveugle';
 $lang['unlimited_mode_short']			= 'Temps illimité';
-$lang['unknown_mode']					= 'Inconnu';
+$lang['unknown_mode_short']				= '<i>Inconnu</i>';
 
 // Play Controller
 $lang['play']							= 'Jouer !';
@@ -47,6 +48,7 @@ $lang['gallery']						= 'Galerie';
 $lang['replay']							= 'Rejouer';
 $lang['story']							= 'Évolution'; // Chain mode only
 $lang['page']							= 'Page :';
+$lang['drawing_desc']					= 'Dessin de {picture} par {author} | {mode} (#{id})';
 $lang['no_model']						= 'Aucun';
 $lang['live_replay']					= 'Replay';
 $lang['new_comment']					= 'Poster un commentaire';
@@ -71,7 +73,6 @@ $lang['optional']						= '(facultatif)';
 $lang['change_password']				= 'Changer le mot de passe';
 $lang['old_password']					= 'Ancien mot de passe :';
 $lang['new_password']					= 'Nouveau mot de passe :';
-$lang['confirm_password']				= 'Confirmer le nouveau mot de passe :';
 $lang['confirm']						= 'Valider';
 $lang['msg_complete_all_fields']		= 'Veuillez compléter chaque champ.';
 $lang['msg_auth_error']					= 'Erreur d\'authentification';
@@ -81,7 +82,7 @@ $lang['msg_passwords_mismatch']			= 'Les mots de passe ne correspondent pas.';
 $lang['msg_password_success']			= 'Mot de passe changé avec succès !';
 
 // Misc.
-$lang['home']							= 'Normalux.ch | Mode normal';
+$lang['home']							= 'Normalux.ch';
 $lang['meta_description']				= 'Vous avez 45 secondes pour dessiner selon le modèle !';
 $lang['contact']						= 'Contact';
 $lang['menu_yo']						= 'Hello ;-)';

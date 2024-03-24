@@ -74,9 +74,9 @@ class User extends MY_Controller {
 			$output['title'] = $this->lang->line('settings');
 
 			if(isset($_POST['submit'])){
-				if(empty($_POST['old_password']) || empty($_POST['new_password']) || empty($_POST['confirm_password'])){
+				if(empty($_POST['old_password']) || empty($_POST['new_password']) || empty($_POST['passconf'])){
 					$output['message'] = $this->lang->line('msg_complete_all_fields');
-				} else if($_POST['new_password'] != $_POST['confirm_password']){
+				} else if($_POST['new_password'] != $_POST['passconf']){
 					$output['message'] = $this->lang->line('msg_passwords_mismatch');
 				} else if(!$this->user_model->check_password($_SESSION['username'], $_POST['old_password'])){
 					$output['message'] = $this->lang->line('msg_auth_error');

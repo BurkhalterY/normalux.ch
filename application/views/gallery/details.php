@@ -7,29 +7,7 @@
 		<table style="width:100%">
 			<tr>
 				<th><?=$this->lang->line('mode')?></th>
-				<td><a href="<?=base_url('play/index/'.$drawing->type)?>"><?php switch ($drawing->type) {
-						case NORMAL_MODE:
-							echo $this->lang->line('normal_mode_short');
-							break;
-						case CHAIN_MODE:
-							echo $this->lang->line('chain_mode_short');
-							break;
-						case ROTATION_MODE:
-							echo $this->lang->line('rotation_mode_short');
-							break;
-						case BLINDED_MODE:
-							echo $this->lang->line('blind_mode_short');
-							break;
-						case PIXEL_ART_MODE:
-							echo $this->lang->line('pixel_art_mode_short');
-							break;
-						case INFINITY_MODE:
-							echo $this->lang->line('unlimited_mode_short');
-							break;
-						default:
-							echo '<i>'.$this->lang->line('unknown_mode').'</i>';
-							break;
-				} ?></a></td>
+				<td><a href="<?=base_url('play/index/'.$drawing->type)?>"><?=$drawing->mode?></a></td>
 				<td rowspan="5" style="text-align: right;">
 					<a href="<?=base_url('gallery/like/'.$drawing->id)?>"><img src="<?=base_url('assets/images/thumb.png')?>" alt="Like"/></a>
 				</td>
@@ -53,15 +31,13 @@
 				<th><?=$this->lang->line('date')?></th>
 				<td><?=$drawing->date_drawing?></td>
 			</tr>
-			<tr>
-				<td colspan="2">
-					<?php
-						if(!is_null($drawing->json)){
-							echo '<a href="'.base_url('gallery/replay/'.$drawing->id).'">'.$this->lang->line('live_replay').'</a>';
-						}
-					?>
-				</td>
-			</tr>
+			<?php if(!is_null($drawing->json)){ ?>
+				<tr>
+					<td colspan="2">
+						<?='<a href="'.base_url('gallery/replay/'.$drawing->id).'">'.$this->lang->line('live_replay').'</a>'?>
+					</td>
+				</tr>
+			<?php } ?>
 			<?php if($drawing->deleted){ ?>
 				<tr><td colspan="4" style="color: red;"><b><?=$this->lang->line('is_censored')?></b></td></tr>
 			<?php } ?>

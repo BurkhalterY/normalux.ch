@@ -36,9 +36,14 @@ class Gallery extends MY_Controller {
 	}
 
 	public function details($id){
-		$output['title'] = $this->lang->line('details'); // TODO
 		$output['drawing'] = $this->drawing_model->with('picture')->with_deleted()->get($id);
+		$output['drawing']->mode = $this->drawing_model->get_mode_name($output['drawing']->type, TRUE);
 		if(is_null($output['drawing'])){ redirect('misc/error/404'); return; }
+		$arr = array('{picture}' => $output['drawing']->picture->title,
+					 '{author}' => $output['drawing']->pseudo,
+					 '{mode}' => $this->drawing_model->get_mode_name($output['drawing']->type),
+					 '{id}' => $output['drawing']->id);
+		$output['title'] = strtr($this->lang->line('drawing_desc'), $arr);
 		$output['likes'] = $this->vote_model->count_by('fk_drawing', $id);
 		if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == true && $_SESSION['user_access'] >= ACCESS_LVL_MODO){
 			$output['comments'] = $this->comment_model->with_deleted()->get_many_by('fk_drawing', $id);

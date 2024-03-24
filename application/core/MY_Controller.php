@@ -14,6 +14,8 @@ class MY_Controller extends CI_Controller
 	{
 		parent::__construct();
 
+		$this->lang->load('MY_application', $this->session->lang ?? 'english');
+
 		/* Check permission on construct */
 		if (!$this->check_permission()) {
 			show_error($this->lang->line('msg_err_access_denied'));

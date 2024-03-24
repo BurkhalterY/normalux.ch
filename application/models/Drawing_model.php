@@ -23,4 +23,24 @@ class drawing_model extends MY_Model
 		parent::__construct();
 	}
 
+	public function get_mode_name($mode, $short=FALSE)
+	{
+		if($short) $short = '_short';
+		switch ($mode) {
+			case NORMAL_MODE:
+				return $this->lang->line('normal_mode'.$short);
+			case CHAIN_MODE:
+				return $this->lang->line('chain_mode'.$short);
+			case ROTATION_MODE:
+				return $this->lang->line('rotation_mode'.$short);
+			case PIXEL_ART_MODE:
+				return $this->lang->line('pixel_art_mode'.$short);
+			case BLINDED_MODE:
+				return $this->lang->line('blind_mode'.$short);
+			case INFINITY_MODE:
+				return $this->lang->line('unlimited_mode'.$short);
+			default:
+				return $this->lang->line('unknown_mode'.$short); // Should never happen
+		}
+	}
 }

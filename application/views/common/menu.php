@@ -32,6 +32,10 @@ function check_active($p1 = '', $p2 = '', $p3 = '1'){
 			<li class="menu"><a <?=check_active('user', 'login')?'class="active blue"':''?> href="<?=base_url('user/login')?>"><?=$this->lang->line('login')?></a></li>
 		<?php } ?>
 		<li class="menu"><a <?=check_active('misc', 'contact')?'class="active yellow"':''?> href="<?=base_url('misc/contact')?>"><?=$this->lang->line('contact')?></a></li>
-		<li class="menu ee"><a <?=check_active('play', 'index', '4')?'class="active yellow"':''?> href="<?=base_url('play/index/4')?>"><?=$this->lang->line('menu_yo')?></a></li>
+		<li class="menu">
+			<a href="<?=base_url('misc/lang/en')?>" style="width: auto; font-size: 150%; padding: 1px 15px 0;">🇺🇸</a>
+			<a href="<?=base_url('misc/lang/fr')?>" style="width: auto; font-size: 150%; padding: 1px 15px 0;">🇫🇷</a><!--TODO-->
+			<a class="<?=check_active('play', 'index', '4')?'active yellow':'ee'?>" href="<?=base_url('play/index/4')?>" style="width: 40%;"><?=$this->lang->line('menu_yo')?></a>
+		</li>
 	</ul>
 </nav>

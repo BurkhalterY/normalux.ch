@@ -11,6 +11,13 @@ class Misc extends MY_Controller {
 		$this->display_view('misc/contact', $output);
 	}
 
+	public function lang($code) {
+		$languages = array('en' => 'english', 'fr' => 'french');
+		if(array_key_exists($code, $languages))
+			$this->session->set_userdata('lang', $languages[$code]);
+		redirect($_SERVER['HTTP_REFERER']);
+	}
+
 	public function error($error = 404) {
 		$output['title'] = $this->lang->line('error').' '.$error;
 		$output['error'] = $error;
