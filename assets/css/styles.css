@@ -13,6 +13,7 @@ h1 {
 	text-align: center;
 }
 article {
+	box-sizing: border-box;
 	flex-grow: 1;
 	padding: 20px;
 	overflow-y: scroll;
