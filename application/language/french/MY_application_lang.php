@@ -48,6 +48,7 @@ $lang['gallery']						= 'Galerie';
 $lang['replay']							= 'Rejouer';
 $lang['story']							= 'Évolution'; // Chain mode only
 $lang['page']							= 'Page :';
+$lang['of']				            	= 'de';
 $lang['drawing_desc']					= 'Dessin de {picture} par {author} | {mode} (#{id})';
 $lang['no_model']						= 'Aucun';
 $lang['live_replay']					= 'Replay';

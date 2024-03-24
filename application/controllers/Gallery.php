@@ -13,19 +13,22 @@ class Gallery extends MY_Controller {
 		$output['picture_id'] = $picture;
 
 		$where = '1 = 1';
-		if($mode != 0){
-			$where .= ' AND type = '.$mode;
-		}
 		if($picture != 0){
 			$where .= ' AND fk_picture = '.$picture;
+			$pic = $this->picture_model->get($picture);
+			$output['title'] .= ' '.$this->lang->line('of').' '.$pic->title;
+		}
+		if($mode != 0){
+			$where .= ' AND type = '.$mode;
+			$output['title'] .= ' | '.$this->drawing_model->get_mode_name($mode);
 		}
 
 		$this->db->order_by('title');
 		$output['pictures'] = $this->picture_model->get_all();
 		$output['drawings'] = $this->drawing_model->get_many_by($where);
 
-		if($picture != 0){
-			array_unshift($output['drawings'], $this->picture_model->get($picture));
+		if(isset($pic)){
+			array_unshift($output['drawings'], $pic);
 		}
 
 		$output['nb_pages'] = ceil(count($output['drawings'])/PER_PAGE);
