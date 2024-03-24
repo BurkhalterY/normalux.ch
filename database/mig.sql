@@ -1,0 +1,20 @@
+-- To migrate datamodel from the previous one, no more useful
+DROP TABLE `online_themes_words`, `online_themes`, `online_words`, `suggestions`;
+ALTER TABLE `comments` ADD `pseudo` VARCHAR(255) NOT NULL AFTER `fk_user`; 
+UPDATE `comments`, `users` SET `comments`.`pseudo`=`users`.`pseudo` WHERE `comments`.`fk_user`=`users`.`id`;
+ALTER TABLE `comments` DROP FOREIGN KEY comments_ibfk_1;
+ALTER TABLE `comments` DROP `fk_user`;
+ALTER TABLE `comments` CHANGE `ip` `ip` VARCHAR(45) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NOT NULL; 
+ALTER TABLE `comments` DROP FOREIGN KEY `comments_ibfk_2`; ALTER TABLE `comments` ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`fk_drawing`) REFERENCES `drawings`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE `drawings` DROP FOREIGN KEY drawings_ibfk_2;
+ALTER TABLE `drawings` DROP `fk_user`;
+ALTER TABLE `users` DROP FOREIGN KEY users_ibfk_1;
+ALTER TABLE `users` DROP `fk_profile_picture`;
+ALTER TABLE `users` DROP FOREIGN KEY `users_ibfk_2`; ALTER TABLE `users` ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`fk_user_type`) REFERENCES `users_types`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT; 
+UPDATE `users_types` SET `grade` = 'Guest' WHERE `users_types`.`id` = 1;
+UPDATE `users_types` SET `grade` = 'User' WHERE `users_types`.`id` = 2;
+UPDATE `users_types` SET `grade` = 'Modo' WHERE `users_types`.`id` = 3;
+ALTER TABLE `votes` DROP FOREIGN KEY votes_ibfk_1;
+ALTER TABLE `votes` DROP `fk_user`;
+ALTER TABLE `votes` ADD `ip` VARCHAR(45) NOT NULL AFTER `id`; 
+ALTER TABLE `votes` DROP FOREIGN KEY `votes_ibfk_2`; ALTER TABLE `votes` ADD CONSTRAINT `votes_ibfk_1` FOREIGN KEY (`fk_drawing`) REFERENCES `drawings`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT; 
