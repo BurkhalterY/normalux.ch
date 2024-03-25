@@ -12,6 +12,7 @@ class Play extends MY_Controller {
 		if (!in_array($mode, ALL_MODES)) $mode = NORMAL_MODE;
 		if($mode == INFINITY_MODE){
 			$output['models'] = $this->picture_model->get_dropdown();
+			$output['default_pic_id'] = $this->config->item('default_pic_id');
 		}
 		$output['mode'] = $mode;
 		$output['title'] = $this->drawing_model->get_mode_name($mode);

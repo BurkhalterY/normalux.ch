@@ -7,7 +7,7 @@
 		<?=form_input('pseudo', $this->session->pseudo, array('id' => 'pseudo', 'class' => 'field'))?>
 
 		<?php if($mode == INFINITY_MODE){
-			echo $this->lang->line('model').'<br>'.form_dropdown('model', $models, array(), array('class' => 'field'));
+			echo $this->lang->line('model').'<br>'.form_dropdown('model', $models, $default_pic_id, array('class' => 'field'));
 		} ?>
 	<?=form_close()?>
 </article>
