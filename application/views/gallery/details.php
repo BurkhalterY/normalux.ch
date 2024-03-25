@@ -66,8 +66,8 @@
 		<?=form_open('gallery/comment/'.$drawing->id)?>
 			<h3><?=form_label($this->lang->line('new_comment'), 'message')?></h3>
 			<?=form_label($this->lang->line('pseudo'), 'pseudo')?>
-			<?=form_input('pseudo', set_value('pseudo'), array('id' => 'pseudo', 'class' => 'field', 'required' => ''))?>
-			<?=form_textarea('message', set_value('message'), array('required' => ''))?>
+			<?=form_input('pseudo', $this->session->pseudo, array('id' => 'pseudo', 'class' => 'field', 'required' => ''))?>
+			<?=form_textarea('message', '', array('required' => ''))?>
 			<br><br>
 			<?=form_submit('send', $this->lang->line('send'), array('class' => 'field'))?>
 			<br><br>

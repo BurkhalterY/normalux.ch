@@ -71,6 +71,7 @@ class Gallery extends MY_Controller {
 
 	public function comment($id){
 		if(!empty($_POST['pseudo']) && !empty($_POST['message'])) {
+			$_SESSION['pseudo'] = htmlspecialchars($_POST['pseudo']);
 			$req = array(
 				'fk_drawing' => $id,
 				'pseudo' => $this->input->post('pseudo'),
