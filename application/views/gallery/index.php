@@ -24,7 +24,6 @@
 					<a href="<?=base_url('gallery/index/'.$mode.'/'.$picture_id.'/'.$i)?>"><?=$i?></a>
 				<?php } ?>
 			<?php } ?>
-			<?=$i%50==0?'<br>':''?>
 		<?php } ?>
 	</div>
 
