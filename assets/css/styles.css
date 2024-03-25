@@ -332,6 +332,7 @@ article #model {
 .comments > form {
 	background-color: white;
 	border: 1px solid #ccc;
+	box-sizing: border-box;
 	padding: 5px;
 }
 .comments > div:hover {
@@ -358,4 +359,20 @@ th {
 }
 .text-red {
 	color: red;
+}
+
+/* Responsive */
+@media only screen and (max-width: 650px) {
+	body {
+		flex-direction: column;
+		height: auto;
+	}
+	#canvas,
+	#model {
+		width: 300px;
+		height: 300px;
+	}
+	.comments {
+		width: 100%;
+	}
 }
