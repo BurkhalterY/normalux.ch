@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: db
--- Generation Time: Mar 24, 2024 at 11:24 AM
--- Server version: 10.6.17-MariaDB-1:10.6.17+maria~ubu2004
--- PHP Version: 8.2.17
+-- Hôte : localhost:3306
+-- Généré le : lun. 25 mars 2024 à 21:53
+-- Version du serveur : 10.6.15-MariaDB
+-- Version de PHP : 8.2.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `normalux`
+-- Base de données : `normalux`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ci_sessions`
+-- Structure de la table `ci_sessions`
 --
 
 CREATE TABLE `ci_sessions` (
@@ -37,7 +37,7 @@ CREATE TABLE `ci_sessions` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `comments`
+-- Structure de la table `comments`
 --
 
 CREATE TABLE `comments` (
@@ -53,13 +53,13 @@ CREATE TABLE `comments` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `drawings`
+-- Structure de la table `drawings`
 --
 
 CREATE TABLE `drawings` (
   `id` int(11) NOT NULL,
   `pseudo` varchar(255) NOT NULL,
-  `fk_picture` int(11) DEFAULT NULL,
+  `fk_picture` int(11) NOT NULL,
   `type` int(11) NOT NULL,
   `file` varchar(255) NOT NULL,
   `json` varchar(255) DEFAULT NULL,
@@ -71,7 +71,7 @@ CREATE TABLE `drawings` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pictures`
+-- Structure de la table `pictures`
 --
 
 CREATE TABLE `pictures` (
@@ -85,7 +85,7 @@ CREATE TABLE `pictures` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Structure de la table `users`
 --
 
 CREATE TABLE `users` (
@@ -101,7 +101,7 @@ CREATE TABLE `users` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users_types`
+-- Structure de la table `users_types`
 --
 
 CREATE TABLE `users_types` (
@@ -111,7 +111,7 @@ CREATE TABLE `users_types` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 --
--- Dumping data for table `users_types`
+-- Déchargement des données de la table `users_types`
 --
 
 INSERT INTO `users_types` (`id`, `grade`, `level`) VALUES
@@ -123,7 +123,7 @@ INSERT INTO `users_types` (`id`, `grade`, `level`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `votes`
+-- Structure de la table `votes`
 --
 
 CREATE TABLE `votes` (
@@ -133,119 +133,119 @@ CREATE TABLE `votes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;
 
 --
--- Indexes for dumped tables
+-- Index pour les tables déchargées
 --
 
 --
--- Indexes for table `ci_sessions`
+-- Index pour la table `ci_sessions`
 --
 ALTER TABLE `ci_sessions`
   ADD KEY `ci_sessions_timestamp` (`timestamp`);
 
 --
--- Indexes for table `comments`
+-- Index pour la table `comments`
 --
 ALTER TABLE `comments`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_drawing` (`fk_drawing`);
 
 --
--- Indexes for table `drawings`
+-- Index pour la table `drawings`
 --
 ALTER TABLE `drawings`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_picture` (`fk_picture`);
 
 --
--- Indexes for table `pictures`
+-- Index pour la table `pictures`
 --
 ALTER TABLE `pictures`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `users`
+-- Index pour la table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_user_type` (`fk_user_type`);
 
 --
--- Indexes for table `users_types`
+-- Index pour la table `users_types`
 --
 ALTER TABLE `users_types`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `votes`
+-- Index pour la table `votes`
 --
 ALTER TABLE `votes`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_drawing` (`fk_drawing`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT pour les tables déchargées
 --
 
 --
--- AUTO_INCREMENT for table `comments`
+-- AUTO_INCREMENT pour la table `comments`
 --
 ALTER TABLE `comments`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `drawings`
+-- AUTO_INCREMENT pour la table `drawings`
 --
 ALTER TABLE `drawings`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `pictures`
+-- AUTO_INCREMENT pour la table `pictures`
 --
 ALTER TABLE `pictures`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `users_types`
+-- AUTO_INCREMENT pour la table `users_types`
 --
 ALTER TABLE `users_types`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `votes`
+-- AUTO_INCREMENT pour la table `votes`
 --
 ALTER TABLE `votes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Constraints for dumped tables
+-- Contraintes pour les tables déchargées
 --
 
 --
--- Constraints for table `comments`
+-- Contraintes pour la table `comments`
 --
 ALTER TABLE `comments`
   ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`fk_drawing`) REFERENCES `drawings` (`id`);
 
 --
--- Constraints for table `drawings`
+-- Contraintes pour la table `drawings`
 --
 ALTER TABLE `drawings`
   ADD CONSTRAINT `drawings_ibfk_1` FOREIGN KEY (`fk_picture`) REFERENCES `pictures` (`id`);
 
 --
--- Constraints for table `users`
+-- Contraintes pour la table `users`
 --
 ALTER TABLE `users`
   ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`fk_user_type`) REFERENCES `users_types` (`id`);
 
 --
--- Constraints for table `votes`
+-- Contraintes pour la table `votes`
 --
 ALTER TABLE `votes`
   ADD CONSTRAINT `votes_ibfk_1` FOREIGN KEY (`fk_drawing`) REFERENCES `drawings` (`id`);
