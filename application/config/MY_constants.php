@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Add line "include'MY_constants.php';" in constants.php to load these
 */
 
-define('PER_PAGE', 30);
+define('PER_PAGE', 20);
 
 define('NORMAL_MODE', 1);
 define('CHAIN_MODE', 2);
