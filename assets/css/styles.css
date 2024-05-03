@@ -361,6 +361,14 @@ th {
 	color: red;
 }
 
+/* Misc. */
+img.fork {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 200px;
+}
+
 /* Responsive */
 @media only screen and (max-width: 650px) {
 	body {
