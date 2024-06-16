@@ -42,3 +42,4 @@ function check_active($p1 = '', $p2 = '', $p3 = '1'){
 		</li>
 	</ul>
 </nav>
+<div id="start"></div>
