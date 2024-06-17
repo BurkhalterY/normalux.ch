@@ -1,6 +1,6 @@
 # Normalux.ch
 
-The best way to see what this project is is to try it by yourself. It only takes 45 seconds.
+The best way to see what this project is to try it by yourself. It only takes 45 seconds.
 
 https://www.normalux.ch/
 
