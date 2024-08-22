@@ -25,7 +25,7 @@ cp database.php.sample database.php
 - Edit `database.php` with your MySQL credentials.
 - Manually create the database and import `database/normalux.sql` into it.
 
-You can use an all-in-one solution such as XAMPP, UwAmp to run this project. Alternatively, you can use the following command in the repository root: `php7.4 -S 0.0.0.0:8000`.
+You can use an all-in-one solution such as XAMPP or UwAmp to run this project. Alternatively, you can use the following command in the repository root: `php7.4 -S 0.0.0.0:8000`.
 
 ## Built With
 
