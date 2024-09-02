@@ -29,7 +29,7 @@ You can use an all-in-one solution such as XAMPP or UwAmp to run this project. A
 
 ## Built With
 
-- [CodeIgniter 3](https://codeigniter.com/userguide3/) - the PHP framework
+- [CodeIgniter 3](https://codeigniter.com/userguide3/) - The PHP framework
 
 ## Contributing
 
