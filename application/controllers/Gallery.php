@@ -40,8 +40,8 @@ class Gallery extends MY_Controller {
 
 	public function details($id){
 		$output['drawing'] = $this->drawing_model->with('picture')->with_deleted()->get($id);
-		$output['drawing']->mode = $this->drawing_model->get_mode_name($output['drawing']->type, TRUE);
 		if(is_null($output['drawing'])){ redirect('misc/error/404'); return; }
+		$output['drawing']->mode = $this->drawing_model->get_mode_name($output['drawing']->type, TRUE);
 		$arr = array('{picture}' => $output['drawing']->picture->title,
 					 '{author}' => $output['drawing']->pseudo,
 					 '{mode}' => $this->drawing_model->get_mode_name($output['drawing']->type),
