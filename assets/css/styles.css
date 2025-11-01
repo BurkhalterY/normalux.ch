@@ -237,15 +237,16 @@ textarea {
 #colors li:last-child {
 	margin-right: 0;
 }
-#colors a {
+#colors i {
 	border-radius: 50%;
 	display: inline-block;
 	height: 30px;
 	overflow: hidden;
 	text-indent: 100%;
 	width: 30px;
+	cursor: pointer;
 }
-#colors a.active {
+#colors i.active {
 	border: 2px solid #000;
 	width: 26px;
 	height: 26px;
