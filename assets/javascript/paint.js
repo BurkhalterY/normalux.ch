@@ -118,7 +118,7 @@ function timeDecrement() {
 	s--;
 	document.getElementById("s").innerHTML = s;
 	if (s == 0 && !blindmode) {
-		//finishAndSend();
+		finishAndSend();
 	} else if (s == -1 && blindmode) {
 		blindmode = false;
 		s = 45;
