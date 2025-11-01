@@ -18,10 +18,10 @@ var startColor = Array(4);
 var fillColor = Array(4);
 
 var xmlhttp = new XMLHttpRequest();
-xmlhttp.onreadystatechange = function() {
+xmlhttp.onreadystatechange = function () {
 	if (this.readyState == 4 && this.status == 200) {
 		var myArr = JSON.parse(this.responseText);
-		for(var j = 0; j < myArr.length; j++){
+		for (var j = 0; j < myArr.length; j++) {
 			setTimeout(action, myArr[j].time, myArr[j]);
 		}
 	}
@@ -29,15 +29,14 @@ xmlhttp.onreadystatechange = function() {
 xmlhttp.open("GET", document.getElementById("json").value, true);
 xmlhttp.send();
 
-function action(params){
-	switch(params.action){
+function action(params) {
+	switch (params.action) {
 		case "time":
 			s = params.s;
 			document.getElementById("s").innerHTML = s;
-			if(s == "∞"){
-
+			if (s == "∞") {
 			} else {
-				if(s == 2){
+				if (s == 2) {
 					blindmode = true;
 				}
 				timer = setInterval(timeDecrement, 1000);
@@ -89,57 +88,54 @@ function action(params){
 	}
 }
 
-function bucketTool(){
+function bucketTool() {
 	colorLayer = ctx.getImageData(0, 0, c.width, c.height);
 
-	for(var i = 0; i < 4; i++){
-		startColor[i] = colorLayer.data[x*4 + y*c.width*4 + i];
+	for (var i = 0; i < 4; i++) {
+		startColor[i] = colorLayer.data[x * 4 + y * c.width * 4 + i];
 	}
 	fillColor = nameToHex(ctx.strokeStyle);
 	pixelStack = [[x, y]];
 
-	while(pixelStack.length)
-	{
+	while (pixelStack.length) {
 		var newPos, pixelPos, reachLeft, reachRight;
 		newPos = pixelStack.pop();
 		x = newPos[0];
 		y = newPos[1];
-		
-		pixelPos = (y*c.width + x) * 4;
-		while(y-- >= 0/*drawingBoundTop*/ && matchStartColor(pixelPos))
-		{
+
+		pixelPos = (y * c.width + x) * 4;
+		while (y-- >= 0 /*drawingBoundTop*/ && matchStartColor(pixelPos)) {
 			pixelPos -= c.width * 4;
 		}
 		pixelPos += c.width * 4;
 		y++;
 		reachLeft = false;
 		reachRight = false;
-		while(y++ < c.height-1 && matchStartColor(pixelPos))
-		{
+		while (y++ < c.height - 1 && matchStartColor(pixelPos)) {
 			colorPixel(pixelPos);
 
-			if(x > 0) {
-				if(matchStartColor(pixelPos - 4)) {
-					if(!reachLeft){
+			if (x > 0) {
+				if (matchStartColor(pixelPos - 4)) {
+					if (!reachLeft) {
 						pixelStack.push([x - 1, y]);
 						reachLeft = true;
 					}
-				} else if(reachLeft) {
+				} else if (reachLeft) {
 					reachLeft = false;
 				}
 			}
-		
-			if(x < c.width-1) {
-				if(matchStartColor(pixelPos + 4)) {
-					if(!reachRight) {
+
+			if (x < c.width - 1) {
+				if (matchStartColor(pixelPos + 4)) {
+					if (!reachRight) {
 						pixelStack.push([x + 1, y]);
 						reachRight = true;
 					}
-				} else if(reachRight) {
+				} else if (reachRight) {
 					reachRight = false;
 				}
 			}
-				
+
 			pixelPos += c.width * 4;
 		}
 	}
@@ -147,40 +143,38 @@ function bucketTool(){
 }
 
 function matchStartColor(pixelPos) {
-
 	let threshold = 4;
 
-	var r = Math.abs(startColor[0] - colorLayer.data[pixelPos+0]) <= threshold;
-	var g = Math.abs(startColor[1] - colorLayer.data[pixelPos+1]) <= threshold;
-	var b = Math.abs(startColor[2] - colorLayer.data[pixelPos+2]) <= threshold;
-	var a = Math.abs(startColor[3] - colorLayer.data[pixelPos+3]) <= threshold;
+	var r = Math.abs(startColor[0] - colorLayer.data[pixelPos + 0]) <= threshold;
+	var g = Math.abs(startColor[1] - colorLayer.data[pixelPos + 1]) <= threshold;
+	var b = Math.abs(startColor[2] - colorLayer.data[pixelPos + 2]) <= threshold;
+	var a = Math.abs(startColor[3] - colorLayer.data[pixelPos + 3]) <= threshold;
 
-	return (r && g && b && a);
+	return r && g && b && a;
 }
 
 function colorPixel(pixelPos) {
 	colorLayer.data[pixelPos] = fillColor[0];
-	colorLayer.data[pixelPos+1] = fillColor[1];
-	colorLayer.data[pixelPos+2] = fillColor[2];
-	if(colorLayer.data[pixelPos+3] == 0){
-		colorLayer.data[pixelPos+3] = 255;
+	colorLayer.data[pixelPos + 1] = fillColor[1];
+	colorLayer.data[pixelPos + 2] = fillColor[2];
+	if (colorLayer.data[pixelPos + 3] == 0) {
+		colorLayer.data[pixelPos + 3] = 255;
 	}
 }
 
 function nameToHex(name) {
-
 	let fakeDiv = document.createElement("div");
 	fakeDiv.style.color = name;
 	document.body.appendChild(fakeDiv);
 
 	let cs = window.getComputedStyle(fakeDiv),
-	pv = cs.getPropertyValue("color");
+		pv = cs.getPropertyValue("color");
 
 	document.body.removeChild(fakeDiv);
 
 	let rgb = pv.substr(4).split(")")[0].split(",");
 
-	return [rgb[0], rgb[1], rgb[2], 0xFF];
+	return [rgb[0], rgb[1], rgb[2], 0xff];
 }
 
 function drawRect(x1, y1) {
@@ -191,7 +185,7 @@ function drawRect(x1, y1) {
 function timeDecrement() {
 	s--;
 	document.getElementById("s").innerHTML = s;
-	if(s == -1 && blindmode) {
+	if (s == -1 && blindmode) {
 		blindmode = false;
 		s = 45;
 		document.getElementById("s").innerHTML = s;

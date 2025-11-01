@@ -1,6 +1,8 @@
 var painting = false;
-var x = 0, y = 0;
-var x1 = 0, y1 = 0;
+var x = 0,
+	y = 0;
+var x1 = 0,
+	y1 = 0;
 var tile = 25;
 
 var positions = new Array();
@@ -18,21 +20,31 @@ for (var i = 0; i < buttons.length; i++) {
 	buttons[i].style.backgroundColor = buttons[i].getAttribute("data-color");
 }
 
-function setColor(id){
+function setColor(id) {
 	for (var i = 0; i < buttons.length; i++) {
 		buttons[i].classList.remove("active");
 	}
-	ctx.fillStyle = document.getElementById("color-"+id).getAttribute("data-color");
-	document.getElementById("color-"+id).classList.add("active");
-	positions.push({time:Date.now()-initialTime, action:"color", color:ctx.fillStyle});
+	ctx.fillStyle = document
+		.getElementById("color-" + id)
+		.getAttribute("data-color");
+	document.getElementById("color-" + id).classList.add("active");
+	positions.push({
+		time: Date.now() - initialTime,
+		action: "color",
+		color: ctx.fillStyle,
+	});
 }
 
-function colorPicker(color){
+function colorPicker(color) {
 	for (var i = 0; i < buttons.length; i++) {
 		buttons[i].classList.remove("active");
 	}
 	ctx.fillStyle = color;
-	positions.push({time:Date.now()-initialTime, action:"color", color:ctx.fillStyle});
+	positions.push({
+		time: Date.now() - initialTime,
+		action: "color",
+		color: ctx.fillStyle,
+	});
 }
 
 document.addEventListener("mouseup", function (e) {
@@ -44,23 +56,33 @@ c.addEventListener("mousedown", function (e) {
 });
 
 c.addEventListener("mousemove", function (e) {
-	if(painting){
+	if (painting) {
 		x = e.offsetX;
 		y = e.offsetY;
-		x1 = Math.ceil(x/tile) * tile - tile;
-		y1 = Math.ceil(y/tile) * tile - tile;
+		x1 = Math.ceil(x / tile) * tile - tile;
+		y1 = Math.ceil(y / tile) * tile - tile;
 		drawRect();
-		positions.push({time:Date.now()-initialTime, action:"rect", x:x1, y:y1});
+		positions.push({
+			time: Date.now() - initialTime,
+			action: "rect",
+			x: x1,
+			y: y1,
+		});
 	}
 });
 
 c.addEventListener("click", function (e) {
 	x = e.offsetX;
 	y = e.offsetY;
-	x1 = Math.ceil(x/tile) * tile - tile;
-	y1 = Math.ceil(y/tile) * tile - tile;
+	x1 = Math.ceil(x / tile) * tile - tile;
+	y1 = Math.ceil(y / tile) * tile - tile;
 	drawRect();
-	positions.push({time:Date.now()-initialTime, action:"rect", x:x1, y:y1});
+	positions.push({
+		time: Date.now() - initialTime,
+		action: "rect",
+		x: x1,
+		y: y1,
+	});
 });
 
 function drawRect() {
@@ -69,9 +91,8 @@ function drawRect() {
 }
 
 var s = document.getElementById("s").innerHTML;
-positions.push({time:Date.now()-initialTime, action:"time", s:s});
-if(s == "∞"){
-	
+positions.push({ time: Date.now() - initialTime, action: "time", s: s });
+if (s == "∞") {
 } else {
 	setInterval(timeDecrement, 1000);
 }
@@ -79,13 +100,13 @@ if(s == "∞"){
 function timeDecrement() {
 	s--;
 	document.getElementById("s").innerHTML = s;
-	if (s == 0){
+	if (s == 0) {
 		finishAndSend();
 	}
 }
 
 function finishAndSend() {
-	positions.push({time:Date.now()-initialTime, action:"finish"});
+	positions.push({ time: Date.now() - initialTime, action: "finish" });
 	var dataURL = c.toDataURL("image/png");
 	document.getElementById("image").value = dataURL;
 	document.getElementById("json").value = JSON.stringify(positions);

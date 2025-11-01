@@ -21,13 +21,19 @@ for (var i = 0; i < buttons.length; i++) {
 	buttons[i].style.backgroundColor = buttons[i].getAttribute("data-color");
 }
 
-function setColor(id){
+function setColor(id) {
 	for (var i = 0; i < buttons.length; i++) {
 		buttons[i].classList.remove("active");
 	}
-	ctx.strokeStyle = document.getElementById("color-"+id).getAttribute("data-color");
-	document.getElementById("color-"+id).classList.add("active");
-	positions.push({time:Date.now()-initialTime, action:"color", color:ctx.strokeStyle});
+	ctx.strokeStyle = document
+		.getElementById("color-" + id)
+		.getAttribute("data-color");
+	document.getElementById("color-" + id).classList.add("active");
+	positions.push({
+		time: Date.now() - initialTime,
+		action: "color",
+		color: ctx.strokeStyle,
+	});
 }
 
 document.addEventListener("mouseup", function (e) {
@@ -38,11 +44,16 @@ c.addEventListener("mousedown", function (e) {
 	painting = true;
 	x = e.offsetX;
 	y = e.offsetY;
-	positions.push({time:Date.now()-initialTime, action:"start", x:x, y:y});
+	positions.push({
+		time: Date.now() - initialTime,
+		action: "start",
+		x: x,
+		y: y,
+	});
 });
 
 c.addEventListener("mousemove", function (e) {
-	if(painting){
+	if (painting) {
 		ctx.beginPath();
 		ctx.moveTo(x, y);
 		x = e.offsetX;
@@ -50,7 +61,12 @@ c.addEventListener("mousemove", function (e) {
 		ctx.lineTo(x, y);
 		ctx.stroke();
 		ctx.closePath();
-		positions.push({time:Date.now()-initialTime, action:"paint", x:x, y:y});
+		positions.push({
+			time: Date.now() - initialTime,
+			action: "paint",
+			x: x,
+			y: y,
+		});
 	}
 });
 
@@ -63,16 +79,20 @@ c.addEventListener("click", function (e) {
 	ctx.lineTo(x, y);
 	ctx.stroke();
 	ctx.closePath();
-	positions.push({time:Date.now()-initialTime, action:"point", x:x, y:y});
+	positions.push({
+		time: Date.now() - initialTime,
+		action: "point",
+		x: x,
+		y: y,
+	});
 });
 
 var blindmode = false;
 var s = document.getElementById("s").innerHTML;
-positions.push({time:Date.now()-initialTime, action:"time", s:s});
-if(s == "∞"){
-	
+positions.push({ time: Date.now() - initialTime, action: "time", s: s });
+if (s == "∞") {
 } else {
-	if(s == 2){
+	if (s == 2) {
 		blindmode = true;
 	}
 	setInterval(timeDecrement, 1000);
@@ -81,9 +101,9 @@ if(s == "∞"){
 function timeDecrement() {
 	s--;
 	document.getElementById("s").innerHTML = s;
-	if (s == 0 && !blindmode){
+	if (s == 0 && !blindmode) {
 		finishAndSend();
-	} else if(s == -1 && blindmode) {
+	} else if (s == -1 && blindmode) {
 		blindmode = false;
 		s = 45;
 		document.getElementById("s").innerHTML = s;
@@ -93,7 +113,7 @@ function timeDecrement() {
 }
 
 function finishAndSend() {
-	positions.push({time:Date.now()-initialTime, action:"finish"});
+	positions.push({ time: Date.now() - initialTime, action: "finish" });
 	var dataURL = c.toDataURL("image/png");
 	document.getElementById("image").value = dataURL;
 	document.getElementById("json").value = JSON.stringify(positions);
