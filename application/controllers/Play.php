@@ -107,9 +107,14 @@ class Play extends MY_Controller {
 		
 		file_put_contents($dir.'/'.$json_temp_name, $_POST['json']);
 
+		$this->load->library('user_agent');
+		$pseudo = $_SESSION['pseudo'];
+		if($this->user_agent->is_mobile()){
+			$pseudo = '<i>' . $pseudo . '</i>';
+		}
 
 		$req = array(
-			'pseudo' => $_SESSION['pseudo'],
+			'pseudo' => $pseudo,
 			'fk_picture' => $picture,
 			'type' => $mode,
 			'file' => date("Y-m").'/'.$temp_name,
