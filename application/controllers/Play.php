@@ -109,7 +109,7 @@ class Play extends MY_Controller {
 
 		$this->load->library('user_agent');
 		$pseudo = $_SESSION['pseudo'];
-		if($this->user_agent->is_mobile()){
+		if($this->agent->is_mobile()){
 			$pseudo = '<i>' . $pseudo . '</i>';
 		}
 
