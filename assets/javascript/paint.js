@@ -1,5 +1,4 @@
 var painting = false;
-var bucketMode = false;
 var x = 0;
 var y = 0;
 
@@ -8,49 +7,75 @@ var initialTime = Date.now();
 
 var c = document.getElementById("canvas");
 var ctx = c.getContext("2d");
-
 ctx.lineWidth = 5;
 ctx.lineJoin = "round";
 ctx.lineCap = "round";
 
-var startColor = Array(4);
-var fillColor = Array(4);
+var buttons = {};
+for (let button of document.getElementsByClassName("color")) {
+	buttons[button.id] = button;
+	button.style.backgroundColor = button.getAttribute("data-color");
+}
 
-var buttons = document.getElementsByClassName("color");
-for (var i = 0; i < buttons.length; i++) {
-	buttons[i].style.backgroundColor = buttons[i].getAttribute("data-color");
+function addPosition(action, param) {
+	positions.push({ time: Date.now() - initialTime, action: action, ...param });
 }
 
 function setColor(id) {
-	for (var i = 0; i < buttons.length; i++) {
+	for (let i in buttons) {
 		buttons[i].classList.remove("active");
 	}
-	ctx.strokeStyle = document
-		.getElementById("color-" + id)
-		.getAttribute("data-color");
-	document.getElementById("color-" + id).classList.add("active");
-	positions.push({
-		time: Date.now() - initialTime,
-		action: "color",
-		color: ctx.strokeStyle,
+	let button = buttons["color-" + id];
+	ctx.strokeStyle = button.getAttribute("data-color");
+	button.classList.add("active");
+	addPosition("color", { color: ctx.strokeStyle });
+}
+
+function touchHandler(event) {
+	/*	Function to map touch events to mouse events
+		Source: https://stackoverflow.com/questions/1517924/javascript-mapping-touch-events-to-mouse-events
+		Updated according to: https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/MouseEvent
+	*/
+	let touches = event.changedTouches,
+		first = touches[0],
+		type = "";
+	switch (event.type) {
+		case "touchstart":
+			type = "mousedown";
+			break;
+		case "touchmove":
+			type = "mousemove";
+			break;
+		case "touchend":
+			type = "mouseup";
+			break;
+		default:
+			return;
+	}
+
+	let simulatedEvent = new MouseEvent(type, {
+		screenX: first.screenX,
+		screenY: first.screenY,
+		clientX: first.clientX,
+		clientY: first.clientY,
 	});
+
+	first.target.dispatchEvent(simulatedEvent);
+	event.preventDefault();
 }
 
 document.addEventListener("mouseup", function (e) {
 	painting = false;
 });
+document.addEventListener("touchcancel", touchHandler, true);
 
 c.addEventListener("mousedown", function (e) {
 	painting = true;
 	x = e.offsetX;
 	y = e.offsetY;
-	positions.push({
-		time: Date.now() - initialTime,
-		action: "start",
-		x: x,
-		y: y,
-	});
+	addPosition("start", { x: x, y: y });
 });
+c.addEventListener("touchstart", touchHandler, true);
 
 c.addEventListener("mousemove", function (e) {
 	if (painting) {
@@ -61,14 +86,10 @@ c.addEventListener("mousemove", function (e) {
 		ctx.lineTo(x, y);
 		ctx.stroke();
 		ctx.closePath();
-		positions.push({
-			time: Date.now() - initialTime,
-			action: "paint",
-			x: x,
-			y: y,
-		});
+		addPosition("paint", { x: x, y: y });
 	}
 });
+c.addEventListener("touchmove", touchHandler, true);
 
 c.addEventListener("click", function (e) {
 	x = e.offsetX;
@@ -79,19 +100,14 @@ c.addEventListener("click", function (e) {
 	ctx.lineTo(x, y);
 	ctx.stroke();
 	ctx.closePath();
-	positions.push({
-		time: Date.now() - initialTime,
-		action: "point",
-		x: x,
-		y: y,
-	});
+	addPosition("point", { x: x, y: y });
 });
 
 var blindmode = false;
 var s = document.getElementById("s").innerHTML;
-positions.push({ time: Date.now() - initialTime, action: "time", s: s });
-if (s == "∞") {
-} else {
+
+addPosition("time", { s: s });
+if (s != "∞") {
 	if (s == 2) {
 		blindmode = true;
 	}
@@ -102,7 +118,7 @@ function timeDecrement() {
 	s--;
 	document.getElementById("s").innerHTML = s;
 	if (s == 0 && !blindmode) {
-		finishAndSend();
+		//finishAndSend();
 	} else if (s == -1 && blindmode) {
 		blindmode = false;
 		s = 45;
@@ -113,8 +129,8 @@ function timeDecrement() {
 }
 
 function finishAndSend() {
-	positions.push({ time: Date.now() - initialTime, action: "finish" });
-	var dataURL = c.toDataURL("image/png");
+	addPosition("finish", {});
+	let dataURL = c.toDataURL("image/png");
 	document.getElementById("image").value = dataURL;
 	document.getElementById("json").value = JSON.stringify(positions);
 	document.getElementById("form").submit();
