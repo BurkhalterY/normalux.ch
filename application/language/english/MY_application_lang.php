@@ -91,4 +91,4 @@ $lang['contact']						= 'Contact';
 $lang['error']							= 'Error';
 $lang['error_message'][403]				= 'You are not allowed to access this page 😡';
 $lang['error_message'][404]				= 'Page Not Found';
-$lang['leader_web_sponso']				= 'I recently founded my agency Leader Web. Feel free to contact me if you need a developer.'
+$lang['leader_web_sponso']				= 'I recently founded my agency Leader Web. Feel free to contact me if you need a developer.';

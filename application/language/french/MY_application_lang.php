@@ -91,4 +91,4 @@ $lang['contact']						= 'Contact';
 $lang['error']							= 'Erreur';
 $lang['error_message'][403]				= 'Vous n\'avez pas la permission d\'accèder à cette page 😡';
 $lang['error_message'][404]				= 'Cette page est introuvable.';
-$lang['leader_web_sponso']				= 'J\'ai récemment fondé mon agence Leader Web. N\'hésitez pas à me contacter si vous avez besoin d\'un développeur.'
+$lang['leader_web_sponso']				= 'J\'ai récemment fondé mon agence Leader Web. N\'hésitez pas à me contacter si vous avez besoin d\'un développeur.';
